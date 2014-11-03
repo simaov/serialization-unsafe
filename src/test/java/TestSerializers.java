@@ -1,3 +1,5 @@
+import org.jcoffee.AbstractSerializerUnsafe;
+
 /**
  * Created by sima on 11/3/14.
  */

@@ -1,6 +1,6 @@
-import com.sun.deploy.util.ArrayUtil;
 import junit.framework.TestCase;
 import org.apache.commons.lang3.ArrayUtils;
+import org.jcoffee.UnsafeMemory;
 import org.junit.Test;
 
 import java.nio.charset.Charset;
@@ -11,14 +11,11 @@ public class UnsafeMemoryTest extends TestCase {
     @Test
     public void testGetStringFieldValue() throws Exception {
         TestClasses.TestString testString = new TestClasses.TestString("myStr");
-        byte[] bytes = UnsafeMemory.getStringFieldValue(testString, TestClasses.TestString.class.getDeclaredField("string"));
-        System.out.println(new String(bytes, Charset.forName("UTF16")));
-
         TestSerializers.TestStringSerializer testStringSerializer = new TestSerializers.TestStringSerializer(TestClasses.TestString.class);
 
-        System.out.println(new String(testStringSerializer.serialize(testString), Charset.forName("UTF16")));
+        byte[] serialize = testStringSerializer.serialize(testString);
 
-        byte[] b = testStringSerializer.serialize(testString);
+        testStringSerializer.deserialize(serialize);
 
     }
 

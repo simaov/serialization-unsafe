@@ -1,3 +1,5 @@
+package org.jcoffee;
+
 import java.util.Random;
 import java.util.UUID;
 

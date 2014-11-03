@@ -1,3 +1,5 @@
+package org.jcoffee;
+
 import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;
@@ -52,7 +54,8 @@ public class UnsafeMemory {
 
         String s = (String) string;
         char[] charBuffer = new char[s.length()];
-        UNSAFE.copyMemory(getFieldObject(string, charValueFieldOffset), baseCharArrayOffset, charBuffer, baseCharArrayOffset, s.length() * 2);
+        UNSAFE.copyMemory(getFieldObject(string, charValueFieldOffset),
+                baseCharArrayOffset, charBuffer, baseCharArrayOffset, s.length() * 2);
 /*
 
         byte[] byteBuffer = new byte[charBuffer.length * 2];
