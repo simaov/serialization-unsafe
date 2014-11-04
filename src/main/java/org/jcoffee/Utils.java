@@ -35,6 +35,15 @@ public class Utils {
         return buffer;
     }
 
+    public static byte[] bytesFromInt(int k) {
+        int index = 0;
+        byte[] buffer = new byte[4];
+        for (int i = 0; i < buffer.length; i++) {
+            buffer[index++] = (byte) (k >> ((3 - i) * 8));
+        }
+        return buffer;
+    }
+
     public static byte[] bytesFromChars(char[] chars) {
         int charsSize = chars.length * 2;
         byte[] byteBuffer = new byte[JAVA_INTEGER_SIZE + charsSize];
@@ -77,18 +86,8 @@ public class Utils {
     public static char[] charsFromBytes(byte[] bytes, int size, int offset) {
         char[] result = new char[size / 2];
         for (int i = 0; i < size; i += 2) {
-
-            char c = (char) bytes[i + offset];
-
-            c = (char) ((c << 8) + bytes[i + 1 + offset]);
-
-
-            /*if (i != 0 && i % 2 == 0) {
-                c = (char) bytes[i + offset];
-            } else {
-                c = (char) ((c << 8) + bytes[i + offset]);
-                result[i / 2] = c;
-            }*/
+            char c = (char) bytes[i + offset + JAVA_INTEGER_SIZE];
+            c = (char) ((c << 8) + bytes[i + 1 + offset + JAVA_INTEGER_SIZE]);
             result[i / 2] = c;
         }
         return result;

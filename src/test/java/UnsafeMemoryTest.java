@@ -1,10 +1,11 @@
+import com.sun.org.apache.xpath.internal.SourceTree;
 import junit.framework.TestCase;
 import org.apache.commons.lang3.ArrayUtils;
-import org.jcoffee.UnsafeMemory;
+import org.junit.Assert;
 import org.junit.Test;
 
-import java.nio.charset.Charset;
-import java.util.Arrays;
+import java.io.DataOutputStream;
+import java.util.*;
 
 public class UnsafeMemoryTest extends TestCase {
 
@@ -12,22 +13,16 @@ public class UnsafeMemoryTest extends TestCase {
     public void testGetStringFieldValue() throws Exception {
         TestClasses.TestString testString = new TestClasses.TestString("myStr");
         TestSerializers.TestStringSerializer testStringSerializer = new TestSerializers.TestStringSerializer(TestClasses.TestString.class);
-
         byte[] serialize = testStringSerializer.serialize(testString);
-
-        testStringSerializer.deserialize(serialize);
-
+        Assert.assertEquals(testString, testStringSerializer.deserialize(serialize));
     }
 
     @Test
     public void testLongValue() throws Exception {
         TestClasses.TestLong testLong = new TestClasses.TestLong(100500L);
-        System.out.println(Long.toBinaryString(100500L));
         TestSerializers.TestLongSerializer testLongSerializer = new TestSerializers.TestLongSerializer(TestClasses.TestLong.class);
         byte[] b = testLongSerializer.serialize(testLong);
-
-        TestClasses.TestLong testLong1 = testLongSerializer.deserialize(b);
-        System.out.println();
+        assertEquals(testLong, testLongSerializer.deserialize(b));
     }
 
     @Test
@@ -56,6 +51,46 @@ public class UnsafeMemoryTest extends TestCase {
         TestSerializers.TestCharArraySerializer testCharArraySerializer = new TestSerializers.TestCharArraySerializer(TestClasses.TestCharArray.class);
         testCharArraySerializer.serialize(testCharArray);
     }
+
+    @Test
+    public void testComplexObject() throws Exception {
+        List<TestClasses.TestLongIntegerString> list = new ArrayList<>();
+        Random random = new Random();
+        for (int i = 0; i < 10; i++) {
+            TestClasses.TestLongIntegerString testLongIntegerString = new TestClasses.TestLongIntegerString(random.nextLong(), random.nextInt() , UUID.randomUUID().toString());
+            list.add(testLongIntegerString);
+        }
+        TestClasses.TestLongIntegerString testLongIntegerString = new TestClasses.TestLongIntegerString(12345L, 9876, "sss78yhgw46g34d");
+        TestSerializers.TestLongIntegerStringSerializer testCharArraySerializer = new TestSerializers.TestLongIntegerStringSerializer(TestClasses.TestLongIntegerString.class);
+        byte[] b = testCharArraySerializer.serialize(testLongIntegerString);
+
+        testLongIntegerString = testCharArraySerializer.deserialize(b);
+        System.out.println();
+    }
+
+    @Test
+    public void testPerf() throws Exception {
+        List<TestClasses.TestLongIntegerString> list = new ArrayList<>();
+        Random random = new Random();
+        for (int i = 0; i < 1000000; i++) {
+            TestClasses.TestLongIntegerString testLongIntegerString = new TestClasses.TestLongIntegerString(random.nextLong(), random.nextInt() , UUID.randomUUID().toString());
+            list.add(testLongIntegerString);
+        }
+
+        TestSerializers.TestLongIntegerStringSerializer testCharArraySerializer = new TestSerializers.TestLongIntegerStringSerializer(TestClasses.TestLongIntegerString.class);
+
+        long start = System.nanoTime();
+        for (int i = 0; i < list.size(); i++) {
+            byte[] b = testCharArraySerializer.serialize(list.get(i));
+        }
+
+        System.out.println("Time: " + (System.nanoTime() - start) / 1000000 + " ns.");
+
+//        testLongIntegerString = testCharArraySerializer.deserialize(b);
+        System.out.println();
+    }
+
+
 
     @Test
     public void test() throws Exception {

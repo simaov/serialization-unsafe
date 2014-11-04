@@ -34,4 +34,10 @@ public class TestSerializers {
             super(testLongIntegerClass);
         }
     }
+
+    static class TestLongIntegerStringSerializer extends AbstractSerializerUnsafe<TestClasses.TestLongIntegerString> {
+        public TestLongIntegerStringSerializer(Class<TestClasses.TestLongIntegerString> testLongIntegerString) {
+            super(testLongIntegerString);
+        }
+    }
 }

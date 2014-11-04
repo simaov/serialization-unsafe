@@ -37,10 +37,12 @@ public class AbstractSerializerUnsafe<T> implements SerializerUnsafeI<T> {
         for (int i = 0; i < declaredFields.length; i++) {
             String type = declaredFieldsTypes[i];
             if (type.equals(JAVA_LONG_TYPE)) {
-                declaredFieldsValues[i] = UnsafeMemory.getLongFieldValue(obj, declaredFields[i]);
+                byte[] b = Utils.bytesFromLong(UnsafeMemory.getLongFieldValue(obj, declaredFields[i]));
+                declaredFieldsValues[i] = b;
                 bufferSize += JAVA_LONG_SIZE;
             } else if (type.equals(JAVA_INTEGER_TYPE)){
-                declaredFieldsValues[i] = UnsafeMemory.getIntegerFieldValue(obj, declaredFields[i]);
+                byte[] b = Utils.bytesFromInt(UnsafeMemory.getIntegerFieldValue(obj, declaredFields[i]));
+                declaredFieldsValues[i] = b;
                 bufferSize += JAVA_INTEGER_SIZE;
             } else if (type.equals(JAVA_STRING_TYPE)){
                 byte[] bytes = Utils.bytesFromChars(UnsafeMemory.getStringFieldValue(obj, declaredFields[i]));
@@ -78,7 +80,9 @@ public class AbstractSerializerUnsafe<T> implements SerializerUnsafeI<T> {
             } else if (type.equals(JAVA_STRING_TYPE)){
                 int size  = Utils.intFromBytes(bytes, offset);
                 char[] res = Utils.charsFromBytes(bytes, size, offset);
-                System.out.println(new String(res));
+                String s = (String) UnsafeMemory.getUnsafe().allocateInstance(String.class);
+                UnsafeMemory.getUnsafe().putObject(s, UnsafeMemory.charValueFieldOffset, res);
+                UnsafeMemory.getUnsafe().putObject(instance, declaredFieldsOffsets[i], s);
             }
         }
 
