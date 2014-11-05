@@ -33,6 +33,20 @@ public class UnsafeMemory {
 
     }
 
+    public static long getLongValue(Object baseObj, long fieldOffset) throws Exception {
+        if (baseObj == null) {
+            return 0;
+        }
+        return UNSAFE.getLong(baseObj, fieldOffset);
+    }
+
+    public static int getIntValue(Object baseObj, long fieldOffset) throws Exception {
+        if (baseObj == null) {
+            return 0;
+        }
+        return UNSAFE.getInt(baseObj, fieldOffset);
+    }
+
     public static long getLongValueFromLongObject(Object l) throws Exception {
         if (l == null) {
             return 0;
@@ -56,24 +70,19 @@ public class UnsafeMemory {
         char[] charBuffer = new char[s.length()];
         UNSAFE.copyMemory(getFieldObject(string, charValueFieldOffset),
                 baseCharArrayOffset, charBuffer, baseCharArrayOffset, s.length() * 2);
-/*
 
-        byte[] byteBuffer = new byte[charBuffer.length * 2];
-
-        int index = 0;
-        for (int i = 0; i < charBuffer.length; i++) {
-            byteBuffer[index++] = (byte) (charBuffer[i] >> 8);
-            byteBuffer[index++] = (byte) (charBuffer[i]);
-        }
-
-*/
         return charBuffer;
     }
 
-    public static char[] getCharArrayValue(Object i, int size) throws Exception {
-        char[] buffer = new char[size];
-        UNSAFE.copyMemory(i, baseCharArrayOffset, buffer, baseCharArrayOffset, size);
-        return buffer;
+    public static char[] getCharArrayValue(Object baseObj, long charArrayOffset) throws Exception {
+        char[] chars = (char[]) getFieldObject(baseObj, charArrayOffset);
+        //char[] buffer = new char[chars.length];
+
+        //UNSAFE.copyMemory(chars, baseCharArrayOffset, buffer, baseCharArrayOffset, chars.length * 2);
+
+
+//        UNSAFE.copyMemory(i, baseCharArrayOffset, buffer, baseCharArrayOffset, size);
+        return chars;
     }
 
     public static byte[] getUUIDValue(Object uuid) throws Exception {
@@ -112,30 +121,10 @@ public class UnsafeMemory {
 
     public static int getIntegerFieldValue(Object baseObj, Field field) throws Exception {
         return getIntValueFromIntObject(getFieldObject(baseObj, getFieldOffset(field)));
-/*
-        int index = 0;
-        byte[] buffer = new byte[4];
-        for (int i = 0; i < buffer.length; i++) {
-            buffer[index++] = (byte) (value >> ((3 - i) * 8));
-        }
-        return  buffer;
-*/
     }
 
     public static char[] getStringFieldValue(Object baseObj, Field field) throws Exception {
         return getStringValue(getFieldObject(baseObj, getFieldOffset(field)));
-/*
-        final byte[] result = new byte[stringValue.length + Integer.SIZE];
-        int index = 0;
-        for (int i = 0; i < 4; ++i) {
-            result[index++] = (byte) (stringValue.length >> ((3 - i) * 8));
-        }
-
-        for (int i = 0; i < stringValue.length; i++) {
-            result[index++] = stringValue[i];
-        }
-        return result;
-*/
     }
 
     public static Unsafe getUnsafe() {

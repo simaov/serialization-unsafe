@@ -85,8 +85,26 @@ public class UnsafeMemoryTest extends TestCase {
         }
 
         System.out.println("Time: " + (System.nanoTime() - start) / 1000000 + " ns.");
+        System.out.println();
+    }
 
-//        testLongIntegerString = testCharArraySerializer.deserialize(b);
+    @Test
+    public void testPerfPrim() throws Exception {
+        List<TestClasses.TestLongIntegerStringPrim> list = new ArrayList<>();
+        Random random = new Random();
+        for (int i = 0; i < 100000; i++) {
+            TestClasses.TestLongIntegerStringPrim testLongIntegerString = new TestClasses.TestLongIntegerStringPrim(random.nextLong(), random.nextInt() , UUID.randomUUID().toString().toCharArray());
+            list.add(testLongIntegerString);
+        }
+
+        TestSerializers.TestLongIntegerStringPrimSerializer testCharArraySerializer = new TestSerializers.TestLongIntegerStringPrimSerializer(TestClasses.TestLongIntegerStringPrim.class);
+        Thread.sleep(2_000);
+        long start = System.nanoTime();
+        for (int i = 0; i < list.size(); i++) {
+            byte[] b = testCharArraySerializer.serialize(list.get(i));
+        }
+
+        System.out.println("Time: " + (System.nanoTime() - start) / 100000 + " ns.");
         System.out.println();
     }
 

@@ -1,10 +1,12 @@
 package org.jcoffee;
 
 public class JavaTypes {
-    public static final String JAVA_INTEGER_TYPE        = Integer.class.getName();
-    public static final String JAVA_LONG_TYPE           = Long.class.getName();
-    public static final String JAVA_STRING_TYPE         = String.class.getName();
-    public static final String JAVA_CHAR_ARRAY_TYPE     = char[].class.getName();
+    public static final int JAVA_INT_TYPE            = 1;
+    public static final int JAVA_LONG_TYPE           = 2;
+    public static final int JAVA_CHAR_ARRAY_TYPE     = 3;
+    public static final int JAVA_INTEGER_OBJECT_TYPE = 4;
+    public static final int JAVA_LONG_OBJECT_TYPE    = 5;
+    public static final int JAVA_STRING_TYPE         = 6;
 
     public static final int JAVA_INTEGER_SIZE           = Integer.SIZE / 8;
     public static final int JAVA_LONG_SIZE              = Long.SIZE / 8;

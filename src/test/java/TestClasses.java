@@ -95,4 +95,16 @@ public class TestClasses {
             this.string = string;
         }
     }
+
+    static class TestLongIntegerStringPrim {
+        private long aLong;
+        private int aInteger;
+        private char[] string;
+
+        public TestLongIntegerStringPrim(long aLong, int aInteger, char[] string) {
+            this.aLong = aLong;
+            this.aInteger = aInteger;
+            this.string = string;
+        }
+    }
 }
