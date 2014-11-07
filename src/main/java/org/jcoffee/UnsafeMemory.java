@@ -3,7 +3,6 @@ package org.jcoffee;
 import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.UUID;
 
 public class UnsafeMemory {
@@ -33,56 +32,43 @@ public class UnsafeMemory {
 
     }
 
-    public static long getLongValue(Object baseObj, long fieldOffset) throws Exception {
+    public static long getPrimitiveLong(Object baseObj, long fieldOffset) throws Exception {
         if (baseObj == null) {
             return 0;
         }
         return UNSAFE.getLong(baseObj, fieldOffset);
     }
 
-    public static int getIntValue(Object baseObj, long fieldOffset) throws Exception {
+    public static int getPrimitiveInt(Object baseObj, long fieldOffset) throws Exception {
         if (baseObj == null) {
             return 0;
         }
         return UNSAFE.getInt(baseObj, fieldOffset);
     }
 
-    public static long getLongValueFromLongObject(Object l) throws Exception {
-        if (l == null) {
+    public static long getLong(Object longObject) throws Exception {
+        if (longObject == null) {
             return 0;
         }
-        return UNSAFE.getLong(l, longValueFieldOffset);
+        return UNSAFE.getLong(longObject, longValueFieldOffset);
     }
 
-    public static int getIntValueFromIntObject(Object i) throws Exception {
-        if (i == null) {
+    public static int getInt(Object intObject) throws Exception {
+        if (intObject == null) {
             return 0;
         }
-        return UNSAFE.getInt(i, intValueFieldOffset);
+        return UNSAFE.getInt(intObject, intValueFieldOffset);
     }
 
-    public static char[] getStringValue(Object string) throws Exception {
-        if (string == null) {
+    public static char[] getCharsFromString(Object stringObject) throws Exception {
+        if (stringObject == null) {
             return new char[0];
         }
-
-        String s = (String) string;
-        char[] charBuffer = new char[s.length()];
-        UNSAFE.copyMemory(getFieldObject(string, charValueFieldOffset),
-                baseCharArrayOffset, charBuffer, baseCharArrayOffset, s.length() * 2);
-
-        return charBuffer;
+        return getChars(stringObject, charValueFieldOffset);
     }
 
-    public static char[] getCharArrayValue(Object baseObj, long charArrayOffset) throws Exception {
-        char[] chars = (char[]) getFieldObject(baseObj, charArrayOffset);
-        //char[] buffer = new char[chars.length];
-
-        //UNSAFE.copyMemory(chars, baseCharArrayOffset, buffer, baseCharArrayOffset, chars.length * 2);
-
-
-//        UNSAFE.copyMemory(i, baseCharArrayOffset, buffer, baseCharArrayOffset, size);
-        return chars;
+    public static char[] getChars(Object baseObj, long charArrayOffset) throws Exception {
+        return (char[]) getFieldObject(baseObj, charArrayOffset);
     }
 
     public static byte[] getUUIDValue(Object uuid) throws Exception {
@@ -116,15 +102,15 @@ public class UnsafeMemory {
     }
 
     public static long getLongFieldValue(Object baseObj, Field field) throws Exception {
-        return getLongValueFromLongObject(getFieldObject(baseObj, getFieldOffset(field)));
+        return getLong(getFieldObject(baseObj, getFieldOffset(field)));
     }
 
     public static int getIntegerFieldValue(Object baseObj, Field field) throws Exception {
-        return getIntValueFromIntObject(getFieldObject(baseObj, getFieldOffset(field)));
+        return getInt(getFieldObject(baseObj, getFieldOffset(field)));
     }
 
     public static char[] getStringFieldValue(Object baseObj, Field field) throws Exception {
-        return getStringValue(getFieldObject(baseObj, getFieldOffset(field)));
+        return getCharsFromString(getFieldObject(baseObj, getFieldOffset(field)));
     }
 
     public static Unsafe getUnsafe() {

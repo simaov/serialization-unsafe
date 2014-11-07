@@ -1,10 +1,8 @@
-import com.sun.org.apache.xpath.internal.SourceTree;
 import junit.framework.TestCase;
 import org.apache.commons.lang3.ArrayUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.DataOutputStream;
 import java.util.*;
 
 public class UnsafeMemoryTest extends TestCase {
@@ -78,13 +76,13 @@ public class UnsafeMemoryTest extends TestCase {
         }
 
         TestSerializers.TestLongIntegerStringSerializer testCharArraySerializer = new TestSerializers.TestLongIntegerStringSerializer(TestClasses.TestLongIntegerString.class);
-
-        long start = System.nanoTime();
-        for (int i = 0; i < list.size(); i++) {
-            byte[] b = testCharArraySerializer.serialize(list.get(i));
+        for (int j = 0; j < 15; j++) {
+            long start = System.nanoTime();
+            for (int i = 0; i < list.size(); i++) {
+                byte[] b = testCharArraySerializer.serialize(list.get(i));
+            }
+            System.out.println("Time: " + (System.nanoTime() - start) / 1000000 + " ns.");
         }
-
-        System.out.println("Time: " + (System.nanoTime() - start) / 1000000 + " ns.");
         System.out.println();
     }
 
@@ -92,19 +90,22 @@ public class UnsafeMemoryTest extends TestCase {
     public void testPerfPrim() throws Exception {
         List<TestClasses.TestLongIntegerStringPrim> list = new ArrayList<>();
         Random random = new Random();
-        for (int i = 0; i < 100000; i++) {
+        for (int i = 0; i < 1000000; i++) {
             TestClasses.TestLongIntegerStringPrim testLongIntegerString = new TestClasses.TestLongIntegerStringPrim(random.nextLong(), random.nextInt() , UUID.randomUUID().toString().toCharArray());
             list.add(testLongIntegerString);
         }
 
         TestSerializers.TestLongIntegerStringPrimSerializer testCharArraySerializer = new TestSerializers.TestLongIntegerStringPrimSerializer(TestClasses.TestLongIntegerStringPrim.class);
-        Thread.sleep(2_000);
-        long start = System.nanoTime();
-        for (int i = 0; i < list.size(); i++) {
-            byte[] b = testCharArraySerializer.serialize(list.get(i));
-        }
 
-        System.out.println("Time: " + (System.nanoTime() - start) / 100000 + " ns.");
+        long start = System.nanoTime();
+        for (int j = 0; j < 15; j++) {
+
+            for (int i = 0; i < list.size(); i++) {
+                byte[] b = testCharArraySerializer.serialize(list.get(i));
+            }
+
+        }
+        System.out.println("Time: " + (System.nanoTime() - start) / 1000000 / 15 + " ns.");
         System.out.println();
     }
 

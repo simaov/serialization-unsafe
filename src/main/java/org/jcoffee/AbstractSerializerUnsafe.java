@@ -44,20 +44,21 @@ public class AbstractSerializerUnsafe<T> implements SerializerUnsafeI<T> {
     @Override
     public byte[] serialize(T obj) throws Exception {
         int bufferSize = 0;
-        final Object[] declaredFieldsValues = new Object[declaredFields.length];
+        final byte[][] declaredFieldsValues = new byte[declaredFields.length][];
+
         for (int i = 0; i < declaredFields.length; i++) {
 
             switch (declaredFieldsTypes[i]) {
                 case JAVA_INT_TYPE:
-                    declaredFieldsValues[i] = Utils.bytesFromInt(UnsafeMemory.getIntValue(obj, declaredFieldsOffsets[i]));
+                    declaredFieldsValues[i] = Utils.bytesFromInt(UnsafeMemory.getPrimitiveInt(obj, declaredFieldsOffsets[i]));
                     bufferSize += JAVA_INTEGER_SIZE;
                     break;
                 case JAVA_LONG_TYPE:
-                    declaredFieldsValues[i] = Utils.bytesFromLong(UnsafeMemory.getLongValue(obj, declaredFieldsOffsets[i]));
+                    declaredFieldsValues[i] = Utils.bytesFromLong(UnsafeMemory.getPrimitiveLong(obj, declaredFieldsOffsets[i]));
                     bufferSize += JAVA_LONG_SIZE;
                     break;
                 case JAVA_CHAR_ARRAY_TYPE:
-                    byte[] bytes = Utils.bytesFromChars(UnsafeMemory.getCharArrayValue(obj, declaredFieldsOffsets[i]));
+                    byte[] bytes = Utils.bytesFromChars(UnsafeMemory.getChars(obj, declaredFieldsOffsets[i]));
                     declaredFieldsValues[i] = bytes;
                     bufferSize += bytes.length;
                     break;
@@ -80,7 +81,7 @@ public class AbstractSerializerUnsafe<T> implements SerializerUnsafeI<T> {
         byte[] buffer = new byte[bufferSize];
         int index = 0;
         for (int i = 0; i < declaredFieldsValues.length; i++) {
-            byte[] bytes = (byte[]) declaredFieldsValues[i];
+            byte[] bytes = declaredFieldsValues[i];
             System.arraycopy(bytes, 0, buffer, index, bytes.length);
             index += bytes.length;
         }
@@ -92,24 +93,27 @@ public class AbstractSerializerUnsafe<T> implements SerializerUnsafeI<T> {
     public T deserialize(byte[] bytes) throws IllegalAccessException, InstantiationException {
         int offset = 0;
         T instance = (T) UnsafeMemory.getUnsafe().allocateInstance(tClass);
-        /*for (int i = 0; i < declaredFields.length; i++) {
-            String type = declaredFieldsTypes[i];
-            if (type.equals(JAVA_LONG_OBJECT_TYPE)) {
-                Long aLong = Utils.longFromBytes(bytes, offset);
-                UnsafeMemory.getUnsafe().putObject(instance, declaredFieldsOffsets[i], aLong);
-                offset += 8;
-            } else if (type.equals(JAVA_INTEGER_OBJECT_TYPE)) {
-                Integer aInteger = Utils.intFromBytes(bytes, offset);
-                UnsafeMemory.getUnsafe().putObject(instance, declaredFieldsOffsets[i], aInteger);
-                offset += 4;
-            } else if (type.equals(JAVA_STRING_TYPE)) {
-                int size = Utils.intFromBytes(bytes, offset);
-                char[] res = Utils.charsFromBytes(bytes, size, offset);
-                String s = (String) UnsafeMemory.getUnsafe().allocateInstance(String.class);
-                UnsafeMemory.getUnsafe().putObject(s, UnsafeMemory.charValueFieldOffset, res);
-                UnsafeMemory.getUnsafe().putObject(instance, declaredFieldsOffsets[i], s);
+        for (int i = 0; i < declaredFields.length; i++) {
+            switch (declaredFieldsTypes[i]) {
+                case JAVA_LONG_OBJECT_TYPE:
+                    Long aLong = Utils.longFromBytes(bytes, offset);
+                    UnsafeMemory.getUnsafe().putObject(instance, declaredFieldsOffsets[i], aLong);
+                    offset += 8;
+                    break;
+                case JAVA_INTEGER_OBJECT_TYPE:
+                    Integer aInteger = Utils.intFromBytes(bytes, offset);
+                    UnsafeMemory.getUnsafe().putObject(instance, declaredFieldsOffsets[i], aInteger);
+                    offset += 4;
+                    break;
+                case JAVA_STRING_TYPE:
+                    int size = Utils.intFromBytes(bytes, offset);
+                    char[] res = Utils.charsFromBytes(bytes, size, offset);
+                    String s = (String) UnsafeMemory.getUnsafe().allocateInstance(String.class);
+                    UnsafeMemory.getUnsafe().putObject(s, UnsafeMemory.charValueFieldOffset, res);
+                    UnsafeMemory.getUnsafe().putObject(instance, declaredFieldsOffsets[i], s);
+                    break;
             }
-        }*/
+        }
 
         return instance;
     }

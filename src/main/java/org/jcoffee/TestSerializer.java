@@ -172,8 +172,8 @@ public class TestSerializer {
                 long price = getUnsafe().getLong(obj, priceFieldOffsetPrim);
                 long sspId = getUnsafe().getLong(obj, sspIdFieldOffsetPrim);
 
-                char[] impressionId = getCharArrayValue(obj, obj.getImpressionId().length);
-                char[] userId = getCharArrayValue(obj, obj.getUserId().length);
+                char[] impressionId = getChars(obj, obj.getImpressionId().length);
+                char[] userId = getChars(obj, obj.getUserId().length);
 
                 byte[] wideId = getUUIDValue(getFieldObject(obj, wideIdFieldOffsetPrim));
                 int eventDay = getUnsafe().getInt(obj, eventDayFieldOffsetPrim);
@@ -236,15 +236,15 @@ public class TestSerializer {
         /*public byte[] toBytes(ClickEventDSPI obj) {
             byte[] buffer = null;
             try {
-                long id = getLongValueFromLongObject(getFieldObject(obj, idFieldOffset));
-                long creativeId = getLongValueFromLongObject(getFieldObject(obj, creativeIdFieldOffset));
-                long eventTimestamp = getLongValueFromLongObject(getFieldObject(obj, eventTimestampFieldOffset));
-                long price = getLongValueFromLongObject(getFieldObject(obj, priceFieldOffset));
-                long sspId = getLongValueFromLongObject(getFieldObject(obj, sspIdFieldOffset));
-                char[] impressionId = getStringValue(getFieldObject(obj, impressionIdFieldOffset));
-                char[] userId = getStringValue(getFieldObject(obj, userIdFieldOffset));
+                long id = getLong(getFieldObject(obj, idFieldOffset));
+                long creativeId = getLong(getFieldObject(obj, creativeIdFieldOffset));
+                long eventTimestamp = getLong(getFieldObject(obj, eventTimestampFieldOffset));
+                long price = getLong(getFieldObject(obj, priceFieldOffset));
+                long sspId = getLong(getFieldObject(obj, sspIdFieldOffset));
+                char[] impressionId = getCharsFromString(getFieldObject(obj, impressionIdFieldOffset));
+                char[] userId = getCharsFromString(getFieldObject(obj, userIdFieldOffset));
                 byte[] wideId = getUUIDValue(getFieldObject(obj, wideIdFieldOffset));
-                int eventDay = getIntValueFromIntObject(getFieldObject(obj, eventDayFieldOffset));
+                int eventDay = getInt(getFieldObject(obj, eventDayFieldOffset));
 
                 int index = 0;
                 buffer = new byte[5 * 8 *//* 5 longs*//*
