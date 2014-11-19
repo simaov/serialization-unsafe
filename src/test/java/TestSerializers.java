@@ -52,4 +52,10 @@ public class TestSerializers {
             super(testComplexClass);
         }
     }
+
+    static class TestEventSerializer extends SerializerUnsafe<TestClasses.TestEvent> {
+        public TestEventSerializer(Class<TestClasses.TestEvent> testEventClass) {
+            super(testEventClass);
+        }
+    }
 }

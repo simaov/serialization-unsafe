@@ -96,9 +96,28 @@ public class UnsafeMemoryTest extends TestCase {
     }
 
     @Test
+    public void testEventSerialization() throws Exception {
+        TestClasses.TestEvent testEvent = new TestClasses.TestEvent(
+                random.nextLong(),
+                random.nextLong(),
+                random.nextInt(),
+                random.nextLong(),
+                UUID.randomUUID().toString(),
+                random.nextLong(),
+                random.nextLong(),
+                UUID.randomUUID().toString(),
+                UUID.randomUUID()
+        );
+        TestSerializers.TestEventSerializer testEventSerializer = new TestSerializers.TestEventSerializer(TestClasses.TestEvent.class);
+        byte[] serialize = testEventSerializer.serialize(testEvent);
+        TestClasses.TestEvent deserialize = testEventSerializer.deserialize(serialize);
+        assertEquals(testEvent, deserialize);
+    }
+
+    @Test
     public void testPerformance() throws Exception {
-        int objCount = 1000_000;
-        List<TestClasses.TestComplex> list = new ArrayList<>();
+        int objCount = 1_000_000;
+        List<TestClasses.TestComplex> list = new ArrayList<>(objCount);
         System.out.print("Creating [" + objCount + "] objects ... ");
         for (int i = 0; i < objCount; i++) {
             TestClasses.TestComplex testComplex = new TestClasses.TestComplex(
@@ -111,7 +130,9 @@ public class UnsafeMemoryTest extends TestCase {
                     UUID.randomUUID());
             list.add(testComplex);
         }
+
         System.out.println("Done.");
+
         TestSerializers.TestComplexSerializer testComplexSerializer = new TestSerializers.TestComplexSerializer(TestClasses.TestComplex.class);
 
         long start = System.nanoTime();
@@ -119,6 +140,41 @@ public class UnsafeMemoryTest extends TestCase {
         for (int i = 0; i < list.size(); i++) {
             byte[] b = testComplexSerializer.serialize(list.get(i));
             TestClasses.TestComplex deserialize = testComplexSerializer.deserialize(b);
+        }
+
+        System.out.println("Time per object: ~ " + (System.nanoTime() - start) / objCount + " ns.");
+    }
+
+    @Test
+    public void testEventPerformance() throws Exception {
+        TestSerializers.TestEventSerializer testEventSerializer = new TestSerializers.TestEventSerializer(TestClasses.TestEvent.class);
+
+        int objCount = 1_000_000;
+
+        List<TestClasses.TestEvent> list = new ArrayList<>(objCount);
+        System.out.print("Creating [" + objCount + "] objects ... ");
+        for (int i = 0; i < objCount; i++) {
+            TestClasses.TestEvent testEvent = new TestClasses.TestEvent(
+                    random.nextLong(),
+                    random.nextLong(),
+                    random.nextInt(),
+                    random.nextLong(),
+                    UUID.randomUUID().toString(),
+                    random.nextLong(),
+                    random.nextLong(),
+                    UUID.randomUUID().toString(),
+                    UUID.randomUUID()
+            );
+
+            list.add(testEvent);
+        }
+
+        System.out.println("Done.");
+
+        long start = System.nanoTime();
+        for (int i = 0; i < list.size(); i++) {
+            byte[] b = testEventSerializer.serialize(list.get(i));
+            TestClasses.TestEvent deserialize = testEventSerializer.deserialize(b);
         }
 
         System.out.println("Time per object: ~ " + (System.nanoTime() - start) / objCount + " ns.");

@@ -226,4 +226,62 @@ public class TestClasses {
             return result;
         }
     }
+
+    static class TestEvent {
+        private Long long1;
+        private Long long2;
+        private Integer int1;
+        private Long long3;
+        private String string1;
+        private Long long4;
+        private Long long5;
+        private String string2;
+        private UUID uuid1;
+
+        public TestEvent(Long long1, Long long2, Integer int1, Long long3, String string1, Long long4, Long long5, String string2, UUID uuid1) {
+            this.long1 = long1;
+            this.long2 = long2;
+            this.int1 = int1;
+            this.long3 = long3;
+            this.string1 = string1;
+            this.long4 = long4;
+            this.long5 = long5;
+            this.string2 = string2;
+            this.uuid1 = uuid1;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            TestEvent testEvent = (TestEvent) o;
+
+            if (!int1.equals(testEvent.int1)) return false;
+            if (!long1.equals(testEvent.long1)) return false;
+            if (!long2.equals(testEvent.long2)) return false;
+            if (!long3.equals(testEvent.long3)) return false;
+            if (!long4.equals(testEvent.long4)) return false;
+            if (!long5.equals(testEvent.long5)) return false;
+            if (!string1.equals(testEvent.string1)) return false;
+            if (!string2.equals(testEvent.string2)) return false;
+            if (!uuid1.equals(testEvent.uuid1)) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = long1.hashCode();
+            result = 31 * result + long2.hashCode();
+            result = 31 * result + int1.hashCode();
+            result = 31 * result + long3.hashCode();
+            result = 31 * result + string1.hashCode();
+            result = 31 * result + long4.hashCode();
+            result = 31 * result + long5.hashCode();
+            result = 31 * result + string2.hashCode();
+            result = 31 * result + uuid1.hashCode();
+            return result;
+        }
+    }
 }
