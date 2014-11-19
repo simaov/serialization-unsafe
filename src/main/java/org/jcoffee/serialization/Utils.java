@@ -1,6 +1,6 @@
-package org.jcoffee;
+package org.jcoffee.serialization;
 
-import static org.jcoffee.JavaTypes.JAVA_INTEGER_SIZE;
+import static org.jcoffee.serialization.JavaTypes.JAVA_INTEGER_SIZE;
 
 public class Utils {
 

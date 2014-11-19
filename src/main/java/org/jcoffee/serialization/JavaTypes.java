@@ -1,4 +1,4 @@
-package org.jcoffee;
+package org.jcoffee.serialization;
 
 public class JavaTypes {
 
@@ -8,6 +8,7 @@ public class JavaTypes {
     public static final int JAVA_INTEGER_OBJECT_TYPE    = 4;
     public static final int JAVA_LONG_OBJECT_TYPE       = 5;
     public static final int JAVA_STRING_TYPE            = 6;
+    public static final int JAVA_UUID_TYPE              = 7;
 
     public static final int JAVA_LONG_SIZE              = Long.SIZE / 8;
     public static final int JAVA_INTEGER_SIZE           = Integer.SIZE / 8;

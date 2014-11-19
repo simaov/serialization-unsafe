@@ -1,4 +1,4 @@
-package org.jcoffee;
+package org.jcoffee.serialization;
 
 import sun.misc.Unsafe;
 
@@ -8,6 +8,7 @@ import java.util.UUID;
 public class UnsafeMemory {
 
     private static final Unsafe UNSAFE;
+
     public static long longValueFieldOffset;
     public static long intValueFieldOffset;
     public static long charValueFieldOffset;
@@ -29,7 +30,6 @@ public class UnsafeMemory {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
     }
 
     public static long getPrimitiveLong(Object baseObj, long fieldOffset) throws Exception {
@@ -71,7 +71,7 @@ public class UnsafeMemory {
         return (char[]) getFieldObject(baseObj, charArrayOffset);
     }
 
-    public static byte[] getUUIDValue(Object uuid) throws Exception {
+    public static byte[] getBytesFromUUID(Object uuid) throws Exception {
         if (uuid == null) {
             return new byte[0];
         }

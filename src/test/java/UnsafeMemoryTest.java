@@ -7,108 +7,122 @@ import java.util.*;
 
 public class UnsafeMemoryTest extends TestCase {
 
+    private static Random random = new Random(System.currentTimeMillis());
+
     @Test
-    public void testGetStringFieldValue() throws Exception {
-        TestClasses.TestString testString = new TestClasses.TestString("myStr");
+    public void testStringSerialization() throws Exception {
+        String string = UUID.randomUUID().toString();
+        TestClasses.TestString testString = new TestClasses.TestString(string);
         TestSerializers.TestStringSerializer testStringSerializer = new TestSerializers.TestStringSerializer(TestClasses.TestString.class);
         byte[] serialize = testStringSerializer.serialize(testString);
-        Assert.assertEquals(testString, testStringSerializer.deserialize(serialize));
+        TestClasses.TestString deserialize = testStringSerializer.deserialize(serialize);
+        Assert.assertEquals(testString, deserialize);
     }
 
     @Test
-    public void testLongValue() throws Exception {
-        TestClasses.TestLong testLong = new TestClasses.TestLong(100500L);
+    public void testLongSerialization() throws Exception {
+        Long aLong = random.nextLong();
+        TestClasses.TestLong testLong = new TestClasses.TestLong(aLong);
         TestSerializers.TestLongSerializer testLongSerializer = new TestSerializers.TestLongSerializer(TestClasses.TestLong.class);
-        byte[] b = testLongSerializer.serialize(testLong);
-        assertEquals(testLong, testLongSerializer.deserialize(b));
+        byte[] serialize = testLongSerializer.serialize(testLong);
+        TestClasses.TestLong deserialize = testLongSerializer.deserialize(serialize);
+        assertEquals(testLong, deserialize);
     }
 
     @Test
-    public void testIntegerValue() throws Exception {
-        TestClasses.TestInteger testInteger = new TestClasses.TestInteger(100);
+    public void testIntegerSerialization() throws Exception {
+        Integer i = random.nextInt();
+        TestClasses.TestInteger testInteger = new TestClasses.TestInteger(i);
         TestSerializers.TestIntegerSerializer testIntegerSerializer = new TestSerializers.TestIntegerSerializer(TestClasses.TestInteger.class);
-        byte[] b = testIntegerSerializer.serialize(testInteger);
-
-        TestClasses.TestInteger testInteger1 = testIntegerSerializer.deserialize(b);
-        System.out.println();
+        byte[] serialize = testIntegerSerializer.serialize(testInteger);
+        TestClasses.TestInteger deserialize = testIntegerSerializer.deserialize(serialize);
+        assertEquals(testInteger, deserialize);
     }
 
     @Test
-    public void testLongIntegerValue() throws Exception {
-        TestClasses.TestLongInteger testLongInteger = new TestClasses.TestLongInteger(100500L, 100);
-        TestSerializers.TestLongIntegerSerializer testLongIntegerSerializer = new TestSerializers.TestLongIntegerSerializer(TestClasses.TestLongInteger.class);
-        byte[] b = testLongIntegerSerializer.serialize(testLongInteger);
-
-        TestClasses.TestLongInteger testInteger1 = testLongIntegerSerializer.deserialize(b);
-        System.out.println();
+    public void testLongPrimSerialization() throws Exception {
+        long aLong = random.nextLong();
+        TestClasses.TestLongPrim testLongPrim = new TestClasses.TestLongPrim(aLong);
+        TestSerializers.TestLongPrimSerializer testLongPrimSerializer = new TestSerializers.TestLongPrimSerializer(TestClasses.TestLongPrim.class);
+        byte[] serialize = testLongPrimSerializer.serialize(testLongPrim);
+        TestClasses.TestLongPrim deserialize = testLongPrimSerializer.deserialize(serialize);
+        assertEquals(testLongPrim, deserialize);
     }
 
     @Test
-    public void testCharArrayValue() throws Exception {
-        TestClasses.TestCharArray testCharArray = new TestClasses.TestCharArray("sss".toCharArray());
+    public void testIntPrimSerialization() throws Exception {
+        int i = random.nextInt();
+        TestClasses.TestIntPrim testIntPrim = new TestClasses.TestIntPrim(i);
+        TestSerializers.TestIntegerPrimSerializer testIntegerPrimSerializer = new TestSerializers.TestIntegerPrimSerializer(TestClasses.TestIntPrim.class);
+        byte[] serialize = testIntegerPrimSerializer.serialize(testIntPrim);
+        TestClasses.TestIntPrim deserialize = testIntegerPrimSerializer.deserialize(serialize);
+        assertEquals(testIntPrim, deserialize);
+    }
+
+    @Test
+    public void testCharArraySerialization() throws Exception {
+        char[] chars = UUID.randomUUID().toString().toCharArray();
+        TestClasses.TestCharArray testCharArray = new TestClasses.TestCharArray(chars);
         TestSerializers.TestCharArraySerializer testCharArraySerializer = new TestSerializers.TestCharArraySerializer(TestClasses.TestCharArray.class);
-        testCharArraySerializer.serialize(testCharArray);
+        byte[] serialize = testCharArraySerializer.serialize(testCharArray);
+        TestClasses.TestCharArray deserialize = testCharArraySerializer.deserialize(serialize);
+        assertEquals(testCharArray, deserialize);
     }
 
     @Test
-    public void testComplexObject() throws Exception {
-        List<TestClasses.TestLongIntegerString> list = new ArrayList<>();
-        Random random = new Random();
-        for (int i = 0; i < 10; i++) {
-            TestClasses.TestLongIntegerString testLongIntegerString = new TestClasses.TestLongIntegerString(random.nextLong(), random.nextInt() , UUID.randomUUID().toString());
-            list.add(testLongIntegerString);
-        }
-        TestClasses.TestLongIntegerString testLongIntegerString = new TestClasses.TestLongIntegerString(12345L, 9876, "sss78yhgw46g34d");
-        TestSerializers.TestLongIntegerStringSerializer testCharArraySerializer = new TestSerializers.TestLongIntegerStringSerializer(TestClasses.TestLongIntegerString.class);
-        byte[] b = testCharArraySerializer.serialize(testLongIntegerString);
-
-        testLongIntegerString = testCharArraySerializer.deserialize(b);
-        System.out.println();
+    public void testUUIDSerialization() throws Exception {
+        UUID uuid = UUID.randomUUID();
+        TestClasses.TestUUID testUUID = new TestClasses.TestUUID(uuid);
+        TestSerializers.TestUUIDSerializer testUUIDSerializer = new TestSerializers.TestUUIDSerializer(TestClasses.TestUUID.class);
+        byte[] serialize = testUUIDSerializer.serialize(testUUID);
+        TestClasses.TestUUID deserialize = testUUIDSerializer.deserialize(serialize);
+        assertEquals(testUUID, deserialize);
     }
 
     @Test
-    public void testPerf() throws Exception {
-        List<TestClasses.TestLongIntegerString> list = new ArrayList<>();
-        Random random = new Random();
-        for (int i = 0; i < 1000000; i++) {
-            TestClasses.TestLongIntegerString testLongIntegerString = new TestClasses.TestLongIntegerString(random.nextLong(), random.nextInt() , UUID.randomUUID().toString());
-            list.add(testLongIntegerString);
-        }
-
-        TestSerializers.TestLongIntegerStringSerializer testCharArraySerializer = new TestSerializers.TestLongIntegerStringSerializer(TestClasses.TestLongIntegerString.class);
-        for (int j = 0; j < 15; j++) {
-            long start = System.nanoTime();
-            for (int i = 0; i < list.size(); i++) {
-                byte[] b = testCharArraySerializer.serialize(list.get(i));
-            }
-            System.out.println("Time: " + (System.nanoTime() - start) / 1000000 + " ns.");
-        }
-        System.out.println();
+    public void testComplexSerialization() throws Exception {
+        TestClasses.TestComplex testComplex = new TestClasses.TestComplex(
+                random.nextLong(),
+                random.nextInt(),
+                UUID.randomUUID().toString().toCharArray(),
+                random.nextLong(),
+                random.nextInt(),
+                UUID.randomUUID().toString(),
+                UUID.randomUUID());
+        TestSerializers.TestComplexSerializer testComplexSerializer = new TestSerializers.TestComplexSerializer(TestClasses.TestComplex.class);
+        byte[] serialize = testComplexSerializer.serialize(testComplex);
+        TestClasses.TestComplex deserialize = testComplexSerializer.deserialize(serialize);
+        assertEquals(testComplex, deserialize);
     }
 
     @Test
-    public void testPerfPrim() throws Exception {
-        List<TestClasses.TestLongIntegerStringPrim> list = new ArrayList<>();
-        Random random = new Random();
-        for (int i = 0; i < 1000000; i++) {
-            TestClasses.TestLongIntegerStringPrim testLongIntegerString = new TestClasses.TestLongIntegerStringPrim(random.nextLong(), random.nextInt() , UUID.randomUUID().toString().toCharArray());
-            list.add(testLongIntegerString);
+    public void testPerformance() throws Exception {
+        int objCount = 1000_000;
+        List<TestClasses.TestComplex> list = new ArrayList<>();
+        System.out.print("Creating [" + objCount + "] objects ... ");
+        for (int i = 0; i < objCount; i++) {
+            TestClasses.TestComplex testComplex = new TestClasses.TestComplex(
+                    random.nextLong(),
+                    random.nextInt(),
+                    UUID.randomUUID().toString().toCharArray(),
+                    random.nextLong(),
+                    random.nextInt(),
+                    UUID.randomUUID().toString(),
+                    UUID.randomUUID());
+            list.add(testComplex);
         }
-
-        TestSerializers.TestLongIntegerStringPrimSerializer testCharArraySerializer = new TestSerializers.TestLongIntegerStringPrimSerializer(TestClasses.TestLongIntegerStringPrim.class);
+        System.out.println("Done.");
+        TestSerializers.TestComplexSerializer testComplexSerializer = new TestSerializers.TestComplexSerializer(TestClasses.TestComplex.class);
 
         long start = System.nanoTime();
-        for (int j = 0; j < 15; j++) {
 
-            for (int i = 0; i < list.size(); i++) {
-                byte[] b = testCharArraySerializer.serialize(list.get(i));
-            }
-
+        for (int i = 0; i < list.size(); i++) {
+            byte[] b = testComplexSerializer.serialize(list.get(i));
+            TestClasses.TestComplex deserialize = testComplexSerializer.deserialize(b);
         }
-        System.out.println("Time: " + (System.nanoTime() - start) / 1000000 / 15 + " ns.");
-        System.out.println();
-    }
 
+        System.out.println("Time per object: ~ " + (System.nanoTime() - start) / objCount + " ns.");
+    }
 
 
     @Test

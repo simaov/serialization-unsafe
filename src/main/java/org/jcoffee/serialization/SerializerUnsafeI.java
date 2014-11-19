@@ -1,4 +1,4 @@
-package org.jcoffee;
+package org.jcoffee.serialization;
 
 public interface SerializerUnsafeI<T> {
     byte[] serialize(T obj) throws Exception;
