@@ -45,7 +45,7 @@ public class Utils {
     }
 
     public static byte[] bytesFromChars(char[] chars) {
-        int charsSize = chars.length * 2;
+        int charsSize = chars.length << 1;
         byte[] byteBuffer = new byte[JAVA_INTEGER_SIZE + charsSize];
 
         int index = 0;
@@ -84,11 +84,11 @@ public class Utils {
     }
 
     public static char[] charsFromBytes(byte[] bytes, int size, int offset) {
-        char[] result = new char[size / 2];
+        char[] result = new char[size >> 1];
         for (int i = 0; i < size; i += 2) {
             char c = (char) bytes[i + offset + JAVA_INTEGER_SIZE];
             c = (char) ((c << 8) + bytes[i + 1 + offset + JAVA_INTEGER_SIZE]);
-            result[i / 2] = c;
+            result[i >> 1] = c;
         }
         return result;
     }

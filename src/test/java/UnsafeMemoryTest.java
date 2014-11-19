@@ -1,9 +1,12 @@
 import junit.framework.TestCase;
-import org.apache.commons.lang3.ArrayUtils;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 public class UnsafeMemoryTest extends TestCase {
 
@@ -114,6 +117,7 @@ public class UnsafeMemoryTest extends TestCase {
         assertEquals(testEvent, deserialize);
     }
 
+    @Ignore
     @Test
     public void testPerformance() throws Exception {
         int objCount = 1_000_000;
@@ -145,6 +149,7 @@ public class UnsafeMemoryTest extends TestCase {
         System.out.println("Time per object: ~ " + (System.nanoTime() - start) / objCount + " ns.");
     }
 
+    @Ignore
     @Test
     public void testEventPerformance() throws Exception {
         TestSerializers.TestEventSerializer testEventSerializer = new TestSerializers.TestEventSerializer(TestClasses.TestEvent.class);
@@ -178,25 +183,5 @@ public class UnsafeMemoryTest extends TestCase {
         }
 
         System.out.println("Time per object: ~ " + (System.nanoTime() - start) / objCount + " ns.");
-    }
-
-
-    @Test
-    public void test() throws Exception {
-        long l = 255L;
-        long mask = 0xFFL;
-        byte[] longValue = new byte[8];
-
-        for (int i = 0; i < 8; i++) {
-            if (i == 0) {
-                longValue[i] = (byte) (l & mask);
-                continue;
-            }
-            mask <<= 8;
-            longValue[i] = (byte) ((l & mask) >> i * 8);
-        }
-
-        ArrayUtils.reverse(longValue);
-        System.out.println(Arrays.toString(longValue));
     }
 }
