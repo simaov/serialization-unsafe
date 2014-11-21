@@ -63,6 +63,26 @@ public class UnsafeMemoryTest extends TestCase {
     }
 
     @Test
+    public void testBooleanPrimSerialization() throws Exception {
+        boolean b = random.nextBoolean();
+        TestClasses.TestBooleanPrim testBooleanPrim = new TestClasses.TestBooleanPrim(b);
+        TestSerializers.TestBooleanPrimSerializer testBooleanPrimSerializer = new TestSerializers.TestBooleanPrimSerializer(TestClasses.TestBooleanPrim.class);
+        byte[] serialize = testBooleanPrimSerializer.serialize(testBooleanPrim);
+        TestClasses.TestBooleanPrim deserialize = testBooleanPrimSerializer.deserialize(serialize);
+        assertEquals(testBooleanPrim, deserialize);
+    }
+
+    @Test
+    public void testBooleanSerialization() throws Exception {
+        Boolean b = random.nextBoolean();
+        TestClasses.TestBoolean testBoolean = new TestClasses.TestBoolean(b);
+        TestSerializers.TestBooleanSerializer testBooleanSerializer = new TestSerializers.TestBooleanSerializer(TestClasses.TestBoolean.class);
+        byte[] serialize = testBooleanSerializer.serialize(testBoolean);
+        TestClasses.TestBoolean deserialize = testBooleanSerializer.deserialize(serialize);
+        assertEquals(testBoolean, deserialize);
+    }
+
+    @Test
     public void testCharArraySerialization() throws Exception {
         char[] chars = UUID.randomUUID().toString().toCharArray();
         TestClasses.TestCharArray testCharArray = new TestClasses.TestCharArray(chars);
@@ -87,9 +107,11 @@ public class UnsafeMemoryTest extends TestCase {
         TestClasses.TestComplex testComplex = new TestClasses.TestComplex(
                 random.nextLong(),
                 random.nextInt(),
+                random.nextBoolean(),
                 UUID.randomUUID().toString().toCharArray(),
                 random.nextLong(),
                 random.nextInt(),
+                random.nextBoolean(),
                 UUID.randomUUID().toString(),
                 UUID.randomUUID());
         TestSerializers.TestComplexSerializer testComplexSerializer = new TestSerializers.TestComplexSerializer(TestClasses.TestComplex.class);
@@ -127,9 +149,11 @@ public class UnsafeMemoryTest extends TestCase {
             TestClasses.TestComplex testComplex = new TestClasses.TestComplex(
                     random.nextLong(),
                     random.nextInt(),
+                    random.nextBoolean(),
                     UUID.randomUUID().toString().toCharArray(),
                     random.nextLong(),
                     random.nextInt(),
+                    random.nextBoolean(),
                     UUID.randomUUID().toString(),
                     UUID.randomUUID());
             list.add(testComplex);

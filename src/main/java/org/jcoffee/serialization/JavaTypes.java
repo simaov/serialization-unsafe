@@ -9,6 +9,8 @@ public class JavaTypes {
     public static final int JAVA_LONG_OBJECT_TYPE       = 5;
     public static final int JAVA_STRING_TYPE            = 6;
     public static final int JAVA_UUID_TYPE              = 7;
+    public static final int JAVA_BOOLEAN_TYPE           = 8;
+    public static final int JAVA_BOOLEAN_OBJECT_TYPE    = 9;
 
     public static final int JAVA_LONG_SIZE              = Long.SIZE / 8;
     public static final int JAVA_INTEGER_SIZE           = Integer.SIZE / 8;

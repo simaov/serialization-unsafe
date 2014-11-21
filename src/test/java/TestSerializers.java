@@ -29,6 +29,18 @@ public class TestSerializers {
         }
     }
 
+    static class TestBooleanPrimSerializer extends SerializerUnsafe<TestClasses.TestBooleanPrim> {
+        public TestBooleanPrimSerializer(Class<TestClasses.TestBooleanPrim> testBooleanPrimClass) {
+            super(testBooleanPrimClass);
+        }
+    }
+
+    static class TestBooleanSerializer extends SerializerUnsafe<TestClasses.TestBoolean> {
+        public TestBooleanSerializer(Class<TestClasses.TestBoolean> testBooleanClass) {
+            super(testBooleanClass);
+        }
+    }
+
     static class TestStringSerializer extends SerializerUnsafe<TestClasses.TestString> {
         public TestStringSerializer(Class<TestClasses.TestString> testStringClass) {
             super(testStringClass);

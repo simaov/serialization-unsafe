@@ -102,6 +102,56 @@ public class TestClasses {
         }
     }
 
+    static class TestBoolean {
+        Boolean b;
+
+        public TestBoolean(Boolean b) {
+            this.b = b;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            TestBoolean that = (TestBoolean) o;
+
+            if (!b.equals(that.b)) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            return b.hashCode();
+        }
+    }
+
+    static class TestBooleanPrim {
+        boolean b;
+
+        public TestBooleanPrim(boolean b) {
+            this.b = b;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            TestBooleanPrim that = (TestBooleanPrim) o;
+
+            if (b != that.b) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            return (b ? 1 : 0);
+        }
+    }
+
     static class TestString {
         private String string;
 
@@ -180,18 +230,22 @@ public class TestClasses {
     static class TestComplex {
         private long aL;
         private int aInt;
+        private boolean aBoolean;
         private char[] chars;
         private Long aLong;
         private Integer integer;
+        private Boolean aB;
         private String string;
         private UUID uuid;
 
-        public TestComplex(long aL, int aInt, char[] chars, Long aLong, Integer integer, String string, UUID uuid) {
+        public TestComplex(long aL, int aInt, boolean aBoolean, char[] chars, Long aLong, Integer integer, Boolean aB, String string, UUID uuid) {
             this.aL = aL;
             this.aInt = aInt;
+            this.aBoolean = aBoolean;
             this.chars = chars;
             this.aLong = aLong;
             this.integer = integer;
+            this.aB = aB;
             this.string = string;
             this.uuid = uuid;
         }
@@ -203,8 +257,10 @@ public class TestClasses {
 
             TestComplex that = (TestComplex) o;
 
+            if (aBoolean != that.aBoolean) return false;
             if (aInt != that.aInt) return false;
             if (aL != that.aL) return false;
+            if (!aB.equals(that.aB)) return false;
             if (!aLong.equals(that.aLong)) return false;
             if (!Arrays.equals(chars, that.chars)) return false;
             if (!integer.equals(that.integer)) return false;
@@ -218,9 +274,11 @@ public class TestClasses {
         public int hashCode() {
             int result = (int) (aL ^ (aL >>> 32));
             result = 31 * result + aInt;
+            result = 31 * result + (aBoolean ? 1 : 0);
             result = 31 * result + Arrays.hashCode(chars);
             result = 31 * result + aLong.hashCode();
             result = 31 * result + integer.hashCode();
+            result = 31 * result + aB.hashCode();
             result = 31 * result + string.hashCode();
             result = 31 * result + uuid.hashCode();
             return result;

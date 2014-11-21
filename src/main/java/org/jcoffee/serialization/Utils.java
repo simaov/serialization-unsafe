@@ -92,4 +92,13 @@ public class Utils {
         }
         return result;
     }
+
+    public static byte[] byteFromBoolean(boolean b) {
+        return b ? new byte[]{(byte) 1} : new byte[]{(byte) 0};
+    }
+
+    public static boolean booleanFromBytes(byte[] bytes, int offset) {
+        byte b = bytes[offset];
+        return b == 1;
+    }
 }

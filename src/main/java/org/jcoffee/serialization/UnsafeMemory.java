@@ -12,6 +12,7 @@ public class UnsafeMemory {
     public static long longValueFieldOffset;
     public static long intValueFieldOffset;
     public static long charValueFieldOffset;
+    public static long booleanValueFieldOffset;
     public static long mostSigBitsFieldOffset;
     public static long leastSigBitsFieldOffset;
     public static long baseCharArrayOffset;
@@ -24,6 +25,7 @@ public class UnsafeMemory {
             longValueFieldOffset = UNSAFE.objectFieldOffset(Long.class.getDeclaredField("value"));
             intValueFieldOffset = UNSAFE.objectFieldOffset(Integer.class.getDeclaredField("value"));
             charValueFieldOffset = UNSAFE.objectFieldOffset(String.class.getDeclaredField("value"));
+            booleanValueFieldOffset = UNSAFE.objectFieldOffset(Boolean.class.getDeclaredField("value"));
             mostSigBitsFieldOffset = UNSAFE.objectFieldOffset(UUID.class.getDeclaredField("mostSigBits"));
             leastSigBitsFieldOffset = UNSAFE.objectFieldOffset(UUID.class.getDeclaredField("leastSigBits"));
             baseCharArrayOffset = UNSAFE.arrayBaseOffset(char[].class);
@@ -58,6 +60,20 @@ public class UnsafeMemory {
             return 0;
         }
         return UNSAFE.getInt(intObject, intValueFieldOffset);
+    }
+
+    public static boolean getBoolean(Object booleanObject) {
+        if (booleanObject == null) {
+            return false;
+        }
+        return UNSAFE.getBoolean(booleanObject, booleanValueFieldOffset);
+    }
+
+    public static boolean getPrimitiveBoolean(Object baseObject, long fieldOffset) {
+        if (baseObject == null) {
+            return false;
+        }
+        return UNSAFE.getBoolean(baseObject, fieldOffset);
     }
 
     public static char[] getCharsFromString(Object stringObject) throws Exception {

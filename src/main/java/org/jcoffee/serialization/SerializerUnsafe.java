@@ -38,6 +38,10 @@ public class SerializerUnsafe<T> implements SerializerUnsafeI<T> {
                 declaredFieldsTypes[i] = JAVA_STRING_TYPE;
             } else if (declaredFields[i].getType().getName().equals(UUID.class.getName())) {
                 declaredFieldsTypes[i] = JAVA_UUID_TYPE;
+            } else if (declaredFields[i].getType().getName().equals(boolean.class.getName())) {
+                declaredFieldsTypes[i] = JAVA_BOOLEAN_TYPE;
+            } else if (declaredFields[i].getType().getName().equals(Boolean.class.getName())) {
+                declaredFieldsTypes[i] = JAVA_BOOLEAN_OBJECT_TYPE;
             }
 
             declaredFieldsOffsets[i] = UnsafeMemory.getUnsafe().objectFieldOffset(declaredFields[i]);
@@ -82,6 +86,16 @@ public class SerializerUnsafe<T> implements SerializerUnsafeI<T> {
                     byte[] uuidBytes = UnsafeMemory.getBytesFromUUID(UnsafeMemory.getUnsafe().getObject(obj, declaredFieldsOffsets[i]));
                     declaredFieldsValues[i] = uuidBytes;
                     bufferSize += uuidBytes.length;
+                    break;
+                case JAVA_BOOLEAN_TYPE:
+                    byte[] primBoolean = Utils.byteFromBoolean(UnsafeMemory.getPrimitiveBoolean(obj, declaredFieldsOffsets[i]));
+                    declaredFieldsValues[i] = primBoolean;
+                    bufferSize += primBoolean.length;
+                    break;
+                case JAVA_BOOLEAN_OBJECT_TYPE:
+                    byte[] objBoolean = Utils.byteFromBoolean(UnsafeMemory.getBoolean(UnsafeMemory.getUnsafe().getObject(obj, declaredFieldsOffsets[i])));
+                    declaredFieldsValues[i] = objBoolean;
+                    bufferSize += objBoolean.length;
                     break;
             }
         }
@@ -146,6 +160,16 @@ public class SerializerUnsafe<T> implements SerializerUnsafeI<T> {
                     UnsafeMemory.getUnsafe().putLong(uuid, UnsafeMemory.mostSigBitsFieldOffset, mostSigBits);
                     UnsafeMemory.getUnsafe().putLong(uuid, UnsafeMemory.leastSigBitsFieldOffset, leastSigBits);
                     UnsafeMemory.getUnsafe().putObject(instance, declaredFieldsOffsets[i], uuid);
+                    break;
+                case JAVA_BOOLEAN_TYPE:
+                    UnsafeMemory.getUnsafe().putBoolean(instance, declaredFieldsOffsets[i], Utils.booleanFromBytes(bytes, offset));
+                    offset += 1;
+                    break;
+                case JAVA_BOOLEAN_OBJECT_TYPE:
+                    Object b = UnsafeMemory.getUnsafe().allocateInstance(Boolean.class);
+                    UnsafeMemory.getUnsafe().putBoolean(b, UnsafeMemory.booleanValueFieldOffset, Utils.booleanFromBytes(bytes, offset));
+                    UnsafeMemory.getUnsafe().putObject(instance, declaredFieldsOffsets[i], b);
+                    offset += 1;
                     break;
             }
         }
