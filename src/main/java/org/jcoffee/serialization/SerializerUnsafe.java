@@ -42,6 +42,10 @@ public class SerializerUnsafe<T> implements SerializerUnsafeI<T> {
                 declaredFieldsTypes[i] = JAVA_BOOLEAN_TYPE;
             } else if (declaredFields[i].getType().getName().equals(Boolean.class.getName())) {
                 declaredFieldsTypes[i] = JAVA_BOOLEAN_OBJECT_TYPE;
+            } else if (declaredFields[i].getType().getName().equals(double.class.getName())) {
+                declaredFieldsTypes[i] = JAVA_DOUBLE_TYPE;
+            } else if (declaredFields[i].getType().getName().equals(Double.class.getName())) {
+                declaredFieldsTypes[i] = JAVA_DOUBLE_OBJECT_TYPE;
             }
 
             declaredFieldsOffsets[i] = UnsafeMemory.getUnsafe().objectFieldOffset(declaredFields[i]);
@@ -96,6 +100,17 @@ public class SerializerUnsafe<T> implements SerializerUnsafeI<T> {
                     byte[] objBoolean = Utils.byteFromBoolean(UnsafeMemory.getBoolean(UnsafeMemory.getUnsafe().getObject(obj, declaredFieldsOffsets[i])));
                     declaredFieldsValues[i] = objBoolean;
                     bufferSize += objBoolean.length;
+                    break;
+                case JAVA_DOUBLE_TYPE:
+                    declaredFieldsValues[i] = Utils.bytesFromLong(Double.doubleToRawLongBits(UnsafeMemory.getPrimitiveDouble(obj, declaredFieldsOffsets[i])));
+                    bufferSize += JAVA_DOUBLE_SIZE;
+                    break;
+                case JAVA_DOUBLE_OBJECT_TYPE:
+                    declaredFieldsValues[i] = Utils.bytesFromLong(
+                            Double.doubleToRawLongBits(
+                                    UnsafeMemory.getDouble(
+                                            UnsafeMemory.getFieldObject(obj, declaredFieldsOffsets[i]))));
+                    bufferSize += JAVA_DOUBLE_SIZE;
                     break;
             }
         }
@@ -170,6 +185,16 @@ public class SerializerUnsafe<T> implements SerializerUnsafeI<T> {
                     UnsafeMemory.getUnsafe().putBoolean(b, UnsafeMemory.booleanValueFieldOffset, Utils.booleanFromBytes(bytes, offset));
                     UnsafeMemory.getUnsafe().putObject(instance, declaredFieldsOffsets[i], b);
                     offset += 1;
+                    break;
+                case JAVA_DOUBLE_TYPE:
+                    UnsafeMemory.getUnsafe().putDouble(instance, declaredFieldsOffsets[i], Double.longBitsToDouble(Utils.longFromBytes(bytes, offset)));
+                    offset += JAVA_DOUBLE_SIZE;
+                    break;
+                case JAVA_DOUBLE_OBJECT_TYPE:
+                    Object doubleObj = UnsafeMemory.getUnsafe().allocateInstance(Double.class);
+                    UnsafeMemory.getUnsafe().putDouble(doubleObj, UnsafeMemory.doubleValueFieldOffset, Double.longBitsToDouble(Utils.longFromBytes(bytes, offset)));
+                    UnsafeMemory.getUnsafe().putObject(instance, declaredFieldsOffsets[i], doubleObj);
+                    offset += JAVA_DOUBLE_SIZE;
                     break;
             }
         }

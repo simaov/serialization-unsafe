@@ -13,6 +13,7 @@ public class UnsafeMemory {
     public static long intValueFieldOffset;
     public static long charValueFieldOffset;
     public static long booleanValueFieldOffset;
+    public static long doubleValueFieldOffset;
     public static long mostSigBitsFieldOffset;
     public static long leastSigBitsFieldOffset;
     public static long baseCharArrayOffset;
@@ -25,6 +26,7 @@ public class UnsafeMemory {
             longValueFieldOffset = UNSAFE.objectFieldOffset(Long.class.getDeclaredField("value"));
             intValueFieldOffset = UNSAFE.objectFieldOffset(Integer.class.getDeclaredField("value"));
             charValueFieldOffset = UNSAFE.objectFieldOffset(String.class.getDeclaredField("value"));
+            doubleValueFieldOffset = UNSAFE.objectFieldOffset(Double.class.getDeclaredField("value"));
             booleanValueFieldOffset = UNSAFE.objectFieldOffset(Boolean.class.getDeclaredField("value"));
             mostSigBitsFieldOffset = UNSAFE.objectFieldOffset(UUID.class.getDeclaredField("mostSigBits"));
             leastSigBitsFieldOffset = UNSAFE.objectFieldOffset(UUID.class.getDeclaredField("leastSigBits"));
@@ -40,6 +42,14 @@ public class UnsafeMemory {
         }
         return UNSAFE.getLong(baseObj, fieldOffset);
     }
+
+    public static double getPrimitiveDouble(Object baseObj, long fieldOffset) throws Exception {
+        if (baseObj == null) {
+            return 0;
+        }
+        return UNSAFE.getDouble(baseObj, fieldOffset);
+    }
+
 
     public static int getPrimitiveInt(Object baseObj, long fieldOffset) throws Exception {
         if (baseObj == null) {
@@ -67,6 +77,13 @@ public class UnsafeMemory {
             return false;
         }
         return UNSAFE.getBoolean(booleanObject, booleanValueFieldOffset);
+    }
+
+    public static double getDouble(Object doubleObject) {
+        if (doubleObject == null) {
+            return 0;
+        }
+        return UNSAFE.getDouble(doubleObject, doubleValueFieldOffset);
     }
 
     public static boolean getPrimitiveBoolean(Object baseObject, long fieldOffset) {

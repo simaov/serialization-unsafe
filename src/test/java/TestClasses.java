@@ -152,6 +152,57 @@ public class TestClasses {
         }
     }
 
+    static class TestDoublePrim {
+        double d;
+
+        public TestDoublePrim(double d) {
+            this.d = d;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            TestDoublePrim that = (TestDoublePrim) o;
+
+            if (Double.compare(that.d, d) != 0) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            long temp = Double.doubleToLongBits(d);
+            return (int) (temp ^ (temp >>> 32));
+        }
+    }
+
+    static class TestDouble {
+        Double d;
+
+        public TestDouble(Double d) {
+            this.d = d;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            TestDouble that = (TestDouble) o;
+
+            if (!d.equals(that.d)) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            return d.hashCode();
+        }
+    }
+
     static class TestString {
         private String string;
 
@@ -231,21 +282,25 @@ public class TestClasses {
         private long aL;
         private int aInt;
         private boolean aBoolean;
+        private double d;
         private char[] chars;
         private Long aLong;
         private Integer integer;
         private Boolean aB;
+        private Double aDouble;
         private String string;
         private UUID uuid;
 
-        public TestComplex(long aL, int aInt, boolean aBoolean, char[] chars, Long aLong, Integer integer, Boolean aB, String string, UUID uuid) {
+        public TestComplex(long aL, int aInt, boolean aBoolean, double d, char[] chars, Long aLong, Integer integer, Boolean aB, Double aDouble, String string, UUID uuid) {
             this.aL = aL;
             this.aInt = aInt;
             this.aBoolean = aBoolean;
+            this.d = d;
             this.chars = chars;
             this.aLong = aLong;
             this.integer = integer;
             this.aB = aB;
+            this.aDouble = aDouble;
             this.string = string;
             this.uuid = uuid;
         }
@@ -260,7 +315,9 @@ public class TestClasses {
             if (aBoolean != that.aBoolean) return false;
             if (aInt != that.aInt) return false;
             if (aL != that.aL) return false;
+            if (Double.compare(that.d, d) != 0) return false;
             if (!aB.equals(that.aB)) return false;
+            if (!aDouble.equals(that.aDouble)) return false;
             if (!aLong.equals(that.aLong)) return false;
             if (!Arrays.equals(chars, that.chars)) return false;
             if (!integer.equals(that.integer)) return false;
@@ -272,13 +329,18 @@ public class TestClasses {
 
         @Override
         public int hashCode() {
-            int result = (int) (aL ^ (aL >>> 32));
+            int result;
+            long temp;
+            result = (int) (aL ^ (aL >>> 32));
             result = 31 * result + aInt;
             result = 31 * result + (aBoolean ? 1 : 0);
+            temp = Double.doubleToLongBits(d);
+            result = 31 * result + (int) (temp ^ (temp >>> 32));
             result = 31 * result + Arrays.hashCode(chars);
             result = 31 * result + aLong.hashCode();
             result = 31 * result + integer.hashCode();
             result = 31 * result + aB.hashCode();
+            result = 31 * result + aDouble.hashCode();
             result = 31 * result + string.hashCode();
             result = 31 * result + uuid.hashCode();
             return result;
