@@ -1,4 +1,6 @@
 import junit.framework.TestCase;
+import org.jcoffee.serialization.SerializerFactory;
+import org.jcoffee.serialization.SerializerUnsafe;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -231,5 +233,12 @@ public class UnsafeMemoryTest extends TestCase {
         }
 
         System.out.println("Time per object: ~ " + (System.nanoTime() - start) / objCount + " ns.");
+    }
+
+    @Test
+    public void testFactory() {
+        SerializerUnsafe<TestClasses.TestBoolean> serializerUnsafe = SerializerFactory.getSerializer(TestClasses.TestBoolean.class);
+        SerializerUnsafe<TestClasses.TestBoolean> serializerUnsafe2 = SerializerFactory.getSerializer(TestClasses.TestBoolean.class);
+        assertEquals(serializerUnsafe, serializerUnsafe2);
     }
 }
