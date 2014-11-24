@@ -11,11 +11,11 @@ public class JavaTypes {
     public static final int JAVA_UUID_TYPE              = 7;
     public static final int JAVA_BOOLEAN_TYPE           = 8;
     public static final int JAVA_BOOLEAN_OBJECT_TYPE    = 9;
-    public static final int JAVA_DOUBLE_TYPE           = 10;
-    public static final int JAVA_DOUBLE_OBJECT_TYPE    = 11;
+    public static final int JAVA_DOUBLE_TYPE            = 10;
+    public static final int JAVA_DOUBLE_OBJECT_TYPE     = 11;
 
-    public static final int JAVA_LONG_SIZE              = Long.SIZE / 8;
-    public static final int JAVA_INTEGER_SIZE           = Integer.SIZE / 8;
-    public static final int JAVA_DOUBLE_SIZE            = Double.SIZE / 8;
+    public static final int JAVA_LONG_SIZE              = Long.SIZE     >> 3;
+    public static final int JAVA_INTEGER_SIZE           = Integer.SIZE  >> 3;
+    public static final int JAVA_DOUBLE_SIZE            = Double.SIZE   >> 3;
 
 }

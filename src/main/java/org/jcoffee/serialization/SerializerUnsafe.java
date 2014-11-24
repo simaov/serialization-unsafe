@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.UUID;
 
 import static org.jcoffee.serialization.JavaTypes.*;
+import static org.jcoffee.serialization.UnsafeMemory.*;
 
 public class SerializerUnsafe<T> implements SerializerUnsafeI<T> {
 
@@ -149,7 +150,7 @@ public class SerializerUnsafe<T> implements SerializerUnsafeI<T> {
                     break;
                 case JAVA_BOOLEAN_OBJECT_TYPE:
                     Object b = UnsafeMemory.getUnsafe().allocateInstance(Boolean.class);
-                    UnsafeMemory.getUnsafe().putBoolean(b, UnsafeMemory.booleanValueFieldOffset, Utils.booleanFromBytes(bytes, offset));
+                    UnsafeMemory.getUnsafe().putBoolean(b, booleanValueFieldOffset, Utils.booleanFromBytes(bytes, offset));
                     UnsafeMemory.getUnsafe().putObject(instance, declaredFieldsOffsets[i], b);
                     offset += 1;
                     break;
@@ -165,7 +166,7 @@ public class SerializerUnsafe<T> implements SerializerUnsafeI<T> {
                     break;
                 case JAVA_DOUBLE_OBJECT_TYPE:
                     Object doubleObj = UnsafeMemory.getUnsafe().allocateInstance(Double.class);
-                    UnsafeMemory.getUnsafe().putDouble(doubleObj, UnsafeMemory.doubleValueFieldOffset, Double.longBitsToDouble(Utils.longFromBytes(bytes, offset)));
+                    UnsafeMemory.getUnsafe().putDouble(doubleObj, doubleValueFieldOffset, Double.longBitsToDouble(Utils.longFromBytes(bytes, offset)));
                     UnsafeMemory.getUnsafe().putObject(instance, declaredFieldsOffsets[i], doubleObj);
                     offset += JAVA_DOUBLE_SIZE;
                     break;
@@ -179,7 +180,7 @@ public class SerializerUnsafe<T> implements SerializerUnsafeI<T> {
                     int size = Utils.intFromBytes(bytes, offset);
                     char[] res = UnsafeMemory.getCharArrayFromBytes(bytes, offset, size);
                     Object s = UnsafeMemory.getUnsafe().allocateInstance(String.class);
-                    UnsafeMemory.getUnsafe().putObject(s, UnsafeMemory.charValueFieldOffset, res);
+                    UnsafeMemory.getUnsafe().putObject(s, charValueFieldOffset, res);
                     UnsafeMemory.getUnsafe().putObject(instance, declaredFieldsOffsets[i], s);
                     offset += size + JAVA_INTEGER_SIZE;
                     break;
@@ -189,8 +190,8 @@ public class SerializerUnsafe<T> implements SerializerUnsafeI<T> {
                     long leastSigBits = Utils.longFromBytes(bytes, offset);
                     offset += JAVA_LONG_SIZE;
                     Object uuid = UnsafeMemory.getUnsafe().allocateInstance(UUID.class);
-                    UnsafeMemory.getUnsafe().putLong(uuid, UnsafeMemory.mostSigBitsFieldOffset, mostSigBits);
-                    UnsafeMemory.getUnsafe().putLong(uuid, UnsafeMemory.leastSigBitsFieldOffset, leastSigBits);
+                    UnsafeMemory.getUnsafe().putLong(uuid, mostSigBitsFieldOffset, mostSigBits);
+                    UnsafeMemory.getUnsafe().putLong(uuid, leastSigBitsFieldOffset, leastSigBits);
                     UnsafeMemory.getUnsafe().putObject(instance, declaredFieldsOffsets[i], uuid);
                     break;
             }
