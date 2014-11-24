@@ -5,6 +5,8 @@ import sun.misc.Unsafe;
 import java.lang.reflect.Field;
 import java.util.UUID;
 
+import static org.jcoffee.serialization.JavaTypes.JAVA_INTEGER_SIZE;
+
 public class UnsafeMemory {
 
     private static final Unsafe UNSAFE;
@@ -17,6 +19,7 @@ public class UnsafeMemory {
     public static long mostSigBitsFieldOffset;
     public static long leastSigBitsFieldOffset;
     public static long baseCharArrayOffset;
+    public static long baseByteArrayOffset;
 
     static {
         try {
@@ -31,60 +34,27 @@ public class UnsafeMemory {
             mostSigBitsFieldOffset = UNSAFE.objectFieldOffset(UUID.class.getDeclaredField("mostSigBits"));
             leastSigBitsFieldOffset = UNSAFE.objectFieldOffset(UUID.class.getDeclaredField("leastSigBits"));
             baseCharArrayOffset = UNSAFE.arrayBaseOffset(char[].class);
+            baseByteArrayOffset = UNSAFE.arrayBaseOffset(byte[].class);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static long getPrimitiveLong(Object baseObj, long fieldOffset) throws Exception {
-        if (baseObj == null) {
-            return 0;
-        }
-        return UNSAFE.getLong(baseObj, fieldOffset);
+    public static Object getFieldObject(Object baseObject, long offset) {
+        return UNSAFE.getObject(baseObject, offset);
     }
 
-    public static double getPrimitiveDouble(Object baseObj, long fieldOffset) throws Exception {
-        if (baseObj == null) {
-            return 0;
-        }
-        return UNSAFE.getDouble(baseObj, fieldOffset);
+    public static long getFieldOffset(Field field) {
+        return UNSAFE.objectFieldOffset(field);
     }
 
-
-    public static int getPrimitiveInt(Object baseObj, long fieldOffset) throws Exception {
-        if (baseObj == null) {
-            return 0;
-        }
-        return UNSAFE.getInt(baseObj, fieldOffset);
+    public static Unsafe getUnsafe() {
+        return UNSAFE;
     }
 
-    public static long getLong(Object longObject) throws Exception {
-        if (longObject == null) {
-            return 0;
-        }
-        return UNSAFE.getLong(longObject, longValueFieldOffset);
-    }
-
-    public static int getInt(Object intObject) throws Exception {
-        if (intObject == null) {
-            return 0;
-        }
-        return UNSAFE.getInt(intObject, intValueFieldOffset);
-    }
-
-    public static boolean getBoolean(Object booleanObject) {
-        if (booleanObject == null) {
-            return false;
-        }
-        return UNSAFE.getBoolean(booleanObject, booleanValueFieldOffset);
-    }
-
-    public static double getDouble(Object doubleObject) {
-        if (doubleObject == null) {
-            return 0;
-        }
-        return UNSAFE.getDouble(doubleObject, doubleValueFieldOffset);
-    }
+    /*
+     *  Primitive types
+     */
 
     public static boolean getPrimitiveBoolean(Object baseObject, long fieldOffset) {
         if (baseObject == null) {
@@ -93,15 +63,91 @@ public class UnsafeMemory {
         return UNSAFE.getBoolean(baseObject, fieldOffset);
     }
 
-    public static char[] getCharsFromString(Object stringObject) throws Exception {
-        if (stringObject == null) {
-            return new char[0];
+    public static int getPrimitiveInt(Object baseObj, long intFieldOffset) throws Exception {
+        if (baseObj == null) {
+            return 0;
         }
-        return getChars(stringObject, charValueFieldOffset);
+        return UNSAFE.getInt(baseObj, intFieldOffset);
     }
 
-    public static char[] getChars(Object baseObj, long charArrayOffset) throws Exception {
-        return (char[]) getFieldObject(baseObj, charArrayOffset);
+    public static long getPrimitiveLong(Object baseObj, long longFieldOffset) throws Exception {
+        if (baseObj == null) {
+            return 0;
+        }
+        return UNSAFE.getLong(baseObj, longFieldOffset);
+    }
+
+    public static double getPrimitiveDouble(Object baseObj, long doubleFieldOffset) throws Exception {
+        if (baseObj == null) {
+            return 0;
+        }
+        return UNSAFE.getDouble(baseObj, doubleFieldOffset);
+    }
+
+    /*
+     *  Primitive wrapper types
+     */
+
+    public static boolean getBooleanFieldValue(Object baseObj, long booleanFieldOffset) throws Exception {
+        if (baseObj == null) {
+            return false;
+        }
+        return UNSAFE.getBoolean(getFieldObject(baseObj, booleanFieldOffset), booleanValueFieldOffset);
+    }
+
+    public static int getIntegerFieldValue(Object baseObj, long integerFieldOffset) throws Exception {
+        if (baseObj == null) {
+            return 0;
+        }
+        return UNSAFE.getInt(getFieldObject(baseObj, integerFieldOffset), intValueFieldOffset);
+    }
+
+    public static long getLongFieldValue(Object baseObj, long longFieldOffset) throws Exception {
+        if (baseObj == null) {
+            return 0;
+        }
+        return UNSAFE.getLong(getFieldObject(baseObj, longFieldOffset), longValueFieldOffset);
+    }
+
+    public static double getDoubleFieldValue(Object baseObj, long doubleFieldOffset) throws Exception {
+        if (baseObj == null) {
+            return 0;
+        }
+        return UNSAFE.getDouble(getFieldObject(baseObj, doubleFieldOffset), doubleValueFieldOffset);
+    }
+
+    /*
+     *  Arrays of primitives
+     */
+
+
+    public static byte[] getBytesFromCharArray(Object baseObj, long charArrayOffset) throws Exception {
+        char[] chars = (char[]) getFieldObject(baseObj, charArrayOffset);
+        int len = chars.length << 1;
+        byte[] cb = new byte[len + JAVA_INTEGER_SIZE];
+        for (int i = 0; i < 4; i++) {
+            cb[i] = (byte) (len >> ((3 - i) * 8));
+        }
+        UNSAFE.copyMemory(chars, baseCharArrayOffset, cb, baseByteArrayOffset + JAVA_INTEGER_SIZE, len);
+        return cb;
+    }
+
+    public static char[] getCharArrayFromBytes(byte[] bytes, int offset, int sizeInBytes) {
+        char[] chs = new char[sizeInBytes >> 1];
+        UNSAFE.copyMemory(bytes, baseByteArrayOffset + offset + JAVA_INTEGER_SIZE, chs, baseCharArrayOffset, sizeInBytes);
+        return chs;
+    }
+
+    /*
+     *  Other
+     */
+
+
+    public static byte[] getBytesFromString(Object baseObj, long stringFieldOffset) throws Exception {
+        if (baseObj == null) {
+            return new byte[0];
+        }
+        return getBytesFromCharArray(getFieldObject(baseObj, stringFieldOffset), charValueFieldOffset);
     }
 
     public static byte[] getBytesFromUUID(Object uuid) throws Exception {
@@ -125,29 +171,4 @@ public class UnsafeMemory {
 
         return b;
     }
-
-    public static Object getFieldObject(Object baseObject, long offset) {
-        return UNSAFE.getObject(baseObject, offset);
-    }
-
-    public static long getFieldOffset(Field field) {
-        return UNSAFE.objectFieldOffset(field);
-    }
-
-    public static long getLongFieldValue(Object baseObj, Field field) throws Exception {
-        return getLong(getFieldObject(baseObj, getFieldOffset(field)));
-    }
-
-    public static int getIntegerFieldValue(Object baseObj, Field field) throws Exception {
-        return getInt(getFieldObject(baseObj, getFieldOffset(field)));
-    }
-
-    public static char[] getStringFieldValue(Object baseObj, Field field) throws Exception {
-        return getCharsFromString(getFieldObject(baseObj, getFieldOffset(field)));
-    }
-
-    public static Unsafe getUnsafe() {
-        return UNSAFE;
-    }
-
 }
