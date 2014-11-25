@@ -135,6 +135,28 @@ public class UnsafeMemoryTest extends TestCase {
     }
 
     @Test
+    public void testLongArraySerialization() throws Exception {
+        long[] longs = new long[] {random.nextLong(), random.nextLong(), random.nextLong(), random.nextLong(), random.nextLong(),
+                random.nextLong(), random.nextLong(), random.nextLong(), random.nextLong(), random.nextLong()};
+        TestClasses.TestLongArray testLongArray = new TestClasses.TestLongArray(longs);
+        TestSerializers.TestLongArraySerializer testLongArraySerializer = new TestSerializers.TestLongArraySerializer(TestClasses.TestLongArray.class);
+        byte[] serialize = testLongArraySerializer.serialize(testLongArray);
+        TestClasses.TestLongArray deserialize = testLongArraySerializer.deserialize(serialize);
+        assertEquals(testLongArray, deserialize);
+    }
+
+    @Test
+    public void testDoubleArraySerialization() throws Exception {
+        double[] doubles = new double[] {random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble(),
+                random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble()};
+        TestClasses.TestDoubleArray testDoubleArray = new TestClasses.TestDoubleArray(doubles);
+        TestSerializers.TestDoubleArraySerializer testDoubleArraySerializer = new TestSerializers.TestDoubleArraySerializer(TestClasses.TestDoubleArray.class);
+        byte[] serialize = testDoubleArraySerializer.serialize(testDoubleArray);
+        TestClasses.TestDoubleArray deserialize = testDoubleArraySerializer.deserialize(serialize);
+        assertEquals(testDoubleArray, deserialize);
+    }
+
+    @Test
     public void testUUIDSerialization() throws Exception {
         UUID uuid = UUID.randomUUID();
         TestClasses.TestUUID testUUID = new TestClasses.TestUUID(uuid);
@@ -153,6 +175,10 @@ public class UnsafeMemoryTest extends TestCase {
                 random.nextFloat(),
                 random.nextDouble(),
                 UUID.randomUUID().toString().toCharArray(),
+                new long[] {random.nextLong(), random.nextLong(), random.nextLong(), random.nextLong(), random.nextLong(),
+                        random.nextLong(), random.nextLong(), random.nextLong(), random.nextLong(), random.nextLong()},
+                new double[] {random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble(),
+                        random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble()},
                 random.nextBoolean(),
                 random.nextInt(),
                 random.nextLong(),
@@ -199,6 +225,10 @@ public class UnsafeMemoryTest extends TestCase {
                     random.nextFloat(),
                     random.nextDouble(),
                     UUID.randomUUID().toString().toCharArray(),
+                    new long[] {random.nextLong(), random.nextLong(), random.nextLong(), random.nextLong(), random.nextLong(),
+                            random.nextLong(), random.nextLong(), random.nextLong(), random.nextLong(), random.nextLong()},
+                    new double[] {random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble(),
+                            random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble()},
                     random.nextBoolean(),
                     random.nextInt(),
                     random.nextLong(),

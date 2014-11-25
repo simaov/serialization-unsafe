@@ -303,6 +303,56 @@ public class TestClasses {
         }
     }
 
+    static class TestLongArray {
+        long[] longs;
+
+        public TestLongArray(long[] longs) {
+            this.longs = longs;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            TestLongArray that = (TestLongArray) o;
+
+            if (!Arrays.equals(longs, that.longs)) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            return Arrays.hashCode(longs);
+        }
+    }
+
+    static class TestDoubleArray {
+        double[] doubles;
+
+        public TestDoubleArray(double[] doubles) {
+            this.doubles = doubles;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            TestDoubleArray that = (TestDoubleArray) o;
+
+            if (!Arrays.equals(doubles, that.doubles)) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            return Arrays.hashCode(doubles);
+        }
+    }
+
     static class TestUUID {
         private UUID uuid;
 
@@ -335,6 +385,8 @@ public class TestClasses {
         private float f;
         private double d;
         private char[] chars;
+        private long[] longs;
+        private double[] doubles;
         private Boolean aB;
         private Integer integer;
         private Long aLong;
@@ -343,13 +395,15 @@ public class TestClasses {
         private String string;
         private UUID uuid;
 
-        public TestComplex(boolean aBoolean, int aInt, long aL, float f, double d, char[] chars, Boolean aB, Integer integer, Long aLong, Float aFloat, Double aDouble, String string, UUID uuid) {
+        public TestComplex(boolean aBoolean, int aInt, long aL, float f, double d, char[] chars, long[] longs, double[] doubles, Boolean aB, Integer integer, Long aLong, Float aFloat, Double aDouble, String string, UUID uuid) {
             this.aBoolean = aBoolean;
             this.aInt = aInt;
             this.aL = aL;
             this.f = f;
             this.d = d;
             this.chars = chars;
+            this.longs = longs;
+            this.doubles = doubles;
             this.aB = aB;
             this.integer = integer;
             this.aLong = aLong;
@@ -376,7 +430,9 @@ public class TestClasses {
             if (!aFloat.equals(that.aFloat)) return false;
             if (!aLong.equals(that.aLong)) return false;
             if (!Arrays.equals(chars, that.chars)) return false;
+            if (!Arrays.equals(doubles, that.doubles)) return false;
             if (!integer.equals(that.integer)) return false;
+            if (!Arrays.equals(longs, that.longs)) return false;
             if (!string.equals(that.string)) return false;
             if (!uuid.equals(that.uuid)) return false;
 
@@ -394,6 +450,8 @@ public class TestClasses {
             temp = Double.doubleToLongBits(d);
             result = 31 * result + (int) (temp ^ (temp >>> 32));
             result = 31 * result + Arrays.hashCode(chars);
+            result = 31 * result + Arrays.hashCode(longs);
+            result = 31 * result + Arrays.hashCode(doubles);
             result = 31 * result + aB.hashCode();
             result = 31 * result + integer.hashCode();
             result = 31 * result + aLong.hashCode();

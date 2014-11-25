@@ -22,6 +22,8 @@ public class UnsafeMemory {
     public static final long leastSigBitsFieldOffset;
     public static final long baseByteArrayOffset;
     public static final long baseCharArrayOffset;
+    public static final long baseLongArrayOffset;
+    public static final long baseDoubleArrayOffset;
 
     static {
         try {
@@ -38,6 +40,8 @@ public class UnsafeMemory {
             leastSigBitsFieldOffset = UNSAFE.objectFieldOffset(UUID.class.getDeclaredField("leastSigBits"));
             baseByteArrayOffset = UNSAFE.arrayBaseOffset(byte[].class);
             baseCharArrayOffset = UNSAFE.arrayBaseOffset(char[].class);
+            baseLongArrayOffset = UNSAFE.arrayBaseOffset(long[].class);
+            baseDoubleArrayOffset = UNSAFE.arrayBaseOffset(double[].class);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -157,6 +161,40 @@ public class UnsafeMemory {
         char[] chs = new char[sizeInBytes >> 1];
         UNSAFE.copyMemory(bytes, baseByteArrayOffset + offset + JAVA_INTEGER_SIZE, chs, baseCharArrayOffset, sizeInBytes);
         return chs;
+    }
+
+    public static byte[] getBytesFromLongArray(Object baseObj, long longArrayOffset) {
+        long[] longs = (long[]) getFieldObject(baseObj, longArrayOffset);
+        int len = longs.length << 3;
+        byte[] lb = new byte[len + JAVA_INTEGER_SIZE];
+        for (int i = 0; i < 4; i++) {
+            lb[i] = (byte) (len >> ((3 - i) * 8));
+        }
+        UNSAFE.copyMemory(longs, baseLongArrayOffset, lb, baseByteArrayOffset + JAVA_INTEGER_SIZE, len);
+        return lb;
+    }
+
+    public static long[] getLongArrayFromBytes(byte[] bytes, int offset, int sizeInBytes) {
+        long[] longs = new long[sizeInBytes >> 3];
+        UNSAFE.copyMemory(bytes, baseByteArrayOffset + offset + JAVA_INTEGER_SIZE, longs, baseLongArrayOffset, sizeInBytes);
+        return longs;
+    }
+
+    public static byte[] getBytesFromDoubleArray(Object baseObj, long doubleArrayOffset) {
+        double[] doubles = (double[]) getFieldObject(baseObj, doubleArrayOffset);
+        int len = doubles.length << 3;
+        byte[] db = new byte[len + JAVA_INTEGER_SIZE];
+        for (int i = 0; i < 4; i++) {
+            db[i] = (byte) (len >> ((3 - i) * 8));
+        }
+        UNSAFE.copyMemory(doubles, baseDoubleArrayOffset, db, baseByteArrayOffset + JAVA_INTEGER_SIZE, len);
+        return db;
+    }
+
+    public static double[] getDoubleArrayFromBytes(byte[] bytes, int offset, int sizeInBytes) {
+        double[] doubles = new double[sizeInBytes >> 3];
+        UNSAFE.copyMemory(bytes, baseByteArrayOffset + offset + JAVA_INTEGER_SIZE, doubles, baseDoubleArrayOffset, sizeInBytes);
+        return doubles;
     }
 
     /*

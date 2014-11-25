@@ -15,6 +15,8 @@ public class JavaTypes {
     public static final int JAVA_DOUBLE_OBJECT_TYPE     = 11;
     public static final int JAVA_FLOAT_TYPE             = 12;
     public static final int JAVA_FLOAT_OBJECT_TYPE      = 13;
+    public static final int JAVA_LONG_ARRAY_TYPE        = 14;
+    public static final int JAVA_DOUBLE_ARRAY_TYPE      = 15;
 
     public static final int JAVA_BOOLEAN_SIZE           = 1;
     public static final int JAVA_INTEGER_SIZE           = Integer.SIZE  >> 3;

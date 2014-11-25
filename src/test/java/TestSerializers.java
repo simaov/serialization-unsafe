@@ -74,6 +74,18 @@ public class TestSerializers {
         }
     }
 
+    static class TestLongArraySerializer extends SerializerUnsafe<TestClasses.TestLongArray> {
+        public TestLongArraySerializer(Class<TestClasses.TestLongArray> testLongArrayClass) {
+            super(testLongArrayClass);
+        }
+    }
+
+    static class TestDoubleArraySerializer extends SerializerUnsafe<TestClasses.TestDoubleArray> {
+        public TestDoubleArraySerializer(Class<TestClasses.TestDoubleArray> testDoubleArrayClass) {
+            super(testDoubleArrayClass);
+        }
+    }
+
     static class TestUUIDSerializer extends SerializerUnsafe<TestClasses.TestUUID> {
         public TestUUIDSerializer(Class<TestClasses.TestUUID> testUUID) {
             super(testUUID);

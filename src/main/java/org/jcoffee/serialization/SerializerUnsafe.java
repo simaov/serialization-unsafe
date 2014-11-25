@@ -55,6 +55,10 @@ public class SerializerUnsafe<T> implements SerializerUnsafeI<T> {
                 defaultSize += JAVA_DOUBLE_SIZE;
             } else if (declaredFields[i].getType().getName().equals(char[].class.getName())) {
                 declaredFieldsTypes[i] = JAVA_CHAR_ARRAY_TYPE;
+            } else if (declaredFields[i].getType().getName().equals(long[].class.getName())) {
+                declaredFieldsTypes[i] = JAVA_LONG_ARRAY_TYPE;
+            } else if (declaredFields[i].getType().getName().equals(double[].class.getName())) {
+                declaredFieldsTypes[i] = JAVA_DOUBLE_ARRAY_TYPE;
             } else if (declaredFields[i].getType().getName().equals(String.class.getName())) {
                 declaredFieldsTypes[i] = JAVA_STRING_TYPE;
             } else if (declaredFields[i].getType().getName().equals(UUID.class.getName())) {
@@ -108,6 +112,16 @@ public class SerializerUnsafe<T> implements SerializerUnsafeI<T> {
                     byte[] bytes = UnsafeMemory.getBytesFromCharArray(obj, declaredFieldsOffsets[i]);
                     declaredFieldsValues[i] = bytes;
                     bufferSize += bytes.length;
+                    break;
+                case JAVA_LONG_ARRAY_TYPE:
+                    byte[] longBytes = UnsafeMemory.getBytesFromLongArray(obj, declaredFieldsOffsets[i]);
+                    declaredFieldsValues[i] = longBytes;
+                    bufferSize += longBytes.length;
+                    break;
+                case JAVA_DOUBLE_ARRAY_TYPE:
+                    byte[] doubleBytes = UnsafeMemory.getBytesFromDoubleArray(obj, declaredFieldsOffsets[i]);
+                    declaredFieldsValues[i] = doubleBytes;
+                    bufferSize += doubleBytes.length;
                     break;
                 case JAVA_STRING_TYPE:
                     byte[] b = UnsafeMemory.getBytesFromString(obj, declaredFieldsOffsets[i]);
@@ -181,6 +195,16 @@ public class SerializerUnsafe<T> implements SerializerUnsafeI<T> {
                     int charArraySize = Utils.intFromBytes(bytes, offset);
                     UnsafeMemory.getUnsafe().putObject(instance, declaredFieldsOffsets[i], UnsafeMemory.getCharArrayFromBytes(bytes, offset, charArraySize));
                     offset += charArraySize + JAVA_INTEGER_SIZE;
+                    break;
+                case JAVA_LONG_ARRAY_TYPE:
+                    int longArraySize = Utils.intFromBytes(bytes, offset);
+                    UnsafeMemory.getUnsafe().putObject(instance, declaredFieldsOffsets[i], UnsafeMemory.getLongArrayFromBytes(bytes, offset, longArraySize));
+                    offset += longArraySize + JAVA_INTEGER_SIZE;
+                    break;
+                case JAVA_DOUBLE_ARRAY_TYPE:
+                    int doubleArraySize = Utils.intFromBytes(bytes, offset);
+                    UnsafeMemory.getUnsafe().putObject(instance, declaredFieldsOffsets[i], UnsafeMemory.getDoubleArrayFromBytes(bytes, offset, doubleArraySize));
+                    offset += doubleArraySize + JAVA_INTEGER_SIZE;
                     break;
                 case JAVA_STRING_TYPE:
                     int size = Utils.intFromBytes(bytes, offset);
