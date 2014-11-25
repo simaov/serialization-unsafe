@@ -105,6 +105,26 @@ public class UnsafeMemoryTest extends TestCase {
     }
 
     @Test
+    public void testFloatPrimSerialization() throws Exception {
+        float f = random.nextFloat();
+        TestClasses.TestFloatPrim testFloatPrim = new TestClasses.TestFloatPrim(f);
+        TestSerializers.TestFloatPrimSerializer testFloatPrimSerializer = new TestSerializers.TestFloatPrimSerializer(TestClasses.TestFloatPrim.class);
+        byte[] serialize = testFloatPrimSerializer.serialize(testFloatPrim);
+        TestClasses.TestFloatPrim deserialize = testFloatPrimSerializer.deserialize(serialize);
+        assertEquals(testFloatPrim, deserialize);
+    }
+
+    @Test
+    public void testFloatSerialization() throws Exception {
+        Float f = random.nextFloat();
+        TestClasses.TestFloat testFloat = new TestClasses.TestFloat(f);
+        TestSerializers.TestFloatSerializer testFloatSerializer = new TestSerializers.TestFloatSerializer(TestClasses.TestFloat.class);
+        byte[] serialize = testFloatSerializer.serialize(testFloat);
+        TestClasses.TestFloat deserialize = testFloatSerializer.deserialize(serialize);
+        assertEquals(testFloat, deserialize);
+    }
+
+    @Test
     public void testCharArraySerialization() throws Exception {
         char[] chars = UUID.randomUUID().toString().toCharArray();
         TestClasses.TestCharArray testCharArray = new TestClasses.TestCharArray(chars);
@@ -127,14 +147,16 @@ public class UnsafeMemoryTest extends TestCase {
     @Test
     public void testComplexSerialization() throws Exception {
         TestClasses.TestComplex testComplex = new TestClasses.TestComplex(
-                random.nextLong(),
-                random.nextInt(),
                 random.nextBoolean(),
+                random.nextInt(),
+                random.nextLong(),
+                random.nextFloat(),
                 random.nextDouble(),
                 UUID.randomUUID().toString().toCharArray(),
-                random.nextLong(),
-                random.nextInt(),
                 random.nextBoolean(),
+                random.nextInt(),
+                random.nextLong(),
+                random.nextFloat(),
                 random.nextDouble(),
                 UUID.randomUUID().toString(),
                 UUID.randomUUID());
@@ -171,14 +193,16 @@ public class UnsafeMemoryTest extends TestCase {
         System.out.print("Creating [" + objCount + "] objects ... ");
         for (int i = 0; i < objCount; i++) {
             TestClasses.TestComplex testComplex = new TestClasses.TestComplex(
-                    random.nextLong(),
-                    random.nextInt(),
                     random.nextBoolean(),
+                    random.nextInt(),
+                    random.nextLong(),
+                    random.nextFloat(),
                     random.nextDouble(),
                     UUID.randomUUID().toString().toCharArray(),
-                    random.nextLong(),
-                    random.nextInt(),
                     random.nextBoolean(),
+                    random.nextInt(),
+                    random.nextLong(),
+                    random.nextFloat(),
                     random.nextDouble(),
                     UUID.randomUUID().toString(),
                     UUID.randomUUID());
@@ -189,14 +213,16 @@ public class UnsafeMemoryTest extends TestCase {
 
         TestSerializers.TestComplexSerializer testComplexSerializer = new TestSerializers.TestComplexSerializer(TestClasses.TestComplex.class);
 
-        long start = System.nanoTime();
+        for (int j = 0; j < 10; j++) {
+            long start = System.nanoTime();
+            for (int i = 0; i < list.size(); i++) {
+                byte[] b = testComplexSerializer.serialize(list.get(i));
+                TestClasses.TestComplex deserialize = testComplexSerializer.deserialize(b);
+            }
 
-        for (int i = 0; i < list.size(); i++) {
-            byte[] b = testComplexSerializer.serialize(list.get(i));
-            TestClasses.TestComplex deserialize = testComplexSerializer.deserialize(b);
+            System.out.println("Time per object: ~ " + (System.nanoTime() - start) / objCount + " ns.");
+            Thread.yield();
         }
-
-        System.out.println("Time per object: ~ " + (System.nanoTime() - start) / objCount + " ns.");
     }
 
     @Ignore
@@ -226,13 +252,16 @@ public class UnsafeMemoryTest extends TestCase {
 
         System.out.println("Done.");
 
-        long start = System.nanoTime();
-        for (int i = 0; i < list.size(); i++) {
-            byte[] b = testEventSerializer.serialize(list.get(i));
-            TestClasses.TestEvent deserialize = testEventSerializer.deserialize(b);
+        for (int j = 0; j < 10; j++) {
+            long start = System.nanoTime();
+            for (int i = 0; i < list.size(); i++) {
+                byte[] b = testEventSerializer.serialize(list.get(i));
+                TestClasses.TestEvent deserialize = testEventSerializer.deserialize(b);
+            }
+            System.out.println("Time per object: ~ " + (System.nanoTime() - start) / objCount + " ns.");
+            Thread.yield();
         }
 
-        System.out.println("Time per object: ~ " + (System.nanoTime() - start) / objCount + " ns.");
     }
 
     @Test

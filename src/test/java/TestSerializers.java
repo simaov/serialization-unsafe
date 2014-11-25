@@ -53,6 +53,18 @@ public class TestSerializers {
         }
     }
 
+    static class TestFloatPrimSerializer extends SerializerUnsafe<TestClasses.TestFloatPrim> {
+        public TestFloatPrimSerializer(Class<TestClasses.TestFloatPrim> testFloatPrimClass) {
+            super(testFloatPrimClass);
+        }
+    }
+
+    static class TestFloatSerializer extends SerializerUnsafe<TestClasses.TestFloat> {
+        public TestFloatSerializer(Class<TestClasses.TestFloat> testFloatClass) {
+            super(testFloatClass);
+        }
+    }
+
     static class TestStringSerializer extends SerializerUnsafe<TestClasses.TestString> {
         public TestStringSerializer(Class<TestClasses.TestString> testStringClass) {
             super(testStringClass);

@@ -10,34 +10,41 @@ import static org.jcoffee.serialization.JavaTypes.JAVA_INTEGER_SIZE;
 public class UnsafeMemory {
 
     private static final Unsafe UNSAFE;
+    private static final String VALUE_FIELD = "value";
 
-    public static long longValueFieldOffset;
-    public static long intValueFieldOffset;
-    public static long charValueFieldOffset;
     public static long booleanValueFieldOffset;
+    public static long intValueFieldOffset;
+    public static long longValueFieldOffset;
+    public static long floatValueFieldOffset;
     public static long doubleValueFieldOffset;
+    public static long charArrayValueFieldOffset;
     public static long mostSigBitsFieldOffset;
     public static long leastSigBitsFieldOffset;
-    public static long baseCharArrayOffset;
     public static long baseByteArrayOffset;
+    public static long baseCharArrayOffset;
 
     static {
         try {
             Field field = Unsafe.class.getDeclaredField("theUnsafe");
             field.setAccessible(true);
             UNSAFE = (Unsafe) field.get(null);
-            longValueFieldOffset = UNSAFE.objectFieldOffset(Long.class.getDeclaredField("value"));
-            intValueFieldOffset = UNSAFE.objectFieldOffset(Integer.class.getDeclaredField("value"));
-            charValueFieldOffset = UNSAFE.objectFieldOffset(String.class.getDeclaredField("value"));
-            doubleValueFieldOffset = UNSAFE.objectFieldOffset(Double.class.getDeclaredField("value"));
-            booleanValueFieldOffset = UNSAFE.objectFieldOffset(Boolean.class.getDeclaredField("value"));
+            booleanValueFieldOffset = UNSAFE.objectFieldOffset(Boolean.class.getDeclaredField(VALUE_FIELD));
+            intValueFieldOffset = UNSAFE.objectFieldOffset(Integer.class.getDeclaredField(VALUE_FIELD));
+            longValueFieldOffset = UNSAFE.objectFieldOffset(Long.class.getDeclaredField(VALUE_FIELD));
+            floatValueFieldOffset = UNSAFE.objectFieldOffset(Float.class.getDeclaredField(VALUE_FIELD));
+            doubleValueFieldOffset = UNSAFE.objectFieldOffset(Double.class.getDeclaredField(VALUE_FIELD));
+            charArrayValueFieldOffset = UNSAFE.objectFieldOffset(String.class.getDeclaredField(VALUE_FIELD));
             mostSigBitsFieldOffset = UNSAFE.objectFieldOffset(UUID.class.getDeclaredField("mostSigBits"));
             leastSigBitsFieldOffset = UNSAFE.objectFieldOffset(UUID.class.getDeclaredField("leastSigBits"));
-            baseCharArrayOffset = UNSAFE.arrayBaseOffset(char[].class);
             baseByteArrayOffset = UNSAFE.arrayBaseOffset(byte[].class);
+            baseCharArrayOffset = UNSAFE.arrayBaseOffset(char[].class);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static Object allocateInstance(Class aClass) throws InstantiationException {
+        return UNSAFE.allocateInstance(aClass);
     }
 
     public static Object getFieldObject(Object baseObject, long offset) {
@@ -77,6 +84,13 @@ public class UnsafeMemory {
         return UNSAFE.getLong(baseObj, longFieldOffset);
     }
 
+    public static float getPrimitiveFloat(Object baseObj, long floatFieldOffset) throws Exception {
+        if (baseObj == null) {
+            return 0;
+        }
+        return UNSAFE.getFloat(baseObj, floatFieldOffset);
+    }
+
     public static double getPrimitiveDouble(Object baseObj, long doubleFieldOffset) throws Exception {
         if (baseObj == null) {
             return 0;
@@ -107,6 +121,13 @@ public class UnsafeMemory {
             return 0;
         }
         return UNSAFE.getLong(getFieldObject(baseObj, longFieldOffset), longValueFieldOffset);
+    }
+
+    public static float getFloatFieldValue(Object baseObj, long floatFieldOffset) throws Exception {
+        if (baseObj == null) {
+            return 0;
+        }
+        return UNSAFE.getFloat(getFieldObject(baseObj, floatFieldOffset), floatValueFieldOffset);
     }
 
     public static double getDoubleFieldValue(Object baseObj, long doubleFieldOffset) throws Exception {
@@ -147,7 +168,7 @@ public class UnsafeMemory {
         if (baseObj == null) {
             return new byte[0];
         }
-        return getBytesFromCharArray(getFieldObject(baseObj, stringFieldOffset), charValueFieldOffset);
+        return getBytesFromCharArray(getFieldObject(baseObj, stringFieldOffset), charArrayValueFieldOffset);
     }
 
     public static byte[] getBytesFromUUID(Object uuid) throws Exception {

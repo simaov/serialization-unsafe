@@ -203,6 +203,56 @@ public class TestClasses {
         }
     }
 
+    static class TestFloatPrim {
+        float f;
+
+        public TestFloatPrim(float f) {
+            this.f = f;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            TestFloatPrim that = (TestFloatPrim) o;
+
+            if (Float.compare(that.f, f) != 0) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            return (f != +0.0f ? Float.floatToIntBits(f) : 0);
+        }
+    }
+
+    static class TestFloat {
+        Float f;
+
+        public TestFloat(Float f) {
+            this.f = f;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            TestFloat testFloat = (TestFloat) o;
+
+            if (!f.equals(testFloat.f)) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            return f.hashCode();
+        }
+    }
+
     static class TestString {
         private String string;
 
@@ -279,27 +329,31 @@ public class TestClasses {
     }
 
     static class TestComplex {
-        private long aL;
-        private int aInt;
         private boolean aBoolean;
+        private int aInt;
+        private long aL;
+        private float f;
         private double d;
         private char[] chars;
-        private Long aLong;
-        private Integer integer;
         private Boolean aB;
+        private Integer integer;
+        private Long aLong;
+        private Float aFloat;
         private Double aDouble;
         private String string;
         private UUID uuid;
 
-        public TestComplex(long aL, int aInt, boolean aBoolean, double d, char[] chars, Long aLong, Integer integer, Boolean aB, Double aDouble, String string, UUID uuid) {
-            this.aL = aL;
-            this.aInt = aInt;
+        public TestComplex(boolean aBoolean, int aInt, long aL, float f, double d, char[] chars, Boolean aB, Integer integer, Long aLong, Float aFloat, Double aDouble, String string, UUID uuid) {
             this.aBoolean = aBoolean;
+            this.aInt = aInt;
+            this.aL = aL;
+            this.f = f;
             this.d = d;
             this.chars = chars;
-            this.aLong = aLong;
-            this.integer = integer;
             this.aB = aB;
+            this.integer = integer;
+            this.aLong = aLong;
+            this.aFloat = aFloat;
             this.aDouble = aDouble;
             this.string = string;
             this.uuid = uuid;
@@ -316,8 +370,10 @@ public class TestClasses {
             if (aInt != that.aInt) return false;
             if (aL != that.aL) return false;
             if (Double.compare(that.d, d) != 0) return false;
+            if (Float.compare(that.f, f) != 0) return false;
             if (!aB.equals(that.aB)) return false;
             if (!aDouble.equals(that.aDouble)) return false;
+            if (!aFloat.equals(that.aFloat)) return false;
             if (!aLong.equals(that.aLong)) return false;
             if (!Arrays.equals(chars, that.chars)) return false;
             if (!integer.equals(that.integer)) return false;
@@ -331,15 +387,17 @@ public class TestClasses {
         public int hashCode() {
             int result;
             long temp;
-            result = (int) (aL ^ (aL >>> 32));
+            result = (aBoolean ? 1 : 0);
             result = 31 * result + aInt;
-            result = 31 * result + (aBoolean ? 1 : 0);
+            result = 31 * result + (int) (aL ^ (aL >>> 32));
+            result = 31 * result + (f != +0.0f ? Float.floatToIntBits(f) : 0);
             temp = Double.doubleToLongBits(d);
             result = 31 * result + (int) (temp ^ (temp >>> 32));
             result = 31 * result + Arrays.hashCode(chars);
-            result = 31 * result + aLong.hashCode();
-            result = 31 * result + integer.hashCode();
             result = 31 * result + aB.hashCode();
+            result = 31 * result + integer.hashCode();
+            result = 31 * result + aLong.hashCode();
+            result = 31 * result + aFloat.hashCode();
             result = 31 * result + aDouble.hashCode();
             result = 31 * result + string.hashCode();
             result = 31 * result + uuid.hashCode();
