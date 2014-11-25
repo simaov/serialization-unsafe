@@ -9,6 +9,7 @@ public class SerializerFactory {
 
     private SerializerFactory() {}
 
+    @SuppressWarnings("unchecked")
     public static <T> SerializerUnsafe<T> getSerializer(Class<T> clazz) {
         if (!SERIALIZER_UNSAFE_MAP.containsKey(clazz)) {
             synchronized (SERIALIZER_UNSAFE_MAP) {

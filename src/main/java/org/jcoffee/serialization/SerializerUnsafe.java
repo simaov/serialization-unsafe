@@ -139,16 +139,14 @@ public class SerializerUnsafe<T> implements SerializerUnsafeI<T> {
             switch (declaredFieldsTypes[i]) {
                 case JAVA_BOOLEAN_TYPE:
                     UnsafeMemory.getUnsafe().putBoolean(instance, declaredFieldsOffsets[i], Utils.booleanFromBytes(bytes, offset));
-                    offset += 1;
+                    offset += JAVA_BOOLEAN_SIZE;
                     break;
                 case JAVA_INT_TYPE:
-                    int primInt = Utils.intFromBytes(bytes, offset);
-                    UnsafeMemory.getUnsafe().putInt(instance, declaredFieldsOffsets[i], primInt);
+                    UnsafeMemory.getUnsafe().putInt(instance, declaredFieldsOffsets[i], Utils.intFromBytes(bytes, offset));
                     offset += JAVA_INTEGER_SIZE;
                     break;
                 case JAVA_LONG_TYPE:
-                    long primLong = Utils.longFromBytes(bytes, offset);
-                    UnsafeMemory.getUnsafe().putLong(instance, declaredFieldsOffsets[i], primLong);
+                    UnsafeMemory.getUnsafe().putLong(instance, declaredFieldsOffsets[i], Utils.longFromBytes(bytes, offset));
                     offset += JAVA_LONG_SIZE;
                     break;
                 case JAVA_FLOAT_TYPE:
@@ -160,55 +158,43 @@ public class SerializerUnsafe<T> implements SerializerUnsafeI<T> {
                     offset += JAVA_DOUBLE_SIZE;
                     break;
                 case JAVA_BOOLEAN_OBJECT_TYPE:
-                    Object b = UnsafeMemory.allocateInstance(Boolean.class);
-                    UnsafeMemory.getUnsafe().putBoolean(b, booleanValueFieldOffset, Utils.booleanFromBytes(bytes, offset));
-                    UnsafeMemory.getUnsafe().putObject(instance, declaredFieldsOffsets[i], b);
-                    offset += 1;
+                    UnsafeMemory.getUnsafe().putObject(instance, declaredFieldsOffsets[i], Utils.booleanFromBytes(bytes, offset));
+                    offset += JAVA_BOOLEAN_SIZE;
                     break;
                 case JAVA_INTEGER_OBJECT_TYPE:
-                    Integer aInteger = Utils.intFromBytes(bytes, offset);
-                    UnsafeMemory.getUnsafe().putObject(instance, declaredFieldsOffsets[i], aInteger);
+                    UnsafeMemory.getUnsafe().putObject(instance, declaredFieldsOffsets[i], Utils.intFromBytes(bytes, offset));
                     offset += JAVA_INTEGER_SIZE;
                     break;
                 case JAVA_LONG_OBJECT_TYPE:
-                    Long aLong = Utils.longFromBytes(bytes, offset);
-                    UnsafeMemory.getUnsafe().putObject(instance, declaredFieldsOffsets[i], aLong);
+                    UnsafeMemory.getUnsafe().putObject(instance, declaredFieldsOffsets[i], Utils.longFromBytes(bytes, offset));
                     offset += JAVA_LONG_SIZE;
                     break;
                 case JAVA_FLOAT_OBJECT_TYPE:
-                    Object floatObj = UnsafeMemory.allocateInstance(Float.class);
-                    UnsafeMemory.getUnsafe().putFloat(floatObj, floatValueFieldOffset, Float.intBitsToFloat(Utils.intFromBytes(bytes, offset)));
-                    UnsafeMemory.getUnsafe().putObject(instance, declaredFieldsOffsets[i], floatObj);
+                    UnsafeMemory.getUnsafe().putObject(instance, declaredFieldsOffsets[i], Float.intBitsToFloat(Utils.intFromBytes(bytes, offset)));
                     offset += JAVA_FLOAT_SIZE;
                     break;
                 case JAVA_DOUBLE_OBJECT_TYPE:
-                    Object doubleObj = UnsafeMemory.allocateInstance(Double.class);
-                    UnsafeMemory.getUnsafe().putDouble(doubleObj, doubleValueFieldOffset, Double.longBitsToDouble(Utils.longFromBytes(bytes, offset)));
-                    UnsafeMemory.getUnsafe().putObject(instance, declaredFieldsOffsets[i], doubleObj);
+                    UnsafeMemory.getUnsafe().putObject(instance, declaredFieldsOffsets[i], Double.longBitsToDouble(Utils.longFromBytes(bytes, offset)));
                     offset += JAVA_DOUBLE_SIZE;
                     break;
                 case JAVA_CHAR_ARRAY_TYPE:
-                    int cSize = Utils.intFromBytes(bytes, offset);
-                    char[] chs = UnsafeMemory.getCharArrayFromBytes(bytes, offset, cSize);
-                    UnsafeMemory.getUnsafe().putObject(instance, declaredFieldsOffsets[i], chs);
-                    offset += cSize + JAVA_INTEGER_SIZE;
+                    int charArraySize = Utils.intFromBytes(bytes, offset);
+                    UnsafeMemory.getUnsafe().putObject(instance, declaredFieldsOffsets[i], UnsafeMemory.getCharArrayFromBytes(bytes, offset, charArraySize));
+                    offset += charArraySize + JAVA_INTEGER_SIZE;
                     break;
                 case JAVA_STRING_TYPE:
                     int size = Utils.intFromBytes(bytes, offset);
-                    char[] res = UnsafeMemory.getCharArrayFromBytes(bytes, offset, size);
-                    Object s = UnsafeMemory.allocateInstance(String.class);
-                    UnsafeMemory.getUnsafe().putObject(s, charArrayValueFieldOffset, res);
-                    UnsafeMemory.getUnsafe().putObject(instance, declaredFieldsOffsets[i], s);
+                    Object string = UnsafeMemory.allocateInstance(String.class);
+                    UnsafeMemory.getUnsafe().putObject(string, charArrayValueFieldOffset, UnsafeMemory.getCharArrayFromBytes(bytes, offset, size));
+                    UnsafeMemory.getUnsafe().putObject(instance, declaredFieldsOffsets[i], string);
                     offset += size + JAVA_INTEGER_SIZE;
                     break;
                 case JAVA_UUID_TYPE:
-                    long mostSigBits = Utils.longFromBytes(bytes, offset);
-                    offset += JAVA_LONG_SIZE;
-                    long leastSigBits = Utils.longFromBytes(bytes, offset);
-                    offset += JAVA_LONG_SIZE;
                     Object uuid = UnsafeMemory.allocateInstance(UUID.class);
-                    UnsafeMemory.getUnsafe().putLong(uuid, mostSigBitsFieldOffset, mostSigBits);
-                    UnsafeMemory.getUnsafe().putLong(uuid, leastSigBitsFieldOffset, leastSigBits);
+                    UnsafeMemory.getUnsafe().putLong(uuid, mostSigBitsFieldOffset, Utils.longFromBytes(bytes, offset));
+                    offset += JAVA_LONG_SIZE;
+                    UnsafeMemory.getUnsafe().putLong(uuid, leastSigBitsFieldOffset, Utils.longFromBytes(bytes, offset));
+                    offset += JAVA_LONG_SIZE;
                     UnsafeMemory.getUnsafe().putObject(instance, declaredFieldsOffsets[i], uuid);
                     break;
             }

@@ -1,8 +1,5 @@
 import org.jcoffee.serialization.SerializerUnsafe;
 
-/**
- * Created by sima on 11/3/14.
- */
 public class TestSerializers {
 
     static class TestLongSerializer extends SerializerUnsafe<TestClasses.TestLong> {
