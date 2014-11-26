@@ -47,8 +47,13 @@ public class UnsafeMemory {
         }
     }
 
-    public static Object allocateInstance(Class aClass) throws InstantiationException {
-        return UNSAFE.allocateInstance(aClass);
+    public static Object allocateInstance(Class aClass) {
+        try {
+            return UNSAFE.allocateInstance(aClass);
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public static Object getFieldObject(Object baseObject, long offset) {
@@ -202,7 +207,7 @@ public class UnsafeMemory {
      */
 
 
-    public static byte[] getBytesFromString(Object baseObj, long stringFieldOffset) throws Exception {
+    public static byte[] getBytesFromString(Object baseObj, long stringFieldOffset) {
         if (baseObj == null) {
             return new byte[0];
         }
