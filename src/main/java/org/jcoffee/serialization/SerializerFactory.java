@@ -5,12 +5,12 @@ import java.util.Map;
 
 public class SerializerFactory {
 
-    private static final Map<Class, SerializerUnsafe> SERIALIZER_UNSAFE_MAP = new HashMap<>();
+    private static final Map<Class, SerializerUnsafeI> SERIALIZER_UNSAFE_MAP = new HashMap<>();
 
     private SerializerFactory() {}
 
     @SuppressWarnings("unchecked")
-    public static <T> SerializerUnsafe<T> getSerializer(Class<T> clazz) {
+    public static <T> SerializerUnsafeI<T> getSerializer(Class<T> clazz) {
         if (!SERIALIZER_UNSAFE_MAP.containsKey(clazz)) {
             synchronized (SERIALIZER_UNSAFE_MAP) {
                 if (!SERIALIZER_UNSAFE_MAP.containsKey(clazz)) {

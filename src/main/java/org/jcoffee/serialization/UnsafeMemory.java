@@ -59,8 +59,28 @@ public class UnsafeMemory {
         return UNSAFE.objectFieldOffset(field);
     }
 
-    public static Unsafe getUnsafe() {
-        return UNSAFE;
+    public static void putBoolean(Object instance, long fieldOffset, boolean b) {
+        UNSAFE.putBoolean(instance, fieldOffset, b);
+    }
+
+    public static void putInt(Object instance, long fieldOffset, int i) {
+        UNSAFE.putInt(instance, fieldOffset, i);
+    }
+
+    public static void putLong(Object instance, long fieldOffset, long l) {
+        UNSAFE.putLong(instance, fieldOffset, l);
+    }
+
+    public static void putFloat(Object instance, long fieldOffset, float f) {
+        UNSAFE.putFloat(instance, fieldOffset, f);
+    }
+
+    public static void putDouble(Object instance, long fieldOffset, double d) {
+        UNSAFE.putDouble(instance, fieldOffset, d);
+    }
+
+    public static void putObject(Object instance, long fieldOffset, Object object) {
+        UNSAFE.putObject(instance, fieldOffset, object);
     }
 
     /*
@@ -151,7 +171,7 @@ public class UnsafeMemory {
         int len = chars.length << 1;
         byte[] cb = new byte[len + JAVA_INTEGER_SIZE];
         for (int i = 0; i < 4; i++) {
-            cb[i] = (byte) (len >> ((3 - i) * 8));
+            cb[i] = (byte) (len >> ((3 - i) << 3));
         }
         UNSAFE.copyMemory(chars, baseCharArrayOffset, cb, baseByteArrayOffset + JAVA_INTEGER_SIZE, len);
         return cb;
@@ -168,7 +188,7 @@ public class UnsafeMemory {
         int len = longs.length << 3;
         byte[] lb = new byte[len + JAVA_INTEGER_SIZE];
         for (int i = 0; i < 4; i++) {
-            lb[i] = (byte) (len >> ((3 - i) * 8));
+            lb[i] = (byte) (len >> ((3 - i) << 3));
         }
         UNSAFE.copyMemory(longs, baseLongArrayOffset, lb, baseByteArrayOffset + JAVA_INTEGER_SIZE, len);
         return lb;
@@ -185,7 +205,7 @@ public class UnsafeMemory {
         int len = doubles.length << 3;
         byte[] db = new byte[len + JAVA_INTEGER_SIZE];
         for (int i = 0; i < 4; i++) {
-            db[i] = (byte) (len >> ((3 - i) * 8));
+            db[i] = (byte) (len >> ((3 - i) << 3));
         }
         UNSAFE.copyMemory(doubles, baseDoubleArrayOffset, db, baseByteArrayOffset + JAVA_INTEGER_SIZE, len);
         return db;
@@ -202,7 +222,7 @@ public class UnsafeMemory {
      */
 
 
-    public static byte[] getBytesFromString(Object baseObj, long stringFieldOffset) throws Exception {
+    public static byte[] getBytesFromString(Object baseObj, long stringFieldOffset) {
         if (baseObj == null) {
             return new byte[0];
         }
@@ -221,11 +241,11 @@ public class UnsafeMemory {
         long leastSigBits = UNSAFE.getLong(uuid, leastSigBitsFieldOffset);
 
         for (int i = 0; i < 8; ++i) {
-            b[index++] = (byte) (mostSigBits >> ((7 - i) * 8));
+            b[index++] = (byte) (mostSigBits >> ((7 - i) << 3));
         }
 
         for (int i = 0; i < 8; ++i) {
-            b[index++] = (byte) (leastSigBits >> ((7 - i) * 8));
+            b[index++] = (byte) (leastSigBits >> ((7 - i) << 3));
         }
 
         return b;
