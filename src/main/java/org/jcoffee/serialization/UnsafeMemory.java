@@ -12,36 +12,55 @@ public class UnsafeMemory {
     private static final Unsafe UNSAFE;
     private static final String VALUE_FIELD = "value";
 
-    public static final long booleanValueFieldOffset;
+    public static final long byteValueFieldOffset;
+    public static final long shortValueFieldOffset;
     public static final long intValueFieldOffset;
     public static final long longValueFieldOffset;
     public static final long floatValueFieldOffset;
     public static final long doubleValueFieldOffset;
+    public static final long booleanValueFieldOffset;
+    public static final long charValueFieldOffset;
+
+    public static final long baseByteArrayOffset;
+    public static final long baseShortArrayOffset;
+    public static final long baseIntArrayOffset;
+    public static final long baseLongArrayOffset;
+    public static final long baseFloatArrayOffset;
+    public static final long baseDoubleArrayOffset;
+    public static final long baseBooleanArrayOffset;
+    public static final long baseCharArrayOffset;
+
     public static final long charArrayValueFieldOffset;
     public static final long mostSigBitsFieldOffset;
     public static final long leastSigBitsFieldOffset;
-    public static final long baseByteArrayOffset;
-    public static final long baseCharArrayOffset;
-    public static final long baseLongArrayOffset;
-    public static final long baseDoubleArrayOffset;
 
     static {
         try {
             Field field = Unsafe.class.getDeclaredField("theUnsafe");
             field.setAccessible(true);
             UNSAFE = (Unsafe) field.get(null);
-            booleanValueFieldOffset = UNSAFE.objectFieldOffset(Boolean.class.getDeclaredField(VALUE_FIELD));
+
+            byteValueFieldOffset = UNSAFE.objectFieldOffset(Byte.class.getDeclaredField(VALUE_FIELD));
+            shortValueFieldOffset = UNSAFE.objectFieldOffset(Short.class.getDeclaredField(VALUE_FIELD));
             intValueFieldOffset = UNSAFE.objectFieldOffset(Integer.class.getDeclaredField(VALUE_FIELD));
             longValueFieldOffset = UNSAFE.objectFieldOffset(Long.class.getDeclaredField(VALUE_FIELD));
             floatValueFieldOffset = UNSAFE.objectFieldOffset(Float.class.getDeclaredField(VALUE_FIELD));
             doubleValueFieldOffset = UNSAFE.objectFieldOffset(Double.class.getDeclaredField(VALUE_FIELD));
+            booleanValueFieldOffset = UNSAFE.objectFieldOffset(Boolean.class.getDeclaredField(VALUE_FIELD));
+            charValueFieldOffset = UNSAFE.objectFieldOffset(Character.class.getDeclaredField(VALUE_FIELD));
+
+            baseByteArrayOffset = UNSAFE.arrayBaseOffset(byte[].class);
+            baseShortArrayOffset = UNSAFE.arrayBaseOffset(short[].class);
+            baseIntArrayOffset = UNSAFE.arrayBaseOffset(int[].class);
+            baseLongArrayOffset = UNSAFE.arrayBaseOffset(long[].class);
+            baseFloatArrayOffset = UNSAFE.arrayBaseOffset(float[].class);
+            baseDoubleArrayOffset = UNSAFE.arrayBaseOffset(double[].class);
+            baseBooleanArrayOffset = UNSAFE.arrayBaseOffset(boolean[].class);
+            baseCharArrayOffset = UNSAFE.arrayBaseOffset(char[].class);
+
             charArrayValueFieldOffset = UNSAFE.objectFieldOffset(String.class.getDeclaredField(VALUE_FIELD));
             mostSigBitsFieldOffset = UNSAFE.objectFieldOffset(UUID.class.getDeclaredField("mostSigBits"));
             leastSigBitsFieldOffset = UNSAFE.objectFieldOffset(UUID.class.getDeclaredField("leastSigBits"));
-            baseByteArrayOffset = UNSAFE.arrayBaseOffset(byte[].class);
-            baseCharArrayOffset = UNSAFE.arrayBaseOffset(char[].class);
-            baseLongArrayOffset = UNSAFE.arrayBaseOffset(long[].class);
-            baseDoubleArrayOffset = UNSAFE.arrayBaseOffset(double[].class);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -59,8 +78,12 @@ public class UnsafeMemory {
         return UNSAFE.objectFieldOffset(field);
     }
 
-    public static void putBoolean(Object instance, long fieldOffset, boolean b) {
-        UNSAFE.putBoolean(instance, fieldOffset, b);
+    public static void putByte(Object instance, long fieldOffset, byte b) {
+        UNSAFE.putByte(instance, fieldOffset, b);
+    }
+
+    public static void putShort(Object instance, long fieldOffset, short sh) {
+        UNSAFE.putShort(instance, fieldOffset, sh);
     }
 
     public static void putInt(Object instance, long fieldOffset, int i) {
@@ -79,6 +102,14 @@ public class UnsafeMemory {
         UNSAFE.putDouble(instance, fieldOffset, d);
     }
 
+    public static void putBoolean(Object instance, long fieldOffset, boolean b) {
+        UNSAFE.putBoolean(instance, fieldOffset, b);
+    }
+
+    public static void putChar(Object instance, long fieldOffset, char c) {
+        UNSAFE.putChar(instance, fieldOffset, c);
+    }
+
     public static void putObject(Object instance, long fieldOffset, Object object) {
         UNSAFE.putObject(instance, fieldOffset, object);
     }
@@ -87,11 +118,18 @@ public class UnsafeMemory {
      *  Primitive types
      */
 
-    public static boolean getPrimitiveBoolean(Object baseObject, long fieldOffset) {
+    public static byte getPrimitiveByte(Object baseObject, long fieldOffset) {
         if (baseObject == null) {
-            return false;
+            return 0;
         }
-        return UNSAFE.getBoolean(baseObject, fieldOffset);
+        return UNSAFE.getByte(baseObject, fieldOffset);
+    }
+
+    public static short getPrimitiveShort(Object baseObject, long fieldOffset) {
+        if (baseObject == null) {
+            return 0;
+        }
+        return UNSAFE.getShort(baseObject, fieldOffset);
     }
 
     public static int getPrimitiveInt(Object baseObj, long intFieldOffset) {
@@ -122,43 +160,54 @@ public class UnsafeMemory {
         return UNSAFE.getDouble(baseObj, doubleFieldOffset);
     }
 
+    public static boolean getPrimitiveBoolean(Object baseObject, long fieldOffset) {
+        if (baseObject == null) {
+            return false;
+        }
+        return UNSAFE.getBoolean(baseObject, fieldOffset);
+    }
+
+    public static char getPrimitiveChar(Object baseObject, long fieldOffset) {
+        if (baseObject == null) {
+            return 0;
+        }
+        return UNSAFE.getChar(baseObject, fieldOffset);
+    }
+
     /*
      *  Primitive wrapper types
      */
 
-    public static boolean getBooleanFieldValue(Object baseObj, long booleanFieldOffset) {
-        if (baseObj == null) {
-            return false;
-        }
-        return UNSAFE.getBoolean(getFieldObject(baseObj, booleanFieldOffset), booleanValueFieldOffset);
+    public static byte getByteFieldValue(Object baseObj, long byteFieldOffset) {
+        return getPrimitiveByte(getFieldObject(baseObj, byteFieldOffset), byteValueFieldOffset);
+    }
+
+    public static short getShortFieldValue(Object baseObj, long shortFieldOffset) {
+        return getPrimitiveShort(getFieldObject(baseObj, shortFieldOffset), shortValueFieldOffset);
     }
 
     public static int getIntegerFieldValue(Object baseObj, long integerFieldOffset) {
-        if (baseObj == null) {
-            return 0;
-        }
-        return UNSAFE.getInt(getFieldObject(baseObj, integerFieldOffset), intValueFieldOffset);
+        return getPrimitiveInt(getFieldObject(baseObj, integerFieldOffset), intValueFieldOffset);
     }
 
     public static long getLongFieldValue(Object baseObj, long longFieldOffset) {
-        if (baseObj == null) {
-            return 0;
-        }
-        return UNSAFE.getLong(getFieldObject(baseObj, longFieldOffset), longValueFieldOffset);
+        return getPrimitiveLong(getFieldObject(baseObj, longFieldOffset), longValueFieldOffset);
     }
 
     public static float getFloatFieldValue(Object baseObj, long floatFieldOffset) {
-        if (baseObj == null) {
-            return 0;
-        }
-        return UNSAFE.getFloat(getFieldObject(baseObj, floatFieldOffset), floatValueFieldOffset);
+        return getPrimitiveFloat(getFieldObject(baseObj, floatFieldOffset), floatValueFieldOffset);
     }
 
     public static double getDoubleFieldValue(Object baseObj, long doubleFieldOffset) {
-        if (baseObj == null) {
-            return 0;
-        }
-        return UNSAFE.getDouble(getFieldObject(baseObj, doubleFieldOffset), doubleValueFieldOffset);
+        return getPrimitiveDouble(getFieldObject(baseObj, doubleFieldOffset), doubleValueFieldOffset);
+    }
+
+    public static boolean getBooleanFieldValue(Object baseObj, long booleanFieldOffset) {
+        return getPrimitiveBoolean(getFieldObject(baseObj, booleanFieldOffset), booleanValueFieldOffset);
+    }
+
+    public static char getCharFieldValue(Object baseObj, long charFieldOffset) {
+        return getPrimitiveChar(getFieldObject(baseObj, charFieldOffset), charValueFieldOffset);
     }
 
     /*

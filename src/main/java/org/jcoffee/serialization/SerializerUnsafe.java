@@ -23,9 +23,12 @@ public class SerializerUnsafe<T> implements SerializerUnsafeI<T> {
 
         for (int i = 0; i < declaredFields.length; i++) {
 
-            if (declaredFields[i].getType().getName().equals(boolean.class.getName())) {
-                declaredFieldsTypes[i] = JAVA_BOOLEAN_TYPE;
-                defaultSize += JAVA_BOOLEAN_SIZE;
+            if (declaredFields[i].getType().getName().equals(byte.class.getName())) {
+                declaredFieldsTypes[i] = JAVA_BYTE_TYPE;
+                defaultSize += JAVA_BYTE_SIZE;
+            } else if (declaredFields[i].getType().getName().equals(short.class.getName())) {
+                declaredFieldsTypes[i] = JAVA_SHORT_TYPE;
+                defaultSize += JAVA_SHORT_SIZE;
             } else if (declaredFields[i].getType().getName().equals(int.class.getName())) {
                 declaredFieldsTypes[i] = JAVA_INT_TYPE;
                 defaultSize += JAVA_INTEGER_SIZE;
@@ -38,9 +41,18 @@ public class SerializerUnsafe<T> implements SerializerUnsafeI<T> {
             } else if (declaredFields[i].getType().getName().equals(double.class.getName())) {
                 declaredFieldsTypes[i] = JAVA_DOUBLE_TYPE;
                 defaultSize += JAVA_DOUBLE_SIZE;
-            } else if (declaredFields[i].getType().getName().equals(Boolean.class.getName())) {
-                declaredFieldsTypes[i] = JAVA_BOOLEAN_OBJECT_TYPE;
+            } else if (declaredFields[i].getType().getName().equals(boolean.class.getName())) {
+                declaredFieldsTypes[i] = JAVA_BOOLEAN_TYPE;
                 defaultSize += JAVA_BOOLEAN_SIZE;
+            } else if (declaredFields[i].getType().getName().equals(char.class.getName())) {
+                declaredFieldsTypes[i] = JAVA_CHAR_TYPE;
+                defaultSize += JAVA_CHARACTER_SIZE;
+            } else if (declaredFields[i].getType().getName().equals(Byte.class.getName())) {
+                declaredFieldsTypes[i] = JAVA_BYTE_OBJECT_TYPE;
+                defaultSize += JAVA_BYTE_SIZE;
+            } else if (declaredFields[i].getType().getName().equals(Short.class.getName())) {
+                declaredFieldsTypes[i] = JAVA_SHORT_OBJECT_TYPE;
+                defaultSize += JAVA_SHORT_SIZE;
             } else if (declaredFields[i].getType().getName().equals(Integer.class.getName())) {
                 declaredFieldsTypes[i] = JAVA_INTEGER_OBJECT_TYPE;
                 defaultSize += JAVA_INTEGER_SIZE;
@@ -53,12 +65,28 @@ public class SerializerUnsafe<T> implements SerializerUnsafeI<T> {
             } else if (declaredFields[i].getType().getName().equals(Double.class.getName())) {
                 declaredFieldsTypes[i] = JAVA_DOUBLE_OBJECT_TYPE;
                 defaultSize += JAVA_DOUBLE_SIZE;
-            } else if (declaredFields[i].getType().getName().equals(char[].class.getName())) {
-                declaredFieldsTypes[i] = JAVA_CHAR_ARRAY_TYPE;
+            } else if (declaredFields[i].getType().getName().equals(Boolean.class.getName())) {
+                declaredFieldsTypes[i] = JAVA_BOOLEAN_OBJECT_TYPE;
+                defaultSize += JAVA_BOOLEAN_SIZE;
+            } else if (declaredFields[i].getType().getName().equals(Character.class.getName())) {
+                declaredFieldsTypes[i] = JAVA_CHARACTER_OBJECT_TYPE;
+                defaultSize += JAVA_CHARACTER_SIZE;
+            } else if (declaredFields[i].getType().getName().equals(byte[].class.getName())) {
+                declaredFieldsTypes[i] = JAVA_BYTE_ARRAY_TYPE;
+            } else if (declaredFields[i].getType().getName().equals(short[].class.getName())) {
+                declaredFieldsTypes[i] = JAVA_SHORT_ARRAY_TYPE;
+            } else if (declaredFields[i].getType().getName().equals(int[].class.getName())) {
+                declaredFieldsTypes[i] = JAVA_INT_ARRAY_TYPE;
             } else if (declaredFields[i].getType().getName().equals(long[].class.getName())) {
                 declaredFieldsTypes[i] = JAVA_LONG_ARRAY_TYPE;
+            } else if (declaredFields[i].getType().getName().equals(float[].class.getName())) {
+                declaredFieldsTypes[i] = JAVA_FLOAT_ARRAY_TYPE;
             } else if (declaredFields[i].getType().getName().equals(double[].class.getName())) {
                 declaredFieldsTypes[i] = JAVA_DOUBLE_ARRAY_TYPE;
+            } else if (declaredFields[i].getType().getName().equals(boolean[].class.getName())) {
+                declaredFieldsTypes[i] = JAVA_BOOLEAN_ARRAY_TYPE;
+            } else if (declaredFields[i].getType().getName().equals(char[].class.getName())) {
+                declaredFieldsTypes[i] = JAVA_CHAR_ARRAY_TYPE;
             } else if (declaredFields[i].getType().getName().equals(String.class.getName())) {
                 declaredFieldsTypes[i] = JAVA_STRING_TYPE;
             } else if (declaredFields[i].getType().getName().equals(UUID.class.getName())) {
@@ -78,8 +106,11 @@ public class SerializerUnsafe<T> implements SerializerUnsafeI<T> {
         for (int i = 0; i < declaredFields.length; i++) {
 
             switch (declaredFieldsTypes[i]) {
-                case JAVA_BOOLEAN_TYPE:
-                    declaredFieldsValues[i] = Utils.byteFromBoolean(UnsafeMemory.getPrimitiveBoolean(obj, declaredFieldsOffsets[i]));
+                case JAVA_BYTE_TYPE:
+                    declaredFieldsValues[i] = new byte[]{UnsafeMemory.getPrimitiveByte(obj, declaredFieldsOffsets[i])};
+                    break;
+                case JAVA_SHORT_TYPE:
+                    declaredFieldsValues[i] = Utils.bytesFromShort(UnsafeMemory.getPrimitiveShort(obj, declaredFieldsOffsets[i]));
                     break;
                 case JAVA_INT_TYPE:
                     declaredFieldsValues[i] = Utils.bytesFromInt(UnsafeMemory.getPrimitiveInt(obj, declaredFieldsOffsets[i]));
@@ -93,8 +124,17 @@ public class SerializerUnsafe<T> implements SerializerUnsafeI<T> {
                 case JAVA_DOUBLE_TYPE:
                     declaredFieldsValues[i] = Utils.bytesFromLong(Double.doubleToRawLongBits(UnsafeMemory.getPrimitiveDouble(obj, declaredFieldsOffsets[i])));
                     break;
-                case JAVA_BOOLEAN_OBJECT_TYPE:
-                    declaredFieldsValues[i] = Utils.byteFromBoolean(UnsafeMemory.getBooleanFieldValue(obj, declaredFieldsOffsets[i]));
+                case JAVA_BOOLEAN_TYPE:
+                    declaredFieldsValues[i] = Utils.byteFromBoolean(UnsafeMemory.getPrimitiveBoolean(obj, declaredFieldsOffsets[i]));
+                    break;
+                case JAVA_CHAR_TYPE:
+                    declaredFieldsValues[i] = Utils.bytesFromChar(UnsafeMemory.getPrimitiveChar(obj, declaredFieldsOffsets[i]));
+                    break;
+                case JAVA_BYTE_OBJECT_TYPE:
+                    declaredFieldsValues[i] = new byte[]{UnsafeMemory.getByteFieldValue(obj, declaredFieldsOffsets[i])};
+                    break;
+                case JAVA_SHORT_OBJECT_TYPE:
+                    declaredFieldsValues[i] = Utils.bytesFromShort(UnsafeMemory.getShortFieldValue(obj, declaredFieldsOffsets[i]));
                     break;
                 case JAVA_INTEGER_OBJECT_TYPE:
                     declaredFieldsValues[i] = Utils.bytesFromInt(UnsafeMemory.getIntegerFieldValue(obj, declaredFieldsOffsets[i]));
@@ -108,10 +148,11 @@ public class SerializerUnsafe<T> implements SerializerUnsafeI<T> {
                 case JAVA_DOUBLE_OBJECT_TYPE:
                     declaredFieldsValues[i] = Utils.bytesFromLong(Double.doubleToRawLongBits(UnsafeMemory.getDoubleFieldValue(obj, declaredFieldsOffsets[i])));
                     break;
-                case JAVA_CHAR_ARRAY_TYPE:
-                    byte[] bytes = UnsafeMemory.getBytesFromCharArray(obj, declaredFieldsOffsets[i]);
-                    declaredFieldsValues[i] = bytes;
-                    bufferSize += bytes.length;
+                case JAVA_BOOLEAN_OBJECT_TYPE:
+                    declaredFieldsValues[i] = Utils.byteFromBoolean(UnsafeMemory.getBooleanFieldValue(obj, declaredFieldsOffsets[i]));
+                    break;
+                case JAVA_CHARACTER_OBJECT_TYPE:
+                    declaredFieldsValues[i] = Utils.bytesFromChar(UnsafeMemory.getCharFieldValue(obj, declaredFieldsOffsets[i]));
                     break;
                 case JAVA_LONG_ARRAY_TYPE:
                     byte[] longBytes = UnsafeMemory.getBytesFromLongArray(obj, declaredFieldsOffsets[i]);
@@ -122,6 +163,11 @@ public class SerializerUnsafe<T> implements SerializerUnsafeI<T> {
                     byte[] doubleBytes = UnsafeMemory.getBytesFromDoubleArray(obj, declaredFieldsOffsets[i]);
                     declaredFieldsValues[i] = doubleBytes;
                     bufferSize += doubleBytes.length;
+                    break;
+                case JAVA_CHAR_ARRAY_TYPE:
+                    byte[] bytes = UnsafeMemory.getBytesFromCharArray(obj, declaredFieldsOffsets[i]);
+                    declaredFieldsValues[i] = bytes;
+                    bufferSize += bytes.length;
                     break;
                 case JAVA_STRING_TYPE:
                     byte[] b = UnsafeMemory.getBytesFromString(obj, declaredFieldsOffsets[i]);
@@ -151,9 +197,13 @@ public class SerializerUnsafe<T> implements SerializerUnsafeI<T> {
         Object instance = UnsafeMemory.allocateInstance(tClass);
         for (int i = 0; i < declaredFields.length; i++) {
             switch (declaredFieldsTypes[i]) {
-                case JAVA_BOOLEAN_TYPE:
-                    UnsafeMemory.putBoolean(instance, declaredFieldsOffsets[i], Utils.booleanFromBytes(bytes, offset));
-                    offset += JAVA_BOOLEAN_SIZE;
+                case JAVA_BYTE_TYPE:
+                    UnsafeMemory.putByte(instance, declaredFieldsOffsets[i], bytes[offset]);
+                    offset += JAVA_BYTE_SIZE;
+                    break;
+                case JAVA_SHORT_TYPE:
+                    UnsafeMemory.putShort(instance, declaredFieldsOffsets[i], Utils.shortFromBytes(bytes, offset));
+                    offset += JAVA_SHORT_SIZE;
                     break;
                 case JAVA_INT_TYPE:
                     UnsafeMemory.putInt(instance, declaredFieldsOffsets[i], Utils.intFromBytes(bytes, offset));
@@ -171,9 +221,21 @@ public class SerializerUnsafe<T> implements SerializerUnsafeI<T> {
                     UnsafeMemory.putDouble(instance, declaredFieldsOffsets[i], Double.longBitsToDouble(Utils.longFromBytes(bytes, offset)));
                     offset += JAVA_DOUBLE_SIZE;
                     break;
-                case JAVA_BOOLEAN_OBJECT_TYPE:
-                    UnsafeMemory.putObject(instance, declaredFieldsOffsets[i], Utils.booleanFromBytes(bytes, offset));
+                case JAVA_BOOLEAN_TYPE:
+                    UnsafeMemory.putBoolean(instance, declaredFieldsOffsets[i], Utils.booleanFromBytes(bytes, offset));
                     offset += JAVA_BOOLEAN_SIZE;
+                    break;
+                case JAVA_CHAR_TYPE:
+                    UnsafeMemory.putChar(instance, declaredFieldsOffsets[i], Utils.charFromBytes(bytes, offset));
+                    offset += JAVA_BOOLEAN_SIZE;
+                    break;
+                case JAVA_BYTE_OBJECT_TYPE:
+                    UnsafeMemory.putObject(instance, declaredFieldsOffsets[i], bytes[offset]);
+                    offset += JAVA_BYTE_SIZE;
+                    break;
+                case JAVA_SHORT_OBJECT_TYPE:
+                    UnsafeMemory.putObject(instance, declaredFieldsOffsets[i], Utils.shortFromBytes(bytes, offset));
+                    offset += JAVA_SHORT_SIZE;
                     break;
                 case JAVA_INTEGER_OBJECT_TYPE:
                     UnsafeMemory.putObject(instance, declaredFieldsOffsets[i], Utils.intFromBytes(bytes, offset));
@@ -191,10 +253,13 @@ public class SerializerUnsafe<T> implements SerializerUnsafeI<T> {
                     UnsafeMemory.putObject(instance, declaredFieldsOffsets[i], Double.longBitsToDouble(Utils.longFromBytes(bytes, offset)));
                     offset += JAVA_DOUBLE_SIZE;
                     break;
-                case JAVA_CHAR_ARRAY_TYPE:
-                    int charArraySize = Utils.intFromBytes(bytes, offset);
-                    UnsafeMemory.putObject(instance, declaredFieldsOffsets[i], UnsafeMemory.getCharArrayFromBytes(bytes, offset, charArraySize));
-                    offset += charArraySize + JAVA_INTEGER_SIZE;
+                case JAVA_BOOLEAN_OBJECT_TYPE:
+                    UnsafeMemory.putObject(instance, declaredFieldsOffsets[i], Utils.booleanFromBytes(bytes, offset));
+                    offset += JAVA_BOOLEAN_SIZE;
+                    break;
+                case JAVA_CHARACTER_OBJECT_TYPE:
+                    UnsafeMemory.putObject(instance, declaredFieldsOffsets[i], Utils.charFromBytes(bytes, offset));
+                    offset += JAVA_CHARACTER_SIZE;
                     break;
                 case JAVA_LONG_ARRAY_TYPE:
                     int longArraySize = Utils.intFromBytes(bytes, offset);
@@ -205,6 +270,11 @@ public class SerializerUnsafe<T> implements SerializerUnsafeI<T> {
                     int doubleArraySize = Utils.intFromBytes(bytes, offset);
                     UnsafeMemory.putObject(instance, declaredFieldsOffsets[i], UnsafeMemory.getDoubleArrayFromBytes(bytes, offset, doubleArraySize));
                     offset += doubleArraySize + JAVA_INTEGER_SIZE;
+                    break;
+                case JAVA_CHAR_ARRAY_TYPE:
+                    int charArraySize = Utils.intFromBytes(bytes, offset);
+                    UnsafeMemory.putObject(instance, declaredFieldsOffsets[i], UnsafeMemory.getCharArrayFromBytes(bytes, offset, charArraySize));
+                    offset += charArraySize + JAVA_INTEGER_SIZE;
                     break;
                 case JAVA_STRING_TYPE:
                     int size = Utils.intFromBytes(bytes, offset);
