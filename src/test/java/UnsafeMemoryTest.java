@@ -1,7 +1,5 @@
-import junit.framework.TestCase;
 import org.jcoffee.serialization.SerializerFactory;
 import org.jcoffee.serialization.SerializerUnsafe;
-import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -10,7 +8,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-public class UnsafeMemoryTest extends TestCase {
+import static org.junit.Assert.assertEquals;
+
+public class UnsafeMemoryTest {
 
     private static Random random = new Random(System.currentTimeMillis());
 
@@ -21,7 +21,7 @@ public class UnsafeMemoryTest extends TestCase {
         TestSerializers.TestStringSerializer testStringSerializer = new TestSerializers.TestStringSerializer(TestClasses.TestString.class);
         byte[] serialize = testStringSerializer.serialize(testString);
         TestClasses.TestString deserialize = testStringSerializer.deserialize(serialize);
-        Assert.assertEquals(testString, deserialize);
+        assertEquals(testString, deserialize);
     }
 
     @Test
