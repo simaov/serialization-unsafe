@@ -114,6 +114,10 @@ public class UnsafeMemory {
         UNSAFE.putObject(instance, fieldOffset, object);
     }
 
+    public static void copyMemory(Object src, long srcOffset, Object dst, long dstOffset, long size) {
+        UNSAFE.copyMemory(src, srcOffset, dst, dstOffset, size);
+    }
+
     /*
      *  Primitive types
      */
@@ -220,7 +224,7 @@ public class UnsafeMemory {
         int len = chars.length << 1;
         byte[] cb = new byte[len + JAVA_INTEGER_SIZE];
         for (int i = 0; i < 4; i++) {
-            cb[i] = (byte) (len >> ((3 - i) << 3));
+            cb[i] = (byte) (len >> (i << 3));
         }
         UNSAFE.copyMemory(chars, baseCharArrayOffset, cb, baseByteArrayOffset + JAVA_INTEGER_SIZE, len);
         return cb;
@@ -237,7 +241,7 @@ public class UnsafeMemory {
         int len = longs.length << 3;
         byte[] lb = new byte[len + JAVA_INTEGER_SIZE];
         for (int i = 0; i < 4; i++) {
-            lb[i] = (byte) (len >> ((3 - i) << 3));
+            lb[i] = (byte) (len >> (i << 3));
         }
         UNSAFE.copyMemory(longs, baseLongArrayOffset, lb, baseByteArrayOffset + JAVA_INTEGER_SIZE, len);
         return lb;
@@ -254,7 +258,7 @@ public class UnsafeMemory {
         int len = doubles.length << 3;
         byte[] db = new byte[len + JAVA_INTEGER_SIZE];
         for (int i = 0; i < 4; i++) {
-            db[i] = (byte) (len >> ((3 - i) << 3));
+            db[i] = (byte) (len >> (i << 3));
         }
         UNSAFE.copyMemory(doubles, baseDoubleArrayOffset, db, baseByteArrayOffset + JAVA_INTEGER_SIZE, len);
         return db;
@@ -290,11 +294,11 @@ public class UnsafeMemory {
         long leastSigBits = UNSAFE.getLong(uuid, leastSigBitsFieldOffset);
 
         for (int i = 0; i < 8; ++i) {
-            b[index++] = (byte) (mostSigBits >> ((7 - i) << 3));
+            b[index++] = (byte) (mostSigBits >> (i << 3));
         }
 
         for (int i = 0; i < 8; ++i) {
-            b[index++] = (byte) (leastSigBits >> ((7 - i) << 3));
+            b[index++] = (byte) (leastSigBits >> (i << 3));
         }
 
         return b;

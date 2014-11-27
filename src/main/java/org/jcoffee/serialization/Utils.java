@@ -1,86 +1,53 @@
 package org.jcoffee.serialization;
 
+import static org.jcoffee.serialization.JavaTypes.*;
+import static org.jcoffee.serialization.UnsafeMemory.*;
+
 public class Utils {
 
     public static byte[] bytesFromShort(short sh) {
         int index = 0;
-        byte[] buffer = new byte[JavaTypes.JAVA_SHORT_SIZE];
+        byte[] buffer = new byte[JAVA_SHORT_SIZE];
         for (int i = 0; i < buffer.length; i++) {
-            buffer[index++] = (byte) (sh >> ((1 - i) << 3));
+            buffer[index++] = (byte) (sh >> (i << 3));
         }
         return buffer;
     }
 
     public static short shortFromBytes(byte[] bytes, int offset) {
-        int result = 0;
-        for (int i = offset; i < 2 + offset; i++) {
-            byte b = bytes[i];
-            if (b < 0) {
-                b &= ~(1 << 7);
-                result = result << 1;
-                result += 1;
-                result = result << 7;
-                result += b;
-            } else {
-                result = result << 8;
-                result += b;
-            }
-        }
-        return (short) result;
+        short[] shorts = new short[1];
+        UnsafeMemory.copyMemory(bytes, offset + baseByteArrayOffset, shorts, baseShortArrayOffset, JAVA_SHORT_SIZE);
+        return shorts[0];
     }
 
     public static byte[] bytesFromInt(int k) {
         int index = 0;
-        byte[] buffer = new byte[4];
+        byte[] buffer = new byte[JAVA_INTEGER_SIZE];
         for (int i = 0; i < buffer.length; i++) {
-            buffer[index++] = (byte) (k >> ((3 - i) << 3));
+            buffer[index++] = (byte) (k >> (i << 3));
         }
         return buffer;
     }
 
     public static int intFromBytes(byte[] bytes, int offset) {
-        int result = 0;
-        for (int i = offset; i < 4 + offset; i++) {
-            byte b = bytes[i];
-            if (b < 0) {
-                b &= ~(1 << 7);
-                result = result << 1;
-                result += 1;
-                result = result << 7;
-                result += b;
-            } else {
-                result = result << 8;
-                result += b;
-            }
-        }
-        return result;
+        int[] ints = new int[1];
+        UnsafeMemory.copyMemory(bytes, offset + baseByteArrayOffset, ints, baseIntArrayOffset, JAVA_INTEGER_SIZE);
+        return ints[0];
     }
 
     public static byte[] bytesFromLong(long l) {
         int index = 0;
-        byte[] buffer = new byte[8];
+        byte[] buffer = new byte[JAVA_LONG_SIZE];
         for (int i = 0; i < buffer.length; i++) {
-            buffer[index++] = (byte) (l >> ((7 - i) << 3));
+            buffer[index++] = (byte) (l >> (i << 3));
         }
         return buffer;
     }
 
     public static long longFromBytes(byte[] bytes, int offset) {
-        long result = 0;
-        for (int i = offset; i < 8 + offset; i++) {
-            byte b = bytes[i];
-            if (b < 0) {
-                b &= ~(1 << 7);
-                result = result << 1;
-                result += 1;
-                result = result << 7;
-                result += b;
-            } else {
-                result = result << 8;
-                result += b;
-            }
-        }
-        return result;
+        long[] l = new long[1];
+        UnsafeMemory.copyMemory(bytes, offset + baseByteArrayOffset, l, baseLongArrayOffset, JAVA_LONG_SIZE);
+        return l[0];
     }
 
     public static byte[] byteFromBoolean(boolean b) {
@@ -93,28 +60,16 @@ public class Utils {
     }
 
     public static byte[] bytesFromChar(char c) {
-        byte[] buffer = new byte[JavaTypes.JAVA_CHARACTER_SIZE];
-        buffer[0] = (byte) (((int) c & 0xFF00) >> 8);
-        buffer[1] = (byte) (((int) c & 0xFF));
+        byte[] buffer = new byte[JAVA_CHARACTER_SIZE];
+        buffer[0] = (byte) (((int) c & 0xFF));
+        buffer[1] = (byte) (((int) c & 0xFF00) >> 8);
         return buffer;
     }
 
 
     public static char charFromBytes(byte[] bytes, int offset) {
-        int result = 0;
-        for (int i = offset; i < 2 + offset; i++) {
-            byte b = bytes[i];
-            if (b < 0) {
-                b &= ~(1 << 7);
-                result = result << 1;
-                result += 1;
-                result = result << 7;
-                result += b;
-            } else {
-                result = result << 8;
-                result += b;
-            }
-        }
-        return (char)result;
+        char[] chars = new char[1];
+        UnsafeMemory.copyMemory(bytes, offset + baseByteArrayOffset, chars, baseCharArrayOffset, JAVA_CHARACTER_SIZE);
+        return chars[0];
     }
 }

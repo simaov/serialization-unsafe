@@ -87,7 +87,7 @@ public class UnsafeMemoryTest {
 
     @Test
     public void testCharPrimSerialization() throws Exception {
-        char c = (char) random.nextInt(65535);
+        char c = (char) random.nextInt(Character.MAX_VALUE);
         TestClasses.TestCharPrim testCharPrim = new TestClasses.TestCharPrim(c);
         SerializerUnsafeI<TestClasses.TestCharPrim> testCharPrimSerializer = SerializerFactory.getSerializer(TestClasses.TestCharPrim.class);
         byte[] serialize = testCharPrimSerializer.serialize(testCharPrim);
@@ -170,7 +170,7 @@ public class UnsafeMemoryTest {
 
     @Test
     public void testCharacterSerialization() throws Exception {
-        Character c = (char) random.nextInt(65535);
+        Character c = (char) random.nextInt(Character.MAX_VALUE);
         TestClasses.TestCharacter testCharacter = new TestClasses.TestCharacter(c);
         SerializerUnsafeI<TestClasses.TestCharacter> testCharacterSerializer = SerializerFactory.getSerializer(TestClasses.TestCharacter.class);
         byte[] serialize = testCharacterSerializer.serialize(testCharacter);
