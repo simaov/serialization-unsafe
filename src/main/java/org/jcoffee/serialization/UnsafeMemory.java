@@ -5,7 +5,7 @@ import sun.misc.Unsafe;
 import java.lang.reflect.Field;
 import java.util.UUID;
 
-import static org.jcoffee.serialization.JavaTypes.JAVA_INTEGER_SIZE;
+import static org.jcoffee.serialization.JavaTypes.*;
 
 public class UnsafeMemory {
 
@@ -122,6 +122,12 @@ public class UnsafeMemory {
      *  Primitive types
      */
 
+    public static byte[] getPrimitiveInBytes(Object baseObject, long fieldOffset, int typeSize) {
+        byte[] bytes = new byte[typeSize];
+        UNSAFE.copyMemory(baseObject, fieldOffset, bytes, baseByteArrayOffset, typeSize);
+        return bytes;
+    }
+
     public static byte getPrimitiveByte(Object baseObject, long fieldOffset) {
         if (baseObject == null) {
             return 0;
@@ -190,28 +196,56 @@ public class UnsafeMemory {
         return getPrimitiveShort(getFieldObject(baseObj, shortFieldOffset), shortValueFieldOffset);
     }
 
+    public static byte[] getShortFieldValueInBytes(Object baseObj, long shortFieldOffset) {
+        return getPrimitiveInBytes(getFieldObject(baseObj, shortFieldOffset), shortValueFieldOffset, JAVA_SHORT_SIZE);
+    }
+
     public static int getIntegerFieldValue(Object baseObj, long integerFieldOffset) {
         return getPrimitiveInt(getFieldObject(baseObj, integerFieldOffset), intValueFieldOffset);
+    }
+
+    public static byte[] getIntegerFieldValueInBytes(Object baseObj, long integerFieldOffset) {
+        return getPrimitiveInBytes(getFieldObject(baseObj, integerFieldOffset), intValueFieldOffset, JAVA_INTEGER_SIZE);
     }
 
     public static long getLongFieldValue(Object baseObj, long longFieldOffset) {
         return getPrimitiveLong(getFieldObject(baseObj, longFieldOffset), longValueFieldOffset);
     }
 
+    public static byte[] getLongFieldValueInBytes(Object baseObj, long longFieldOffset) {
+        return getPrimitiveInBytes(getFieldObject(baseObj, longFieldOffset), longValueFieldOffset, JAVA_LONG_SIZE);
+    }
+
     public static float getFloatFieldValue(Object baseObj, long floatFieldOffset) {
         return getPrimitiveFloat(getFieldObject(baseObj, floatFieldOffset), floatValueFieldOffset);
+    }
+
+    public static byte[] getFloatFieldValueInBytes(Object baseObj, long floatFieldOffset) {
+        return getPrimitiveInBytes(getFieldObject(baseObj, floatFieldOffset), floatValueFieldOffset, JAVA_FLOAT_SIZE);
     }
 
     public static double getDoubleFieldValue(Object baseObj, long doubleFieldOffset) {
         return getPrimitiveDouble(getFieldObject(baseObj, doubleFieldOffset), doubleValueFieldOffset);
     }
 
+    public static byte[] getDoubleFieldValueInBytes(Object baseObj, long doubleFieldOffset) {
+        return getPrimitiveInBytes(getFieldObject(baseObj, doubleFieldOffset), doubleValueFieldOffset, JAVA_DOUBLE_SIZE);
+    }
+
     public static boolean getBooleanFieldValue(Object baseObj, long booleanFieldOffset) {
         return getPrimitiveBoolean(getFieldObject(baseObj, booleanFieldOffset), booleanValueFieldOffset);
     }
 
+    public static byte[] getBooleanFieldValueInBytes(Object baseObj, long booleanFieldOffset) {
+        return getPrimitiveInBytes(getFieldObject(baseObj, booleanFieldOffset), booleanValueFieldOffset, JAVA_BOOLEAN_SIZE);
+    }
+
     public static char getCharFieldValue(Object baseObj, long charFieldOffset) {
         return getPrimitiveChar(getFieldObject(baseObj, charFieldOffset), charValueFieldOffset);
+    }
+
+    public static byte[] getCharFieldValueInBytes(Object baseObj, long charFieldOffset) {
+        return getPrimitiveInBytes(getFieldObject(baseObj, charFieldOffset), charValueFieldOffset, JAVA_CHARACTER_SIZE);
     }
 
     /*
