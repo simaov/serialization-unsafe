@@ -3,11 +3,11 @@ import java.util.UUID;
 
 public class TestClasses {
 
-    static class TestLongPrim {
-        long l;
+    static class TestBytePrim {
+        private byte b;
 
-        public TestLongPrim(long l) {
-            this.l = l;
+        public TestBytePrim(byte b) {
+            this.b = b;
         }
 
         @Override
@@ -15,23 +15,24 @@ public class TestClasses {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
 
-            TestLongPrim that = (TestLongPrim) o;
+            TestBytePrim bytePrim = (TestBytePrim) o;
 
-            if (l != that.l) return false;
+            if (b != bytePrim.b) return false;
 
             return true;
         }
 
         @Override
         public int hashCode() {
-            return (int) (l ^ (l >>> 32));
+            return (int) b;
         }
     }
 
-    static class TestLong {
-        private Long aLong;
-        public TestLong(Long aLong) {
-            this.aLong = aLong;
+    static class TestShortPrim {
+        private short sh;
+
+        public TestShortPrim(short sh) {
+            this.sh = sh;
         }
 
         @Override
@@ -39,41 +40,16 @@ public class TestClasses {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
 
-            TestLong testLong = (TestLong) o;
+            TestShortPrim shortPrim = (TestShortPrim) o;
 
-            if (!aLong.equals(testLong.aLong)) return false;
-
-            return true;
-        }
-
-        @Override
-        public int hashCode() {
-            return aLong.hashCode();
-        }
-    }
-
-    static class TestInteger {
-        private Integer aInteger;
-
-        public TestInteger(Integer aInteger) {
-            this.aInteger = aInteger;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-
-            TestInteger that = (TestInteger) o;
-
-            if (!aInteger.equals(that.aInteger)) return false;
+            if (sh != shortPrim.sh) return false;
 
             return true;
         }
 
         @Override
         public int hashCode() {
-            return aInteger.hashCode();
+            return (int) sh;
         }
     }
 
@@ -102,11 +78,11 @@ public class TestClasses {
         }
     }
 
-    static class TestBoolean {
-        Boolean b;
+    static class TestLongPrim {
+        long l;
 
-        public TestBoolean(Boolean b) {
-            this.b = b;
+        public TestLongPrim(long l) {
+            this.l = l;
         }
 
         @Override
@@ -114,24 +90,24 @@ public class TestClasses {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
 
-            TestBoolean that = (TestBoolean) o;
+            TestLongPrim that = (TestLongPrim) o;
 
-            if (!b.equals(that.b)) return false;
+            if (l != that.l) return false;
 
             return true;
         }
 
         @Override
         public int hashCode() {
-            return b.hashCode();
+            return (int) (l ^ (l >>> 32));
         }
     }
 
-    static class TestBooleanPrim {
-        boolean b;
+    static class TestFloatPrim {
+        private float f;
 
-        public TestBooleanPrim(boolean b) {
-            this.b = b;
+        public TestFloatPrim(float f) {
+            this.f = f;
         }
 
         @Override
@@ -139,16 +115,16 @@ public class TestClasses {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
 
-            TestBooleanPrim that = (TestBooleanPrim) o;
+            TestFloatPrim that = (TestFloatPrim) o;
 
-            if (b != that.b) return false;
+            if (Float.compare(that.f, f) != 0) return false;
 
             return true;
         }
 
         @Override
         public int hashCode() {
-            return (b ? 1 : 0);
+            return (f != +0.0f ? Float.floatToIntBits(f) : 0);
         }
     }
 
@@ -178,11 +154,11 @@ public class TestClasses {
         }
     }
 
-    static class TestDouble {
-        Double d;
+    static class TestBooleanPrim {
+        boolean b;
 
-        public TestDouble(Double d) {
-            this.d = d;
+        public TestBooleanPrim(boolean b) {
+            this.b = b;
         }
 
         @Override
@@ -190,24 +166,24 @@ public class TestClasses {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
 
-            TestDouble that = (TestDouble) o;
+            TestBooleanPrim that = (TestBooleanPrim) o;
 
-            if (!d.equals(that.d)) return false;
+            if (b != that.b) return false;
 
             return true;
         }
 
         @Override
         public int hashCode() {
-            return d.hashCode();
+            return (b ? 1 : 0);
         }
     }
 
-    static class TestFloatPrim {
-        float f;
+    static class TestCharPrim {
+        public char c;
 
-        public TestFloatPrim(float f) {
-            this.f = f;
+        public TestCharPrim(char c) {
+            this.c = c;
         }
 
         @Override
@@ -215,16 +191,117 @@ public class TestClasses {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
 
-            TestFloatPrim that = (TestFloatPrim) o;
+            TestCharPrim that = (TestCharPrim) o;
 
-            if (Float.compare(that.f, f) != 0) return false;
+            if (c != that.c) return false;
 
             return true;
         }
 
         @Override
         public int hashCode() {
-            return (f != +0.0f ? Float.floatToIntBits(f) : 0);
+            return (int) c;
+        }
+    }
+
+
+
+    static class TestByte {
+        private Byte b;
+
+        public TestByte(Byte b) {
+            this.b = b;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            TestByte testByte = (TestByte) o;
+
+            if (!b.equals(testByte.b)) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            return b.hashCode();
+        }
+    }
+
+    static class TestShort {
+        private Short sh;
+
+        public TestShort(Short sh) {
+            this.sh = sh;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            TestShort testShort = (TestShort) o;
+
+            if (!sh.equals(testShort.sh)) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            return sh.hashCode();
+        }
+    }
+
+    static class TestInteger {
+        private Integer aInteger;
+
+        public TestInteger(Integer aInteger) {
+            this.aInteger = aInteger;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            TestInteger that = (TestInteger) o;
+
+            if (!aInteger.equals(that.aInteger)) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            return aInteger.hashCode();
+        }
+    }
+
+    static class TestLong {
+        private Long aLong;
+        public TestLong(Long aLong) {
+            this.aLong = aLong;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            TestLong testLong = (TestLong) o;
+
+            if (!aLong.equals(testLong.aLong)) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            return aLong.hashCode();
         }
     }
 
@@ -253,11 +330,11 @@ public class TestClasses {
         }
     }
 
-    static class TestString {
-        private String string;
+    static class TestDouble {
+        Double d;
 
-        TestString(String string) {
-            this.string = string;
+        public TestDouble(Double d) {
+            this.d = d;
         }
 
         @Override
@@ -265,18 +342,70 @@ public class TestClasses {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
 
-            TestString that = (TestString) o;
+            TestDouble that = (TestDouble) o;
 
-            if (!string.equals(that.string)) return false;
+            if (!d.equals(that.d)) return false;
 
             return true;
         }
 
         @Override
         public int hashCode() {
-            return string.hashCode();
+            return d.hashCode();
         }
     }
+
+    static class TestBoolean {
+        Boolean b;
+
+        public TestBoolean(Boolean b) {
+            this.b = b;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            TestBoolean that = (TestBoolean) o;
+
+            if (!b.equals(that.b)) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            return b.hashCode();
+        }
+    }
+
+    static class TestCharacter {
+        public Character c;
+
+        public TestCharacter(Character c) {
+            this.c = c;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            TestCharacter that = (TestCharacter) o;
+
+            if (!c.equals(that.c)) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            return c.hashCode();
+        }
+    }
+
+
 
     static class TestCharArray {
         char[] chars;
@@ -350,6 +479,33 @@ public class TestClasses {
         @Override
         public int hashCode() {
             return Arrays.hashCode(doubles);
+        }
+    }
+
+
+
+    static class TestString {
+        private String string;
+
+        TestString(String string) {
+            this.string = string;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            TestString that = (TestString) o;
+
+            if (!string.equals(that.string)) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            return string.hashCode();
         }
     }
 

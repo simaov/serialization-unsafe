@@ -93,20 +93,28 @@ public class Utils {
     }
 
     public static byte[] bytesFromChar(char c) {
-        int index = 0;
         byte[] buffer = new byte[JavaTypes.JAVA_CHARACTER_SIZE];
-        for (int i = 0; i < buffer.length; i++) {
-            buffer[index++] = (byte) (c >> ((1 - i) << 3));
-        }
+        buffer[0] = (byte) (((int) c & 0xFF00) >> 8);
+        buffer[1] = (byte) (((int) c & 0xFF));
         return buffer;
     }
+
 
     public static char charFromBytes(byte[] bytes, int offset) {
         int result = 0;
         for (int i = offset; i < 2 + offset; i++) {
-            result = result << 8;
-            result += bytes[i];
+            byte b = bytes[i];
+            if (b < 0) {
+                b &= ~(1 << 7);
+                result = result << 1;
+                result += 1;
+                result = result << 7;
+                result += b;
+            } else {
+                result = result << 8;
+                result += b;
+            }
         }
-        return (char) result;
+        return (char)result;
     }
 }
