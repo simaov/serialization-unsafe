@@ -241,7 +241,7 @@ public class SerializerUnsafeV2<T> implements SerializerUnsafeI<T> {
                     break;
                 case JAVA_CHAR_TYPE:
                     UnsafeMemory.putChar(instance, declaredFieldsOffsets[i], Utils.charFromBytes(bytes, offset));
-                    offset += JAVA_BOOLEAN_SIZE;
+                    offset += JAVA_CHARACTER_SIZE;
                     break;
                 case JAVA_BYTE_OBJECT_TYPE:
                     UnsafeMemory.putObject(instance, declaredFieldsOffsets[i], bytes[offset]);

@@ -38,7 +38,7 @@ public class JavaTypes {
     public static final int JAVA_LONG_SIZE              = Long.SIZE         >> 3;
     public static final int JAVA_FLOAT_SIZE             = Float.SIZE        >> 3;
     public static final int JAVA_DOUBLE_SIZE            = Double.SIZE       >> 3;
-    public static final int JAVA_BOOLEAN_SIZE           = 1;
+    public static final int JAVA_BOOLEAN_SIZE           = Byte.SIZE         >> 3;
     public static final int JAVA_CHARACTER_SIZE         = Character.SIZE    >> 3;
 
 }
