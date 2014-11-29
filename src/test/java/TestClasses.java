@@ -407,11 +407,11 @@ public class TestClasses {
 
 
 
-    static class TestCharArray {
-        char[] chars;
+    static class TestByteArray {
+        byte[] bytes;
 
-        public TestCharArray(char[] chars) {
-            this.chars = chars;
+        public TestByteArray(byte[] bytes) {
+            this.bytes = bytes;
         }
 
         @Override
@@ -419,16 +419,66 @@ public class TestClasses {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
 
-            TestCharArray that = (TestCharArray) o;
+            TestByteArray that = (TestByteArray) o;
 
-            if (!Arrays.equals(chars, that.chars)) return false;
+            if (!Arrays.equals(bytes, that.bytes)) return false;
 
             return true;
         }
 
         @Override
         public int hashCode() {
-            return Arrays.hashCode(chars);
+            return Arrays.hashCode(bytes);
+        }
+    }
+
+    static class TestShortArray {
+        short[] shorts;
+
+        public TestShortArray(short[] shorts) {
+            this.shorts = shorts;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            TestShortArray that = (TestShortArray) o;
+
+            if (!Arrays.equals(shorts, that.shorts)) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            return Arrays.hashCode(shorts);
+        }
+    }
+
+    static class TestIntArray {
+        int[] ints;
+
+        public TestIntArray(int[] ints) {
+            this.ints = ints;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            TestIntArray that = (TestIntArray) o;
+
+            if (!Arrays.equals(ints, that.ints)) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            return Arrays.hashCode(ints);
         }
     }
 
@@ -457,6 +507,31 @@ public class TestClasses {
         }
     }
 
+    static class TestFloatArray {
+        float[] floats;
+
+        public TestFloatArray(float[] floats) {
+            this.floats = floats;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            TestFloatArray that = (TestFloatArray) o;
+
+            if (!Arrays.equals(floats, that.floats)) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            return Arrays.hashCode(floats);
+        }
+    }
+
     static class TestDoubleArray {
         double[] doubles;
 
@@ -482,6 +557,55 @@ public class TestClasses {
         }
     }
 
+    static class TestCharArray {
+        char[] chars;
+
+        public TestCharArray(char[] chars) {
+            this.chars = chars;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            TestCharArray that = (TestCharArray) o;
+
+            if (!Arrays.equals(chars, that.chars)) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            return Arrays.hashCode(chars);
+        }
+    }
+
+    static class TestBooleanArray {
+        boolean[] booleans;
+
+        public TestBooleanArray(boolean[] booleans) {
+            this.booleans = booleans;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            TestBooleanArray that = (TestBooleanArray) o;
+
+            if (!Arrays.equals(booleans, that.booleans)) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            return Arrays.hashCode(booleans);
+        }
+    }
 
 
     static class TestString {
@@ -535,36 +659,61 @@ public class TestClasses {
     }
 
     static class TestComplex {
-        private boolean aBoolean;
-        private int aInt;
-        private long aL;
+        private byte b;
+        private short sh;
+        private int i;
+        private long l;
         private float f;
         private double d;
-        private char[] chars;
-        private long[] longs;
-        private double[] doubles;
-        private Boolean aB;
-        private Integer integer;
+        private boolean bool;
+        private char c;
+
+        private Byte aByte;
+        private Short aShort;
+        private Integer aInt;
         private Long aLong;
         private Float aFloat;
         private Double aDouble;
+        private Boolean aBoolean;
+        private Character character;
+
+        private byte[] bytes;
+        private short[] shorts;
+        private int[] ints;
+        private long[] longs;
+        private float[] floats;
+        private double[] doubles;
+        private boolean[] booleans;
+        private char[] chars;
+
         private String string;
         private UUID uuid;
 
-        public TestComplex(boolean aBoolean, int aInt, long aL, float f, double d, char[] chars, long[] longs, double[] doubles, Boolean aB, Integer integer, Long aLong, Float aFloat, Double aDouble, String string, UUID uuid) {
-            this.aBoolean = aBoolean;
-            this.aInt = aInt;
-            this.aL = aL;
+        public TestComplex(byte b, short sh, int i, long l, float f, double d, boolean bool, char c, Byte aByte, Short aShort, Integer aInt, Long aLong, Float aFloat, Double aDouble, Boolean aBoolean, Character character, byte[] bytes, short[] shorts, int[] ints, long[] longs, float[] floats, double[] doubles, boolean[] booleans, char[] chars, String string, UUID uuid) {
+            this.b = b;
+            this.sh = sh;
+            this.i = i;
+            this.l = l;
             this.f = f;
             this.d = d;
-            this.chars = chars;
-            this.longs = longs;
-            this.doubles = doubles;
-            this.aB = aB;
-            this.integer = integer;
+            this.bool = bool;
+            this.c = c;
+            this.aByte = aByte;
+            this.aShort = aShort;
+            this.aInt = aInt;
             this.aLong = aLong;
             this.aFloat = aFloat;
             this.aDouble = aDouble;
+            this.aBoolean = aBoolean;
+            this.character = character;
+            this.bytes = bytes;
+            this.shorts = shorts;
+            this.ints = ints;
+            this.longs = longs;
+            this.floats = floats;
+            this.doubles = doubles;
+            this.booleans = booleans;
+            this.chars = chars;
             this.string = string;
             this.uuid = uuid;
         }
@@ -576,19 +725,30 @@ public class TestClasses {
 
             TestComplex that = (TestComplex) o;
 
-            if (aBoolean != that.aBoolean) return false;
-            if (aInt != that.aInt) return false;
-            if (aL != that.aL) return false;
+            if (b != that.b) return false;
+            if (bool != that.bool) return false;
+            if (c != that.c) return false;
             if (Double.compare(that.d, d) != 0) return false;
             if (Float.compare(that.f, f) != 0) return false;
-            if (!aB.equals(that.aB)) return false;
+            if (i != that.i) return false;
+            if (l != that.l) return false;
+            if (sh != that.sh) return false;
+            if (!aBoolean.equals(that.aBoolean)) return false;
+            if (!aByte.equals(that.aByte)) return false;
             if (!aDouble.equals(that.aDouble)) return false;
             if (!aFloat.equals(that.aFloat)) return false;
+            if (!aInt.equals(that.aInt)) return false;
             if (!aLong.equals(that.aLong)) return false;
+            if (!aShort.equals(that.aShort)) return false;
+            if (!Arrays.equals(booleans, that.booleans)) return false;
+            if (!Arrays.equals(bytes, that.bytes)) return false;
+            if (!character.equals(that.character)) return false;
             if (!Arrays.equals(chars, that.chars)) return false;
             if (!Arrays.equals(doubles, that.doubles)) return false;
-            if (!integer.equals(that.integer)) return false;
+            if (!Arrays.equals(floats, that.floats)) return false;
+            if (!Arrays.equals(ints, that.ints)) return false;
             if (!Arrays.equals(longs, that.longs)) return false;
+            if (!Arrays.equals(shorts, that.shorts)) return false;
             if (!string.equals(that.string)) return false;
             if (!uuid.equals(that.uuid)) return false;
 
@@ -599,23 +759,66 @@ public class TestClasses {
         public int hashCode() {
             int result;
             long temp;
-            result = (aBoolean ? 1 : 0);
-            result = 31 * result + aInt;
-            result = 31 * result + (int) (aL ^ (aL >>> 32));
+            result = (int) b;
+            result = 31 * result + (int) sh;
+            result = 31 * result + i;
+            result = 31 * result + (int) (l ^ (l >>> 32));
             result = 31 * result + (f != +0.0f ? Float.floatToIntBits(f) : 0);
             temp = Double.doubleToLongBits(d);
             result = 31 * result + (int) (temp ^ (temp >>> 32));
-            result = 31 * result + Arrays.hashCode(chars);
-            result = 31 * result + Arrays.hashCode(longs);
-            result = 31 * result + Arrays.hashCode(doubles);
-            result = 31 * result + aB.hashCode();
-            result = 31 * result + integer.hashCode();
+            result = 31 * result + (bool ? 1 : 0);
+            result = 31 * result + (int) c;
+            result = 31 * result + aByte.hashCode();
+            result = 31 * result + aShort.hashCode();
+            result = 31 * result + aInt.hashCode();
             result = 31 * result + aLong.hashCode();
             result = 31 * result + aFloat.hashCode();
             result = 31 * result + aDouble.hashCode();
+            result = 31 * result + aBoolean.hashCode();
+            result = 31 * result + character.hashCode();
+            result = 31 * result + Arrays.hashCode(bytes);
+            result = 31 * result + Arrays.hashCode(shorts);
+            result = 31 * result + Arrays.hashCode(ints);
+            result = 31 * result + Arrays.hashCode(longs);
+            result = 31 * result + Arrays.hashCode(floats);
+            result = 31 * result + Arrays.hashCode(doubles);
+            result = 31 * result + Arrays.hashCode(chars);
+            result = 31 * result + Arrays.hashCode(booleans);
             result = 31 * result + string.hashCode();
             result = 31 * result + uuid.hashCode();
             return result;
+        }
+
+        @Override
+        public String toString() {
+            return "TestComplex{" +
+                    "b=" + b +
+                    ", sh=" + sh +
+                    ", i=" + i +
+                    ", l=" + l +
+                    ", f=" + f +
+                    ", d=" + d +
+                    ", bool=" + bool +
+                    ", c=" + c +
+                    ", aByte=" + aByte +
+                    ", aShort=" + aShort +
+                    ", aInt=" + aInt +
+                    ", aLong=" + aLong +
+                    ", aFloat=" + aFloat +
+                    ", aDouble=" + aDouble +
+                    ", aBoolean=" + aBoolean +
+                    ", character=" + character +
+                    ", bytes=" + Arrays.toString(bytes) +
+                    ", shorts=" + Arrays.toString(shorts) +
+                    ", ints=" + Arrays.toString(ints) +
+                    ", longs=" + Arrays.toString(longs) +
+                    ", floats=" + Arrays.toString(floats) +
+                    ", doubles=" + Arrays.toString(doubles) +
+                    ", booleans=" + Arrays.toString(booleans) +
+                    ", chars=" + Arrays.toString(chars) +
+                    ", string='" + string + '\'' +
+                    ", uuid=" + uuid +
+                    '}';
         }
     }
 

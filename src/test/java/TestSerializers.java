@@ -101,6 +101,23 @@ public class TestSerializers {
     }
 
 
+    static class TestByteArraySerializer extends SerializerUnsafe<TestClasses.TestByteArray> {
+        public TestByteArraySerializer(Class<TestClasses.TestByteArray>  testByteArrayClass) {
+            super(testByteArrayClass);
+        }
+    }
+
+    static class TestShortArraySerializer extends SerializerUnsafe<TestClasses.TestShortArray> {
+        public TestShortArraySerializer(Class<TestClasses.TestShortArray> testShortArrayClass) {
+            super(testShortArrayClass);
+        }
+    }
+
+    static class TestIntArraySerializer extends SerializerUnsafe<TestClasses.TestIntArray> {
+        public TestIntArraySerializer(Class<TestClasses.TestIntArray> testIntArrayClass) {
+            super(testIntArrayClass);
+        }
+    }
 
     static class TestLongArraySerializer extends SerializerUnsafe<TestClasses.TestLongArray> {
         public TestLongArraySerializer(Class<TestClasses.TestLongArray> testLongArrayClass) {
@@ -108,9 +125,21 @@ public class TestSerializers {
         }
     }
 
+    static class TestFloatArraySerializer extends SerializerUnsafe<TestClasses.TestFloatArray> {
+        public TestFloatArraySerializer(Class<TestClasses.TestFloatArray> testFloatArrayClass) {
+            super(testFloatArrayClass);
+        }
+    }
+
     static class TestDoubleArraySerializer extends SerializerUnsafe<TestClasses.TestDoubleArray> {
         public TestDoubleArraySerializer(Class<TestClasses.TestDoubleArray> testDoubleArrayClass) {
             super(testDoubleArrayClass);
+        }
+    }
+
+    static class TestBooleanArraySerializer extends SerializerUnsafe<TestClasses.TestBooleanArray> {
+        public TestBooleanArraySerializer(Class<TestClasses.TestBooleanArray> testBooleanArrayClass) {
+            super(testBooleanArrayClass);
         }
     }
 

@@ -181,6 +181,39 @@ public class UnsafeMemoryTest {
 
 
     @Test
+    public void testByteArraySerialization() throws Exception {
+        byte[] bytes = new byte[] {(byte)random.nextInt(), (byte)random.nextInt(), (byte)random.nextInt(), (byte)random.nextInt(), (byte)random.nextInt(),
+                (byte)random.nextInt(), (byte)random.nextInt(), (byte)random.nextInt(), (byte)random.nextInt(), (byte)random.nextInt()};
+        TestClasses.TestByteArray testByteArray = new TestClasses.TestByteArray(bytes);
+        SerializerUnsafeI<TestClasses.TestByteArray> testByteArraySerializer = SerializerFactory.getSerializer(TestClasses.TestByteArray.class);
+        byte[] serialize = testByteArraySerializer.serialize(testByteArray);
+        TestClasses.TestByteArray deserialize = testByteArraySerializer.deserialize(serialize);
+        assertEquals(testByteArray, deserialize);
+    }
+
+    @Test
+    public void testShortArraySerialization() throws Exception {
+        short[] shorts = new short[] {(short)random.nextInt(), (short)random.nextInt(), (short)random.nextInt(), (short)random.nextInt(), (short)random.nextInt(),
+                (short)random.nextInt(), (short)random.nextInt(), (short)random.nextInt(), (short)random.nextInt(), (short)random.nextInt()};
+        TestClasses.TestShortArray testShortArray = new TestClasses.TestShortArray(shorts);
+        SerializerUnsafeI<TestClasses.TestShortArray> testShortArraySerializer = SerializerFactory.getSerializer(TestClasses.TestShortArray.class);
+        byte[] serialize = testShortArraySerializer.serialize(testShortArray);
+        TestClasses.TestShortArray deserialize = testShortArraySerializer.deserialize(serialize);
+        assertEquals(testShortArray, deserialize);
+    }
+
+    @Test
+    public void testIntArraySerialization() throws Exception {
+        int[] ints = new int[] {random.nextInt(), random.nextInt(), random.nextInt(), random.nextInt(), random.nextInt(),
+                random.nextInt(), random.nextInt(), random.nextInt(), random.nextInt(), random.nextInt()};
+        TestClasses.TestIntArray testIntArray = new TestClasses.TestIntArray(ints);
+        SerializerUnsafeI<TestClasses.TestIntArray> testIntArraySerializer = SerializerFactory.getSerializer(TestClasses.TestIntArray.class);
+        byte[] serialize = testIntArraySerializer.serialize(testIntArray);
+        TestClasses.TestIntArray deserialize = testIntArraySerializer.deserialize(serialize);
+        assertEquals(testIntArray, deserialize);
+    }
+
+    @Test
     public void testLongArraySerialization() throws Exception {
         long[] longs = new long[] {random.nextLong(), random.nextLong(), random.nextLong(), random.nextLong(), random.nextLong(),
                 random.nextLong(), random.nextLong(), random.nextLong(), random.nextLong(), random.nextLong()};
@@ -192,6 +225,17 @@ public class UnsafeMemoryTest {
     }
 
     @Test
+    public void testFloatArraySerialization() throws Exception {
+        float[] floats = new float[] {random.nextFloat(), random.nextFloat(), random.nextFloat(), random.nextFloat(), random.nextFloat(),
+                random.nextFloat(), random.nextFloat(), random.nextFloat(), random.nextFloat(), random.nextFloat()};
+        TestClasses.TestFloatArray testFloatArray = new TestClasses.TestFloatArray(floats);
+        SerializerUnsafeI<TestClasses.TestFloatArray> testFloatArraySerializer = SerializerFactory.getSerializer(TestClasses.TestFloatArray.class);
+        byte[] serialize = testFloatArraySerializer.serialize(testFloatArray);
+        TestClasses.TestFloatArray deserialize = testFloatArraySerializer.deserialize(serialize);
+        assertEquals(testFloatArray, deserialize);
+    }
+
+    @Test
     public void testDoubleArraySerialization() throws Exception {
         double[] doubles = new double[] {random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble(),
                 random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble()};
@@ -200,6 +244,17 @@ public class UnsafeMemoryTest {
         byte[] serialize = testDoubleArraySerializer.serialize(testDoubleArray);
         TestClasses.TestDoubleArray deserialize = testDoubleArraySerializer.deserialize(serialize);
         assertEquals(testDoubleArray, deserialize);
+    }
+
+    @Test
+    public void testBooleanArraySerialization() throws Exception {
+        boolean[] booleans = new boolean[] {random.nextBoolean(), random.nextBoolean(), random.nextBoolean(), random.nextBoolean(), random.nextBoolean(),
+                random.nextBoolean(), random.nextBoolean(), random.nextBoolean(), random.nextBoolean(), random.nextBoolean()};
+        TestClasses.TestBooleanArray testBooleanArray = new TestClasses.TestBooleanArray(booleans);
+        SerializerUnsafeI<TestClasses.TestBooleanArray> testBooleanArraySerializer = SerializerFactory.getSerializer(TestClasses.TestBooleanArray.class);
+        byte[] serialize = testBooleanArraySerializer.serialize(testBooleanArray);
+        TestClasses.TestBooleanArray deserialize = testBooleanArraySerializer.deserialize(serialize);
+        assertEquals(testBooleanArray, deserialize);
     }
 
     @Test
@@ -241,26 +296,45 @@ public class UnsafeMemoryTest {
     @Test
     public void testComplexSerialization() throws Exception {
         TestClasses.TestComplex testComplex = new TestClasses.TestComplex(
-                random.nextBoolean(),
+                (byte) random.nextInt(),
+                (short) random.nextInt(),
                 random.nextInt(),
                 random.nextLong(),
                 random.nextFloat(),
                 random.nextDouble(),
-                UUID.randomUUID().toString().toCharArray(),
+                random.nextBoolean(),
+                (char) random.nextInt(Character.MAX_VALUE),
+                (byte) random.nextInt(),
+                (short) random.nextInt(),
+                random.nextInt(),
+                random.nextLong(),
+                random.nextFloat(),
+                random.nextDouble(),
+                random.nextBoolean(),
+                (char) random.nextInt(Character.MAX_VALUE),
+                new byte[] {(byte)random.nextInt(), (byte)random.nextInt(), (byte)random.nextInt(), (byte)random.nextInt(), (byte)random.nextInt(),
+                        (byte)random.nextInt(), (byte)random.nextInt(), (byte)random.nextInt(), (byte)random.nextInt(), (byte)random.nextInt()},
+                new short[] {(short)random.nextInt(), (short)random.nextInt(), (short)random.nextInt(), (short)random.nextInt(), (short)random.nextInt(),
+                        (short)random.nextInt(), (short)random.nextInt(), (short)random.nextInt(), (short)random.nextInt(), (short)random.nextInt()},
+                new int[] {random.nextInt(), random.nextInt(), random.nextInt(), random.nextInt(), random.nextInt(),
+                        random.nextInt(), random.nextInt(), random.nextInt(), random.nextInt(), random.nextInt()},
                 new long[] {random.nextLong(), random.nextLong(), random.nextLong(), random.nextLong(), random.nextLong(),
                         random.nextLong(), random.nextLong(), random.nextLong(), random.nextLong(), random.nextLong()},
+                new float[] {random.nextFloat(), random.nextFloat(), random.nextFloat(), random.nextFloat(), random.nextFloat(),
+                        random.nextFloat(), random.nextFloat(), random.nextFloat(), random.nextFloat(), random.nextFloat()},
                 new double[] {random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble(),
                         random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble()},
-                random.nextBoolean(),
-                random.nextInt(),
-                random.nextLong(),
-                random.nextFloat(),
-                random.nextDouble(),
+                new boolean[] {random.nextBoolean(), random.nextBoolean(), random.nextBoolean(), random.nextBoolean(), random.nextBoolean(),
+                        random.nextBoolean(), random.nextBoolean(), random.nextBoolean(), random.nextBoolean(), random.nextBoolean()},
+                UUID.randomUUID().toString().toCharArray(),
+
                 UUID.randomUUID().toString(),
                 UUID.randomUUID());
         SerializerUnsafeI<TestClasses.TestComplex> testComplexSerializer = SerializerFactory.getSerializer(TestClasses.TestComplex.class);
         byte[] serialize = testComplexSerializer.serialize(testComplex);
         TestClasses.TestComplex deserialize = testComplexSerializer.deserialize(serialize);
+        System.out.println(testComplex);
+        System.out.println(deserialize);
         assertEquals(testComplex, deserialize);
     }
 
@@ -291,21 +365,38 @@ public class UnsafeMemoryTest {
         System.out.print("Creating [" + objCount + "] objects ... ");
         for (int i = 0; i < objCount; i++) {
             TestClasses.TestComplex testComplex = new TestClasses.TestComplex(
-                    random.nextBoolean(),
+                    (byte) random.nextInt(),
+                    (short) random.nextInt(),
                     random.nextInt(),
                     random.nextLong(),
                     random.nextFloat(),
                     random.nextDouble(),
-                    UUID.randomUUID().toString().toCharArray(),
+                    random.nextBoolean(),
+                    (char) random.nextInt(Character.MAX_VALUE),
+                    (byte) random.nextInt(),
+                    (short) random.nextInt(),
+                    random.nextInt(),
+                    random.nextLong(),
+                    random.nextFloat(),
+                    random.nextDouble(),
+                    random.nextBoolean(),
+                    (char) random.nextInt(Character.MAX_VALUE),
+                    new byte[] {(byte)random.nextInt(), (byte)random.nextInt(), (byte)random.nextInt(), (byte)random.nextInt(), (byte)random.nextInt(),
+                            (byte)random.nextInt(), (byte)random.nextInt(), (byte)random.nextInt(), (byte)random.nextInt(), (byte)random.nextInt()},
+                    new short[] {(short)random.nextInt(), (short)random.nextInt(), (short)random.nextInt(), (short)random.nextInt(), (short)random.nextInt(),
+                            (short)random.nextInt(), (short)random.nextInt(), (short)random.nextInt(), (short)random.nextInt(), (short)random.nextInt()},
+                    new int[] {random.nextInt(), random.nextInt(), random.nextInt(), random.nextInt(), random.nextInt(),
+                            random.nextInt(), random.nextInt(), random.nextInt(), random.nextInt(), random.nextInt()},
                     new long[] {random.nextLong(), random.nextLong(), random.nextLong(), random.nextLong(), random.nextLong(),
                             random.nextLong(), random.nextLong(), random.nextLong(), random.nextLong(), random.nextLong()},
+                    new float[] {random.nextFloat(), random.nextFloat(), random.nextFloat(), random.nextFloat(), random.nextFloat(),
+                            random.nextFloat(), random.nextFloat(), random.nextFloat(), random.nextFloat(), random.nextFloat()},
                     new double[] {random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble(),
                             random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble()},
-                    random.nextBoolean(),
-                    random.nextInt(),
-                    random.nextLong(),
-                    random.nextFloat(),
-                    random.nextDouble(),
+                    new boolean[] {random.nextBoolean(), random.nextBoolean(), random.nextBoolean(), random.nextBoolean(), random.nextBoolean(),
+                            random.nextBoolean(), random.nextBoolean(), random.nextBoolean(), random.nextBoolean(), random.nextBoolean()},
+                    UUID.randomUUID().toString().toCharArray(),
+
                     UUID.randomUUID().toString(),
                     UUID.randomUUID());
             list.add(testComplex);

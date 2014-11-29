@@ -185,6 +185,9 @@ public class SerializerUnsafe<T> implements SerializerUnsafeI<T> {
                     bufferSize += doubleBytes.length;
                     break;
                 case JAVA_BOOLEAN_ARRAY_TYPE:
+                    byte[] booleanBytes = UnsafeMemory.getBytesFromBooleanArray(obj, declaredFieldsOffsets[i]);
+                    declaredFieldsValues[i] = booleanBytes;
+                    bufferSize += booleanBytes.length;
                     break;
                 case JAVA_CHAR_ARRAY_TYPE:
                     byte[] bytes = UnsafeMemory.getBytesFromCharArray(obj, declaredFieldsOffsets[i]);
@@ -249,7 +252,7 @@ public class SerializerUnsafe<T> implements SerializerUnsafeI<T> {
                     break;
                 case JAVA_CHAR_TYPE:
                     UnsafeMemory.putChar(instance, declaredFieldsOffsets[i], Utils.charFromBytes(bytes, offset));
-                    offset += JAVA_BOOLEAN_SIZE;
+                    offset += JAVA_CHARACTER_SIZE;
                     break;
                 case JAVA_BYTE_OBJECT_TYPE:
                     UnsafeMemory.putObject(instance, declaredFieldsOffsets[i], bytes[offset]);
@@ -314,6 +317,9 @@ public class SerializerUnsafe<T> implements SerializerUnsafeI<T> {
                     offset += doubleArraySize + JAVA_INTEGER_SIZE;
                     break;
                 case JAVA_BOOLEAN_ARRAY_TYPE:
+                    int booleanArraySize = Utils.intFromBytes(bytes, offset);
+                    UnsafeMemory.putObject(instance, declaredFieldsOffsets[i], UnsafeMemory.getBooleanArrayFromBytes(bytes, offset, booleanArraySize));
+                    offset += booleanArraySize + JAVA_INTEGER_SIZE;
                     break;
                 case JAVA_CHAR_ARRAY_TYPE:
                     int charArraySize = Utils.intFromBytes(bytes, offset);
