@@ -220,14 +220,14 @@ public class TestClasses {
 
             TestByte testByte = (TestByte) o;
 
-            if (!b.equals(testByte.b)) return false;
+            if (b != null ? !b.equals(testByte.b) : testByte.b != null) return false;
 
             return true;
         }
 
         @Override
         public int hashCode() {
-            return b.hashCode();
+            return b != null ? b.hashCode() : 0;
         }
     }
 
@@ -245,14 +245,14 @@ public class TestClasses {
 
             TestShort testShort = (TestShort) o;
 
-            if (!sh.equals(testShort.sh)) return false;
+            if (sh != null ? !sh.equals(testShort.sh) : testShort.sh != null) return false;
 
             return true;
         }
 
         @Override
         public int hashCode() {
-            return sh.hashCode();
+            return sh != null ? sh.hashCode() : 0;
         }
     }
 
@@ -270,14 +270,14 @@ public class TestClasses {
 
             TestInteger that = (TestInteger) o;
 
-            if (!aInteger.equals(that.aInteger)) return false;
+            if (aInteger != null ? !aInteger.equals(that.aInteger) : that.aInteger != null) return false;
 
             return true;
         }
 
         @Override
         public int hashCode() {
-            return aInteger.hashCode();
+            return aInteger != null ? aInteger.hashCode() : 0;
         }
     }
 
@@ -294,14 +294,14 @@ public class TestClasses {
 
             TestLong testLong = (TestLong) o;
 
-            if (!aLong.equals(testLong.aLong)) return false;
+            if (aLong != null ? !aLong.equals(testLong.aLong) : testLong.aLong != null) return false;
 
             return true;
         }
 
         @Override
         public int hashCode() {
-            return aLong.hashCode();
+            return aLong != null ? aLong.hashCode() : 0;
         }
     }
 
@@ -319,14 +319,14 @@ public class TestClasses {
 
             TestFloat testFloat = (TestFloat) o;
 
-            if (!f.equals(testFloat.f)) return false;
+            if (f != null ? !f.equals(testFloat.f) : testFloat.f != null) return false;
 
             return true;
         }
 
         @Override
         public int hashCode() {
-            return f.hashCode();
+            return f != null ? f.hashCode() : 0;
         }
     }
 
@@ -344,14 +344,14 @@ public class TestClasses {
 
             TestDouble that = (TestDouble) o;
 
-            if (!d.equals(that.d)) return false;
+            if (d != null ? !d.equals(that.d) : that.d != null) return false;
 
             return true;
         }
 
         @Override
         public int hashCode() {
-            return d.hashCode();
+            return d != null ? d.hashCode() : 0;
         }
     }
 
@@ -369,14 +369,14 @@ public class TestClasses {
 
             TestBoolean that = (TestBoolean) o;
 
-            if (!b.equals(that.b)) return false;
+            if (b != null ? !b.equals(that.b) : that.b != null) return false;
 
             return true;
         }
 
         @Override
         public int hashCode() {
-            return b.hashCode();
+            return b != null ? b.hashCode() : 0;
         }
     }
 
@@ -394,14 +394,14 @@ public class TestClasses {
 
             TestCharacter that = (TestCharacter) o;
 
-            if (!c.equals(that.c)) return false;
+            if (c != null ? !c.equals(that.c) : that.c != null) return false;
 
             return true;
         }
 
         @Override
         public int hashCode() {
-            return c.hashCode();
+            return c != null ? c.hashCode() : 0;
         }
     }
 
@@ -622,14 +622,14 @@ public class TestClasses {
 
             TestString that = (TestString) o;
 
-            if (!string.equals(that.string)) return false;
+            if (string != null ? !string.equals(that.string) : that.string != null) return false;
 
             return true;
         }
 
         @Override
         public int hashCode() {
-            return string.hashCode();
+            return string != null ? string.hashCode() : 0;
         }
     }
 
@@ -647,14 +647,14 @@ public class TestClasses {
 
             TestUUID testUUID = (TestUUID) o;
 
-            if (!uuid.equals(testUUID.uuid)) return false;
+            if (uuid != null ? !uuid.equals(testUUID.uuid) : testUUID.uuid != null) return false;
 
             return true;
         }
 
         @Override
         public int hashCode() {
-            return uuid.hashCode();
+            return uuid != null ? uuid.hashCode() : 0;
         }
     }
 
@@ -733,24 +733,24 @@ public class TestClasses {
             if (i != that.i) return false;
             if (l != that.l) return false;
             if (sh != that.sh) return false;
-            if (!aBoolean.equals(that.aBoolean)) return false;
-            if (!aByte.equals(that.aByte)) return false;
-            if (!aDouble.equals(that.aDouble)) return false;
-            if (!aFloat.equals(that.aFloat)) return false;
-            if (!aInt.equals(that.aInt)) return false;
-            if (!aLong.equals(that.aLong)) return false;
-            if (!aShort.equals(that.aShort)) return false;
+            if (aBoolean != null ? !aBoolean.equals(that.aBoolean) : that.aBoolean != null) return false;
+            if (aByte != null ? !aByte.equals(that.aByte) : that.aByte != null) return false;
+            if (aDouble != null ? !aDouble.equals(that.aDouble) : that.aDouble != null) return false;
+            if (aFloat != null ? !aFloat.equals(that.aFloat) : that.aFloat != null) return false;
+            if (aInt != null ? !aInt.equals(that.aInt) : that.aInt != null) return false;
+            if (aLong != null ? !aLong.equals(that.aLong) : that.aLong != null) return false;
+            if (aShort != null ? !aShort.equals(that.aShort) : that.aShort != null) return false;
             if (!Arrays.equals(booleans, that.booleans)) return false;
             if (!Arrays.equals(bytes, that.bytes)) return false;
-            if (!character.equals(that.character)) return false;
+            if (character != null ? !character.equals(that.character) : that.character != null) return false;
             if (!Arrays.equals(chars, that.chars)) return false;
             if (!Arrays.equals(doubles, that.doubles)) return false;
             if (!Arrays.equals(floats, that.floats)) return false;
             if (!Arrays.equals(ints, that.ints)) return false;
             if (!Arrays.equals(longs, that.longs)) return false;
             if (!Arrays.equals(shorts, that.shorts)) return false;
-            if (!string.equals(that.string)) return false;
-            if (!uuid.equals(that.uuid)) return false;
+            if (string != null ? !string.equals(that.string) : that.string != null) return false;
+            if (uuid != null ? !uuid.equals(that.uuid) : that.uuid != null) return false;
 
             return true;
         }
@@ -768,24 +768,24 @@ public class TestClasses {
             result = 31 * result + (int) (temp ^ (temp >>> 32));
             result = 31 * result + (bool ? 1 : 0);
             result = 31 * result + (int) c;
-            result = 31 * result + aByte.hashCode();
-            result = 31 * result + aShort.hashCode();
-            result = 31 * result + aInt.hashCode();
-            result = 31 * result + aLong.hashCode();
-            result = 31 * result + aFloat.hashCode();
-            result = 31 * result + aDouble.hashCode();
-            result = 31 * result + aBoolean.hashCode();
-            result = 31 * result + character.hashCode();
-            result = 31 * result + Arrays.hashCode(bytes);
-            result = 31 * result + Arrays.hashCode(shorts);
-            result = 31 * result + Arrays.hashCode(ints);
-            result = 31 * result + Arrays.hashCode(longs);
-            result = 31 * result + Arrays.hashCode(floats);
-            result = 31 * result + Arrays.hashCode(doubles);
-            result = 31 * result + Arrays.hashCode(chars);
-            result = 31 * result + Arrays.hashCode(booleans);
-            result = 31 * result + string.hashCode();
-            result = 31 * result + uuid.hashCode();
+            result = 31 * result + (aByte != null ? aByte.hashCode() : 0);
+            result = 31 * result + (aShort != null ? aShort.hashCode() : 0);
+            result = 31 * result + (aInt != null ? aInt.hashCode() : 0);
+            result = 31 * result + (aLong != null ? aLong.hashCode() : 0);
+            result = 31 * result + (aFloat != null ? aFloat.hashCode() : 0);
+            result = 31 * result + (aDouble != null ? aDouble.hashCode() : 0);
+            result = 31 * result + (aBoolean != null ? aBoolean.hashCode() : 0);
+            result = 31 * result + (character != null ? character.hashCode() : 0);
+            result = 31 * result + (bytes != null ? Arrays.hashCode(bytes) : 0);
+            result = 31 * result + (shorts != null ? Arrays.hashCode(shorts) : 0);
+            result = 31 * result + (ints != null ? Arrays.hashCode(ints) : 0);
+            result = 31 * result + (longs != null ? Arrays.hashCode(longs) : 0);
+            result = 31 * result + (floats != null ? Arrays.hashCode(floats) : 0);
+            result = 31 * result + (doubles != null ? Arrays.hashCode(doubles) : 0);
+            result = 31 * result + (booleans != null ? Arrays.hashCode(booleans) : 0);
+            result = 31 * result + (chars != null ? Arrays.hashCode(chars) : 0);
+            result = 31 * result + (string != null ? string.hashCode() : 0);
+            result = 31 * result + (uuid != null ? uuid.hashCode() : 0);
             return result;
         }
 
@@ -852,30 +852,30 @@ public class TestClasses {
 
             TestEvent testEvent = (TestEvent) o;
 
-            if (!int1.equals(testEvent.int1)) return false;
-            if (!long1.equals(testEvent.long1)) return false;
-            if (!long2.equals(testEvent.long2)) return false;
-            if (!long3.equals(testEvent.long3)) return false;
-            if (!long4.equals(testEvent.long4)) return false;
-            if (!long5.equals(testEvent.long5)) return false;
-            if (!string1.equals(testEvent.string1)) return false;
-            if (!string2.equals(testEvent.string2)) return false;
-            if (!uuid1.equals(testEvent.uuid1)) return false;
+            if (int1 != null ? !int1.equals(testEvent.int1) : testEvent.int1 != null) return false;
+            if (long1 != null ? !long1.equals(testEvent.long1) : testEvent.long1 != null) return false;
+            if (long2 != null ? !long2.equals(testEvent.long2) : testEvent.long2 != null) return false;
+            if (long3 != null ? !long3.equals(testEvent.long3) : testEvent.long3 != null) return false;
+            if (long4 != null ? !long4.equals(testEvent.long4) : testEvent.long4 != null) return false;
+            if (long5 != null ? !long5.equals(testEvent.long5) : testEvent.long5 != null) return false;
+            if (string1 != null ? !string1.equals(testEvent.string1) : testEvent.string1 != null) return false;
+            if (string2 != null ? !string2.equals(testEvent.string2) : testEvent.string2 != null) return false;
+            if (uuid1 != null ? !uuid1.equals(testEvent.uuid1) : testEvent.uuid1 != null) return false;
 
             return true;
         }
 
         @Override
         public int hashCode() {
-            int result = long1.hashCode();
-            result = 31 * result + long2.hashCode();
-            result = 31 * result + int1.hashCode();
-            result = 31 * result + long3.hashCode();
-            result = 31 * result + string1.hashCode();
-            result = 31 * result + long4.hashCode();
-            result = 31 * result + long5.hashCode();
-            result = 31 * result + string2.hashCode();
-            result = 31 * result + uuid1.hashCode();
+            int result = long1 != null ? long1.hashCode() : 0;
+            result = 31 * result + (long2 != null ? long2.hashCode() : 0);
+            result = 31 * result + (int1 != null ? int1.hashCode() : 0);
+            result = 31 * result + (long3 != null ? long3.hashCode() : 0);
+            result = 31 * result + (string1 != null ? string1.hashCode() : 0);
+            result = 31 * result + (long4 != null ? long4.hashCode() : 0);
+            result = 31 * result + (long5 != null ? long5.hashCode() : 0);
+            result = 31 * result + (string2 != null ? string2.hashCode() : 0);
+            result = 31 * result + (uuid1 != null ? uuid1.hashCode() : 0);
             return result;
         }
     }

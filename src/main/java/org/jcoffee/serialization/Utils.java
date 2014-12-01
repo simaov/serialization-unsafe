@@ -72,4 +72,22 @@ public class Utils {
         UnsafeMemory.copyMemory(bytes, offset + baseByteArrayOffset, chars, baseCharArrayOffset, JAVA_CHARACTER_SIZE);
         return chars[0];
     }
+
+    public static byte[] bytesFromUuid(Object uuid) {
+        byte[] b = new byte[JAVA_LONG_SIZE << 1];
+        int index = 0;
+
+        long mostSigBits = UnsafeMemory.getPrimitiveLong(uuid, mostSigBitsFieldOffset);
+        long leastSigBits = UnsafeMemory.getPrimitiveLong(uuid, leastSigBitsFieldOffset);
+
+        for (int i = 0; i < JAVA_LONG_SIZE; ++i) {
+            b[index++] = (byte) (mostSigBits >> (i << 3));
+        }
+
+        for (int i = 0; i < JAVA_LONG_SIZE; ++i) {
+            b[index++] = (byte) (leastSigBits >> (i << 3));
+        }
+
+        return b;
+    }
 }

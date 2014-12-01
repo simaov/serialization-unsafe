@@ -106,6 +106,11 @@ public class UnsafeMemoryTest {
         byte[] serialize = testByteSerializer.serialize(testByte);
         TestClasses.TestByte deserialize = testByteSerializer.deserialize(serialize);
         assertEquals(testByte, deserialize);
+
+        testByte = new TestClasses.TestByte(null);
+        serialize = testByteSerializer.serialize(testByte);
+        deserialize = testByteSerializer.deserialize(serialize);
+        assertEquals(testByte, deserialize);
     }
 
     @Test
@@ -115,6 +120,11 @@ public class UnsafeMemoryTest {
         SerializerUnsafeI<TestClasses.TestShort> testShortSerializer = SerializerFactory.getSerializer(TestClasses.TestShort.class);
         byte[] serialize = testShortSerializer.serialize(testShort);
         TestClasses.TestShort deserialize = testShortSerializer.deserialize(serialize);
+        assertEquals(testShort, deserialize);
+
+        testShort = new TestClasses.TestShort(null);
+        serialize = testShortSerializer.serialize(testShort);
+        deserialize = testShortSerializer.deserialize(serialize);
         assertEquals(testShort, deserialize);
     }
 
@@ -126,6 +136,11 @@ public class UnsafeMemoryTest {
         byte[] serialize = testIntegerSerializer.serialize(testInteger);
         TestClasses.TestInteger deserialize = testIntegerSerializer.deserialize(serialize);
         assertEquals(testInteger, deserialize);
+
+        testInteger = new TestClasses.TestInteger(null);
+        serialize = testIntegerSerializer.serialize(testInteger);
+        deserialize = testIntegerSerializer.deserialize(serialize);
+        assertEquals(testInteger, deserialize);
     }
 
     @Test
@@ -135,6 +150,11 @@ public class UnsafeMemoryTest {
         SerializerUnsafeI<TestClasses.TestLong> testLongSerializer = SerializerFactory.getSerializer(TestClasses.TestLong.class);
         byte[] serialize = testLongSerializer.serialize(testLong);
         TestClasses.TestLong deserialize = testLongSerializer.deserialize(serialize);
+        assertEquals(testLong, deserialize);
+
+        testLong = new TestClasses.TestLong(null);
+        serialize = testLongSerializer.serialize(testLong);
+        deserialize = testLongSerializer.deserialize(serialize);
         assertEquals(testLong, deserialize);
     }
 
@@ -146,6 +166,11 @@ public class UnsafeMemoryTest {
         byte[] serialize = testFloatSerializer.serialize(testFloat);
         TestClasses.TestFloat deserialize = testFloatSerializer.deserialize(serialize);
         assertEquals(testFloat, deserialize);
+
+        testFloat = new TestClasses.TestFloat(null);
+        serialize = testFloatSerializer.serialize(testFloat);
+        deserialize = testFloatSerializer.deserialize(serialize);
+        assertEquals(testFloat, deserialize);
     }
 
     @Test
@@ -155,6 +180,11 @@ public class UnsafeMemoryTest {
         SerializerUnsafeI<TestClasses.TestDouble> testDoubleSerializer = SerializerFactory.getSerializer(TestClasses.TestDouble.class);
         byte[] serialize = testDoubleSerializer.serialize(testDouble);
         TestClasses.TestDouble deserialize = testDoubleSerializer.deserialize(serialize);
+        assertEquals(testDouble, deserialize);
+
+        testDouble = new TestClasses.TestDouble(null);
+        serialize = testDoubleSerializer.serialize(testDouble);
+        deserialize = testDoubleSerializer.deserialize(serialize);
         assertEquals(testDouble, deserialize);
     }
 
@@ -166,6 +196,11 @@ public class UnsafeMemoryTest {
         byte[] serialize = testBooleanSerializer.serialize(testBoolean);
         TestClasses.TestBoolean deserialize = testBooleanSerializer.deserialize(serialize);
         assertEquals(testBoolean, deserialize);
+
+        testBoolean = new TestClasses.TestBoolean(null);
+        serialize = testBooleanSerializer.serialize(testBoolean);
+        deserialize = testBooleanSerializer.deserialize(serialize);
+        assertEquals(testBoolean, deserialize);
     }
 
     @Test
@@ -175,6 +210,11 @@ public class UnsafeMemoryTest {
         SerializerUnsafeI<TestClasses.TestCharacter> testCharacterSerializer = SerializerFactory.getSerializer(TestClasses.TestCharacter.class);
         byte[] serialize = testCharacterSerializer.serialize(testCharacter);
         TestClasses.TestCharacter deserialize = testCharacterSerializer.deserialize(serialize);
+        assertEquals(testCharacter, deserialize);
+
+        testCharacter = new TestClasses.TestCharacter(null);
+        serialize = testCharacterSerializer.serialize(testCharacter);
+        deserialize = testCharacterSerializer.deserialize(serialize);
         assertEquals(testCharacter, deserialize);
     }
 
@@ -189,6 +229,11 @@ public class UnsafeMemoryTest {
         byte[] serialize = testByteArraySerializer.serialize(testByteArray);
         TestClasses.TestByteArray deserialize = testByteArraySerializer.deserialize(serialize);
         assertEquals(testByteArray, deserialize);
+
+        testByteArray = new TestClasses.TestByteArray(null);
+        serialize = testByteArraySerializer.serialize(testByteArray);
+        deserialize = testByteArraySerializer.deserialize(serialize);
+        assertEquals(testByteArray, deserialize);
     }
 
     @Test
@@ -199,6 +244,11 @@ public class UnsafeMemoryTest {
         SerializerUnsafeI<TestClasses.TestShortArray> testShortArraySerializer = SerializerFactory.getSerializer(TestClasses.TestShortArray.class);
         byte[] serialize = testShortArraySerializer.serialize(testShortArray);
         TestClasses.TestShortArray deserialize = testShortArraySerializer.deserialize(serialize);
+        assertEquals(testShortArray, deserialize);
+
+        testShortArray = new TestClasses.TestShortArray(null);
+        serialize = testShortArraySerializer.serialize(testShortArray);
+        deserialize = testShortArraySerializer.deserialize(serialize);
         assertEquals(testShortArray, deserialize);
     }
 
@@ -211,6 +261,11 @@ public class UnsafeMemoryTest {
         byte[] serialize = testIntArraySerializer.serialize(testIntArray);
         TestClasses.TestIntArray deserialize = testIntArraySerializer.deserialize(serialize);
         assertEquals(testIntArray, deserialize);
+
+        testIntArray = new TestClasses.TestIntArray(null);
+        serialize = testIntArraySerializer.serialize(testIntArray);
+        deserialize = testIntArraySerializer.deserialize(serialize);
+        assertEquals(testIntArray, deserialize);
     }
 
     @Test
@@ -221,6 +276,11 @@ public class UnsafeMemoryTest {
         SerializerUnsafeI<TestClasses.TestLongArray> testLongArraySerializer = SerializerFactory.getSerializer(TestClasses.TestLongArray.class);
         byte[] serialize = testLongArraySerializer.serialize(testLongArray);
         TestClasses.TestLongArray deserialize = testLongArraySerializer.deserialize(serialize);
+        assertEquals(testLongArray, deserialize);
+
+        testLongArray = new TestClasses.TestLongArray(null);
+        serialize = testLongArraySerializer.serialize(testLongArray);
+        deserialize = testLongArraySerializer.deserialize(serialize);
         assertEquals(testLongArray, deserialize);
     }
 
@@ -233,6 +293,11 @@ public class UnsafeMemoryTest {
         byte[] serialize = testFloatArraySerializer.serialize(testFloatArray);
         TestClasses.TestFloatArray deserialize = testFloatArraySerializer.deserialize(serialize);
         assertEquals(testFloatArray, deserialize);
+
+        testFloatArray = new TestClasses.TestFloatArray(null);
+        serialize = testFloatArraySerializer.serialize(testFloatArray);
+        deserialize = testFloatArraySerializer.deserialize(serialize);
+        assertEquals(testFloatArray, deserialize);
     }
 
     @Test
@@ -243,6 +308,11 @@ public class UnsafeMemoryTest {
         SerializerUnsafeI<TestClasses.TestDoubleArray> testDoubleArraySerializer = SerializerFactory.getSerializer(TestClasses.TestDoubleArray.class);
         byte[] serialize = testDoubleArraySerializer.serialize(testDoubleArray);
         TestClasses.TestDoubleArray deserialize = testDoubleArraySerializer.deserialize(serialize);
+        assertEquals(testDoubleArray, deserialize);
+
+        testDoubleArray = new TestClasses.TestDoubleArray(null);
+        serialize = testDoubleArraySerializer.serialize(testDoubleArray);
+        deserialize = testDoubleArraySerializer.deserialize(serialize);
         assertEquals(testDoubleArray, deserialize);
     }
 
@@ -255,6 +325,11 @@ public class UnsafeMemoryTest {
         byte[] serialize = testBooleanArraySerializer.serialize(testBooleanArray);
         TestClasses.TestBooleanArray deserialize = testBooleanArraySerializer.deserialize(serialize);
         assertEquals(testBooleanArray, deserialize);
+
+        testBooleanArray = new TestClasses.TestBooleanArray(null);
+        serialize = testBooleanArraySerializer.serialize(testBooleanArray);
+        deserialize = testBooleanArraySerializer.deserialize(serialize);
+        assertEquals(testBooleanArray, deserialize);
     }
 
     @Test
@@ -264,6 +339,11 @@ public class UnsafeMemoryTest {
         SerializerUnsafeI<TestClasses.TestCharArray> testCharArraySerializer = SerializerFactory.getSerializer(TestClasses.TestCharArray.class);
         byte[] serialize = testCharArraySerializer.serialize(testCharArray);
         TestClasses.TestCharArray deserialize = testCharArraySerializer.deserialize(serialize);
+        assertEquals(testCharArray, deserialize);
+
+        testCharArray = new TestClasses.TestCharArray(null);
+        serialize = testCharArraySerializer.serialize(testCharArray);
+        deserialize = testCharArraySerializer.deserialize(serialize);
         assertEquals(testCharArray, deserialize);
     }
 
@@ -278,6 +358,11 @@ public class UnsafeMemoryTest {
         byte[] serialize = testStringSerializer.serialize(testString);
         TestClasses.TestString deserialize = testStringSerializer.deserialize(serialize);
         assertEquals(testString, deserialize);
+
+        testString = new TestClasses.TestString(null);
+        serialize = testStringSerializer.serialize(testString);
+        deserialize = testStringSerializer.deserialize(serialize);
+        assertEquals(testString, deserialize);
     }
 
     @Test
@@ -287,6 +372,11 @@ public class UnsafeMemoryTest {
         SerializerUnsafeI<TestClasses.TestUUID> testUUIDSerializer = SerializerFactory.getSerializer(TestClasses.TestUUID.class);
         byte[] serialize = testUUIDSerializer.serialize(testUUID);
         TestClasses.TestUUID deserialize = testUUIDSerializer.deserialize(serialize);
+        assertEquals(testUUID, deserialize);
+
+        testUUID = new TestClasses.TestUUID(null);
+        serialize = testUUIDSerializer.serialize(testUUID);
+        deserialize = testUUIDSerializer.deserialize(serialize);
         assertEquals(testUUID, deserialize);
     }
 
@@ -333,8 +423,75 @@ public class UnsafeMemoryTest {
         SerializerUnsafeI<TestClasses.TestComplex> testComplexSerializer = SerializerFactory.getSerializer(TestClasses.TestComplex.class);
         byte[] serialize = testComplexSerializer.serialize(testComplex);
         TestClasses.TestComplex deserialize = testComplexSerializer.deserialize(serialize);
-        System.out.println(testComplex);
-        System.out.println(deserialize);
+        assertEquals(testComplex, deserialize);
+
+        testComplex = new TestClasses.TestComplex(
+                (byte) random.nextInt(),
+                (short) random.nextInt(),
+                random.nextInt(),
+                random.nextLong(),
+                random.nextFloat(),
+                random.nextDouble(),
+                random.nextBoolean(),
+                (char) random.nextInt(Character.MAX_VALUE),
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+
+                null,
+                null
+        );
+        serialize = testComplexSerializer.serialize(testComplex);
+        deserialize = testComplexSerializer.deserialize(serialize);
+        assertEquals(testComplex, deserialize);
+
+        testComplex = new TestClasses.TestComplex(
+                (byte) random.nextInt(),
+                (short) random.nextInt(),
+                random.nextInt(),
+                random.nextLong(),
+                random.nextFloat(),
+                random.nextDouble(),
+                random.nextBoolean(),
+                (char) random.nextInt(Character.MAX_VALUE),
+                null,
+                (short) random.nextInt(),
+                random.nextInt(),
+                null,
+                random.nextFloat(),
+                null,
+                random.nextBoolean(),
+                null,
+                new byte[] {(byte)random.nextInt(), (byte)random.nextInt(), (byte)random.nextInt(), (byte)random.nextInt(), (byte)random.nextInt(),
+                        (byte)random.nextInt(), (byte)random.nextInt(), (byte)random.nextInt(), (byte)random.nextInt(), (byte)random.nextInt()},
+                null,
+                new int[] {random.nextInt(), random.nextInt(), random.nextInt(), random.nextInt(), random.nextInt(),
+                        random.nextInt(), random.nextInt(), random.nextInt(), random.nextInt(), random.nextInt()},
+                null,
+                new float[] {random.nextFloat(), random.nextFloat(), random.nextFloat(), random.nextFloat(), random.nextFloat(),
+                        random.nextFloat(), random.nextFloat(), random.nextFloat(), random.nextFloat(), random.nextFloat()},
+                null,
+                new boolean[] {random.nextBoolean(), random.nextBoolean(), random.nextBoolean(), random.nextBoolean(), random.nextBoolean(),
+                        random.nextBoolean(), random.nextBoolean(), random.nextBoolean(), random.nextBoolean(), random.nextBoolean()},
+                null,
+
+                UUID.randomUUID().toString(),
+                null);
+        serialize = testComplexSerializer.serialize(testComplex);
+        deserialize = testComplexSerializer.deserialize(serialize);
         assertEquals(testComplex, deserialize);
     }
 
@@ -351,6 +508,15 @@ public class UnsafeMemoryTest {
                 UUID.randomUUID().toString(),
                 UUID.randomUUID()
         );
+        SerializerUnsafeI<TestClasses.TestEvent> testEventSerializer = SerializerFactory.getSerializer(TestClasses.TestEvent.class);
+        byte[] serialize = testEventSerializer.serialize(testEvent);
+        TestClasses.TestEvent deserialize = testEventSerializer.deserialize(serialize);
+        assertEquals(testEvent, deserialize);
+    }
+
+    @Test
+    public void testNull() throws Exception {
+        TestClasses.TestEvent testEvent = null;
         SerializerUnsafeI<TestClasses.TestEvent> testEventSerializer = SerializerFactory.getSerializer(TestClasses.TestEvent.class);
         byte[] serialize = testEventSerializer.serialize(testEvent);
         TestClasses.TestEvent deserialize = testEventSerializer.deserialize(serialize);

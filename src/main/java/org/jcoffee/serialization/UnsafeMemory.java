@@ -12,6 +12,8 @@ public class UnsafeMemory {
     private static final Unsafe UNSAFE;
     private static final String VALUE_FIELD = "value";
 
+    public static final byte NULL = 1;
+
     public static final long byteValueFieldOffset;
     public static final long shortValueFieldOffset;
     public static final long intValueFieldOffset;
@@ -129,58 +131,34 @@ public class UnsafeMemory {
     }
 
     public static byte getPrimitiveByte(Object baseObject, long fieldOffset) {
-        if (baseObject == null) {
-            return 0;
-        }
         return UNSAFE.getByte(baseObject, fieldOffset);
     }
 
     public static short getPrimitiveShort(Object baseObject, long fieldOffset) {
-        if (baseObject == null) {
-            return 0;
-        }
         return UNSAFE.getShort(baseObject, fieldOffset);
     }
 
     public static int getPrimitiveInt(Object baseObj, long intFieldOffset) {
-        if (baseObj == null) {
-            return 0;
-        }
         return UNSAFE.getInt(baseObj, intFieldOffset);
     }
 
     public static long getPrimitiveLong(Object baseObj, long longFieldOffset) {
-        if (baseObj == null) {
-            return 0;
-        }
         return UNSAFE.getLong(baseObj, longFieldOffset);
     }
 
     public static float getPrimitiveFloat(Object baseObj, long floatFieldOffset) {
-        if (baseObj == null) {
-            return 0;
-        }
         return UNSAFE.getFloat(baseObj, floatFieldOffset);
     }
 
     public static double getPrimitiveDouble(Object baseObj, long doubleFieldOffset) {
-        if (baseObj == null) {
-            return 0;
-        }
         return UNSAFE.getDouble(baseObj, doubleFieldOffset);
     }
 
     public static boolean getPrimitiveBoolean(Object baseObject, long fieldOffset) {
-        if (baseObject == null) {
-            return false;
-        }
         return UNSAFE.getBoolean(baseObject, fieldOffset);
     }
 
     public static char getPrimitiveChar(Object baseObject, long fieldOffset) {
-        if (baseObject == null) {
-            return 0;
-        }
         return UNSAFE.getChar(baseObject, fieldOffset);
     }
 
@@ -188,64 +166,76 @@ public class UnsafeMemory {
      *  Primitive wrapper types
      */
 
-    public static byte getByteFieldValue(Object baseObj, long byteFieldOffset) {
-        return getPrimitiveByte(getFieldObject(baseObj, byteFieldOffset), byteValueFieldOffset);
+    private static boolean isObjectNull(byte[] isObjectNullArray, int declaredField, Object fieldObject) {
+        if (fieldObject == null) {
+            isObjectNullArray[declaredField] = NULL;
+            return true;
+        }
+        return false;
     }
 
-    public static short getShortFieldValue(Object baseObj, long shortFieldOffset) {
-        return getPrimitiveShort(getFieldObject(baseObj, shortFieldOffset), shortValueFieldOffset);
+    public static byte[] getByteFieldValueInBytes(Object baseObj, long byteFieldOffset, byte[] isObjectNullArray, int declaredField) {
+        final Object fieldObject = getFieldObject(baseObj, byteFieldOffset);
+        if (isObjectNull(isObjectNullArray, declaredField, fieldObject)) {
+            return new byte[0];
+        }
+        return new byte[]{getPrimitiveByte(fieldObject, byteValueFieldOffset)};
     }
 
-    public static byte[] getShortFieldValueInBytes(Object baseObj, long shortFieldOffset) {
-        return getPrimitiveInBytes(getFieldObject(baseObj, shortFieldOffset), shortValueFieldOffset, JAVA_SHORT_SIZE);
+    public static byte[] getShortFieldValueInBytes(Object baseObj, long shortFieldOffset, byte[] isObjectNullArray, int declaredField) {
+        final Object fieldObject = getFieldObject(baseObj, shortFieldOffset);
+        if (isObjectNull(isObjectNullArray, declaredField, fieldObject)) {
+            return new byte[0];
+        }
+        return Utils.bytesFromShort(getPrimitiveShort(fieldObject, shortValueFieldOffset));
     }
 
-    public static int getIntegerFieldValue(Object baseObj, long integerFieldOffset) {
-        return getPrimitiveInt(getFieldObject(baseObj, integerFieldOffset), intValueFieldOffset);
+    public static byte[] getIntegerFieldValueInBytes(Object baseObj, long integerFieldOffset, byte[] isObjectNullArray, int declaredField) {
+        final Object fieldObject = getFieldObject(baseObj, integerFieldOffset);
+        if (isObjectNull(isObjectNullArray, declaredField, fieldObject)) {
+            return new byte[0];
+        }
+        return Utils.bytesFromInt(getPrimitiveInt(fieldObject, intValueFieldOffset));
     }
 
-    public static byte[] getIntegerFieldValueInBytes(Object baseObj, long integerFieldOffset) {
-        return getPrimitiveInBytes(getFieldObject(baseObj, integerFieldOffset), intValueFieldOffset, JAVA_INTEGER_SIZE);
+    public static byte[] getLongFieldValueInBytes(Object baseObj, long longFieldOffset, byte[] isObjectNullArray, int declaredField) {
+        final Object fieldObject = getFieldObject(baseObj, longFieldOffset);
+        if (isObjectNull(isObjectNullArray, declaredField, fieldObject)) {
+            return new byte[0];
+        }
+        return Utils.bytesFromLong(getPrimitiveLong(fieldObject, longValueFieldOffset));
     }
 
-    public static long getLongFieldValue(Object baseObj, long longFieldOffset) {
-        return getPrimitiveLong(getFieldObject(baseObj, longFieldOffset), longValueFieldOffset);
+    public static byte[] getFloatFieldValueInBytes(Object baseObj, long floatFieldOffset, byte[] isObjectNullArray, int declaredField) {
+        final Object fieldObject = getFieldObject(baseObj, floatFieldOffset);
+        if (isObjectNull(isObjectNullArray, declaredField, fieldObject)) {
+            return new byte[0];
+        }
+        return Utils.bytesFromInt(Float.floatToRawIntBits(getPrimitiveFloat(fieldObject, floatValueFieldOffset)));
     }
 
-    public static byte[] getLongFieldValueInBytes(Object baseObj, long longFieldOffset) {
-        return getPrimitiveInBytes(getFieldObject(baseObj, longFieldOffset), longValueFieldOffset, JAVA_LONG_SIZE);
+    public static byte[] getDoubleFieldValueInBytes(Object baseObj, long doubleFieldOffset, byte[] isObjectNullArray, int declaredField) {
+        final Object fieldObject = getFieldObject(baseObj, doubleFieldOffset);
+        if (isObjectNull(isObjectNullArray, declaredField, fieldObject)) {
+            return new byte[0];
+        }
+        return Utils.bytesFromLong(Double.doubleToRawLongBits(getPrimitiveDouble(fieldObject, doubleValueFieldOffset)));
     }
 
-    public static float getFloatFieldValue(Object baseObj, long floatFieldOffset) {
-        return getPrimitiveFloat(getFieldObject(baseObj, floatFieldOffset), floatValueFieldOffset);
+    public static byte[] getBooleanFieldValueInBytes(Object baseObj, long booleanFieldOffset, byte[] isObjectNullArray, int declaredField) {
+        final Object fieldObject = getFieldObject(baseObj, booleanFieldOffset);
+        if (isObjectNull(isObjectNullArray, declaredField, fieldObject)) {
+            return new byte[0];
+        }
+        return Utils.byteFromBoolean(getPrimitiveBoolean(fieldObject, booleanValueFieldOffset));
     }
 
-    public static byte[] getFloatFieldValueInBytes(Object baseObj, long floatFieldOffset) {
-        return getPrimitiveInBytes(getFieldObject(baseObj, floatFieldOffset), floatValueFieldOffset, JAVA_FLOAT_SIZE);
-    }
-
-    public static double getDoubleFieldValue(Object baseObj, long doubleFieldOffset) {
-        return getPrimitiveDouble(getFieldObject(baseObj, doubleFieldOffset), doubleValueFieldOffset);
-    }
-
-    public static byte[] getDoubleFieldValueInBytes(Object baseObj, long doubleFieldOffset) {
-        return getPrimitiveInBytes(getFieldObject(baseObj, doubleFieldOffset), doubleValueFieldOffset, JAVA_DOUBLE_SIZE);
-    }
-
-    public static boolean getBooleanFieldValue(Object baseObj, long booleanFieldOffset) {
-        return getPrimitiveBoolean(getFieldObject(baseObj, booleanFieldOffset), booleanValueFieldOffset);
-    }
-
-    public static byte[] getBooleanFieldValueInBytes(Object baseObj, long booleanFieldOffset) {
-        return getPrimitiveInBytes(getFieldObject(baseObj, booleanFieldOffset), booleanValueFieldOffset, JAVA_BOOLEAN_SIZE);
-    }
-
-    public static char getCharFieldValue(Object baseObj, long charFieldOffset) {
-        return getPrimitiveChar(getFieldObject(baseObj, charFieldOffset), charValueFieldOffset);
-    }
-
-    public static byte[] getCharFieldValueInBytes(Object baseObj, long charFieldOffset) {
-        return getPrimitiveInBytes(getFieldObject(baseObj, charFieldOffset), charValueFieldOffset, JAVA_CHARACTER_SIZE);
+    public static byte[] getCharFieldValueInBytes(Object baseObj, long charFieldOffset, byte[] isObjectNullArray, int declaredField) {
+        final Object fieldObject = getFieldObject(baseObj, charFieldOffset);
+        if (isObjectNull(isObjectNullArray, declaredField, fieldObject)) {
+            return new byte[0];
+        }
+        return Utils.bytesFromChar(getPrimitiveChar(fieldObject, charValueFieldOffset));
     }
 
     /*
@@ -253,8 +243,11 @@ public class UnsafeMemory {
      */
 
     // byte
-    public static byte[] getBytesFromByteArray(Object baseObj, long byteArrayOffset) {
+    public static byte[] getBytesFromByteArray(Object baseObj, long byteArrayOffset, byte[] isObjectNullArray, int declaredField) {
         byte[] bytes = (byte[]) getFieldObject(baseObj, byteArrayOffset);
+        if (isObjectNull(isObjectNullArray, declaredField, bytes)) {
+            return new byte[0];
+        }
         int len = bytes.length;
         byte[] bb = new byte[len + JAVA_INTEGER_SIZE];
         for (int i = 0; i < JAVA_INTEGER_SIZE; i++) {
@@ -271,8 +264,11 @@ public class UnsafeMemory {
     }
 
     // short
-    public static byte[] getBytesFromShortArray(Object baseObj, long shortArrayOffset) {
+    public static byte[] getBytesFromShortArray(Object baseObj, long shortArrayOffset, byte[] isObjectNullArray, int declaredField) {
         short[] shorts = (short[]) getFieldObject(baseObj, shortArrayOffset);
+        if (isObjectNull(isObjectNullArray, declaredField, shorts)) {
+            return new byte[0];
+        }
         int len = shorts.length << 1;
         byte[] shb = new byte[len + JAVA_INTEGER_SIZE];
         for (int i = 0; i < JAVA_INTEGER_SIZE; i++) {
@@ -289,14 +285,17 @@ public class UnsafeMemory {
     }
 
     // int
-    public static byte[] getBytesFromIntArray(Object baseObj, long intArrayOffset) {
-        int[] longs = (int[]) getFieldObject(baseObj, intArrayOffset);
-        int len = longs.length << 2;
+    public static byte[] getBytesFromIntArray(Object baseObj, long intArrayOffset, byte[] isObjectNullArray, int declaredField) {
+        int[] ints = (int[]) getFieldObject(baseObj, intArrayOffset);
+        if (isObjectNull(isObjectNullArray, declaredField, ints)) {
+            return new byte[0];
+        }
+        int len = ints.length << 2;
         byte[] ib = new byte[len + JAVA_INTEGER_SIZE];
         for (int i = 0; i < JAVA_INTEGER_SIZE; i++) {
             ib[i] = (byte) (len >> (i << 3));
         }
-        UNSAFE.copyMemory(longs, baseIntArrayOffset, ib, baseByteArrayOffset + JAVA_INTEGER_SIZE, len);
+        UNSAFE.copyMemory(ints, baseIntArrayOffset, ib, baseByteArrayOffset + JAVA_INTEGER_SIZE, len);
         return ib;
     }
 
@@ -307,8 +306,11 @@ public class UnsafeMemory {
     }
 
     // long
-    public static byte[] getBytesFromLongArray(Object baseObj, long longArrayOffset) {
+    public static byte[] getBytesFromLongArray(Object baseObj, long longArrayOffset, byte[] isObjectNullArray, int declaredField) {
         long[] longs = (long[]) getFieldObject(baseObj, longArrayOffset);
+        if (isObjectNull(isObjectNullArray, declaredField, longs)) {
+            return new byte[0];
+        }
         int len = longs.length << 3;
         byte[] lb = new byte[len + JAVA_INTEGER_SIZE];
         for (int i = 0; i < JAVA_INTEGER_SIZE; i++) {
@@ -325,8 +327,11 @@ public class UnsafeMemory {
     }
 
     // float
-    public static byte[] getBytesFromFloatArray(Object baseObj, long floatArrayOffset) {
+    public static byte[] getBytesFromFloatArray(Object baseObj, long floatArrayOffset, byte[] isObjectNullArray, int declaredField) {
         float[] floats = (float[]) getFieldObject(baseObj, floatArrayOffset);
+        if (isObjectNull(isObjectNullArray, declaredField, floats)) {
+            return new byte[0];
+        }
         int len = floats.length << 2;
         byte[] fb = new byte[len + JAVA_INTEGER_SIZE];
         for (int i = 0; i < JAVA_INTEGER_SIZE; i++) {
@@ -343,8 +348,11 @@ public class UnsafeMemory {
     }
 
     // double
-    public static byte[] getBytesFromDoubleArray(Object baseObj, long doubleArrayOffset) {
+    public static byte[] getBytesFromDoubleArray(Object baseObj, long doubleArrayOffset, byte[] isObjectNullArray, int declaredField) {
         double[] doubles = (double[]) getFieldObject(baseObj, doubleArrayOffset);
+        if (isObjectNull(isObjectNullArray, declaredField, doubles)) {
+            return new byte[0];
+        }
         int len = doubles.length << 3;
         byte[] db = new byte[len + JAVA_INTEGER_SIZE];
         for (int i = 0; i < JAVA_INTEGER_SIZE; i++) {
@@ -361,8 +369,11 @@ public class UnsafeMemory {
     }
 
     // boolean
-    public static byte[] getBytesFromBooleanArray(Object baseObj, long booleanArrayOffset) {
+    public static byte[] getBytesFromBooleanArray(Object baseObj, long booleanArrayOffset, byte[] isObjectNullArray, int declaredField) {
         boolean[] booleans = (boolean[]) getFieldObject(baseObj, booleanArrayOffset);
+        if (isObjectNull(isObjectNullArray, declaredField, booleans)) {
+            return new byte[0];
+        }
         int len = booleans.length;
         byte[] bb = new byte[len + JAVA_INTEGER_SIZE];
         for (int i = 0; i < JAVA_INTEGER_SIZE; i++) {
@@ -379,8 +390,11 @@ public class UnsafeMemory {
     }
 
     // char
-    public static byte[] getBytesFromCharArray(Object baseObj, long charArrayOffset) {
+    public static byte[] getBytesFromCharArray(Object baseObj, long charArrayOffset, byte[] isObjectNullArray, int declaredField) {
         char[] chars = (char[]) getFieldObject(baseObj, charArrayOffset);
+        if (isObjectNull(isObjectNullArray, declaredField, chars)) {
+            return new byte[0];
+        }
         int len = chars.length << 1;
         byte[] cb = new byte[len + JAVA_INTEGER_SIZE];
         for (int i = 0; i < JAVA_INTEGER_SIZE; i++) {
@@ -402,32 +416,19 @@ public class UnsafeMemory {
      */
 
 
-    public static byte[] getBytesFromString(Object baseObj, long stringFieldOffset) {
-        if (baseObj == null) {
+    public static byte[] getBytesFromString(Object baseObj, long stringFieldOffset, byte[] isObjectNullArray, int declaredField) {
+        final Object fieldObject = getFieldObject(baseObj, stringFieldOffset);
+        if (isObjectNull(isObjectNullArray, declaredField, fieldObject)) {
             return new byte[0];
         }
-        return getBytesFromCharArray(getFieldObject(baseObj, stringFieldOffset), charArrayValueFieldOffset);
+        return getBytesFromCharArray(getFieldObject(baseObj, stringFieldOffset), charArrayValueFieldOffset, isObjectNullArray, declaredField);
     }
 
-    public static byte[] getBytesFromUUID(Object uuid) {
-        if (uuid == null) {
+    public static byte[] getBytesFromUUID(Object baseObj, long uuidFieldOffset, byte[] isObjectNullArray, int declaredField) {
+        final Object fieldObject = getFieldObject(baseObj, uuidFieldOffset);
+        if (isObjectNull(isObjectNullArray, declaredField, fieldObject)) {
             return new byte[0];
         }
-
-        byte[] b = new byte[16];
-        int index = 0;
-
-        long mostSigBits = UNSAFE.getLong(uuid, mostSigBitsFieldOffset);
-        long leastSigBits = UNSAFE.getLong(uuid, leastSigBitsFieldOffset);
-
-        for (int i = 0; i < JAVA_LONG_SIZE; ++i) {
-            b[index++] = (byte) (mostSigBits >> (i << 3));
-        }
-
-        for (int i = 0; i < JAVA_LONG_SIZE; ++i) {
-            b[index++] = (byte) (leastSigBits >> (i << 3));
-        }
-
-        return b;
+        return Utils.bytesFromUuid(fieldObject);
     }
 }
