@@ -94,7 +94,7 @@ public class SerializerUnsafe<T> implements SerializerUnsafeI<T> {
     @Override
     public byte[] serialize(T obj) {
         if (obj == null) return null;
-        byte[] isObjectNullArray = new byte[declaredFieldsSize];
+        boolean[] isObjectNullArray = new boolean[declaredFieldsSize];
         int bufferSize = defaultSize;
         final byte[][] declaredFieldsValues = new byte[declaredFields.length][];
 
@@ -225,7 +225,7 @@ public class SerializerUnsafe<T> implements SerializerUnsafeI<T> {
         }
 
         byte[] buffer = new byte[bufferSize + isObjectNullArray.length];
-        System.arraycopy(isObjectNullArray, 0, buffer, 0, isObjectNullArray.length);
+        UnsafeMemory.copyMemory(isObjectNullArray, baseBooleanArrayOffset, buffer, baseByteArrayOffset, isObjectNullArray.length);
         int index = isObjectNullArray.length;
         for (byte[] bytes : declaredFieldsValues) {
             System.arraycopy(bytes, 0, buffer, index, bytes.length);
@@ -239,8 +239,8 @@ public class SerializerUnsafe<T> implements SerializerUnsafeI<T> {
     @Override
     public T deserialize(byte[] bytes) throws IllegalAccessException, InstantiationException {
         if (bytes == null) return null;
-        byte[] isObjectNullArray = new byte[declaredFieldsSize];
-        System.arraycopy(bytes, 0, isObjectNullArray, 0, declaredFieldsSize);
+        boolean[] isObjectNullArray = new boolean[declaredFieldsSize];
+        UnsafeMemory.copyMemory(bytes, baseByteArrayOffset, isObjectNullArray, baseBooleanArrayOffset, declaredFieldsSize);
         int offset = isObjectNullArray.length;
         Object instance = UnsafeMemory.allocateInstance(tClass);
         for (int i = 0; i < declaredFields.length; i++) {
@@ -280,91 +280,91 @@ public class SerializerUnsafe<T> implements SerializerUnsafeI<T> {
 
 
                 case JAVA_BYTE_OBJECT_TYPE:
-                    if (isObjectNullArray[i] == NULL) break;
+                    if (isObjectNullArray[i]) break;
                     UnsafeMemory.putObject(instance, declaredFieldsOffsets[i], bytes[offset]);
                     offset += JAVA_BYTE_SIZE;
                     break;
                 case JAVA_SHORT_OBJECT_TYPE:
-                    if (isObjectNullArray[i] == NULL) break;
+                    if (isObjectNullArray[i]) break;
                     UnsafeMemory.putObject(instance, declaredFieldsOffsets[i], Utils.shortFromBytes(bytes, offset));
                     offset += JAVA_SHORT_SIZE;
                     break;
                 case JAVA_INTEGER_OBJECT_TYPE:
-                    if (isObjectNullArray[i] == NULL) break;
+                    if (isObjectNullArray[i]) break;
                     UnsafeMemory.putObject(instance, declaredFieldsOffsets[i], Utils.intFromBytes(bytes, offset));
                     offset += JAVA_INTEGER_SIZE;
                     break;
                 case JAVA_LONG_OBJECT_TYPE:
-                    if (isObjectNullArray[i] == NULL) break;
+                    if (isObjectNullArray[i]) break;
                     UnsafeMemory.putObject(instance, declaredFieldsOffsets[i], Utils.longFromBytes(bytes, offset));
                     offset += JAVA_LONG_SIZE;
                     break;
                 case JAVA_FLOAT_OBJECT_TYPE:
-                    if (isObjectNullArray[i] == NULL) break;
+                    if (isObjectNullArray[i]) break;
                     UnsafeMemory.putObject(instance, declaredFieldsOffsets[i], Float.intBitsToFloat(Utils.intFromBytes(bytes, offset)));
                     offset += JAVA_FLOAT_SIZE;
                     break;
                 case JAVA_DOUBLE_OBJECT_TYPE:
-                    if (isObjectNullArray[i] == NULL) break;
+                    if (isObjectNullArray[i]) break;
                     UnsafeMemory.putObject(instance, declaredFieldsOffsets[i], Double.longBitsToDouble(Utils.longFromBytes(bytes, offset)));
                     offset += JAVA_DOUBLE_SIZE;
                     break;
                 case JAVA_BOOLEAN_OBJECT_TYPE:
-                    if (isObjectNullArray[i] == NULL) break;
+                    if (isObjectNullArray[i]) break;
                     UnsafeMemory.putObject(instance, declaredFieldsOffsets[i], Utils.booleanFromBytes(bytes, offset));
                     offset += JAVA_BOOLEAN_SIZE;
                     break;
                 case JAVA_CHARACTER_OBJECT_TYPE:
-                    if (isObjectNullArray[i] == NULL) break;
+                    if (isObjectNullArray[i]) break;
                     UnsafeMemory.putObject(instance, declaredFieldsOffsets[i], Utils.charFromBytes(bytes, offset));
                     offset += JAVA_CHARACTER_SIZE;
                     break;
 
 
                 case JAVA_BYTE_ARRAY_TYPE:
-                    if (isObjectNullArray[i] == NULL) break;
+                    if (isObjectNullArray[i]) break;
                     int byteArraySize = Utils.intFromBytes(bytes, offset);
                     UnsafeMemory.putObject(instance, declaredFieldsOffsets[i], UnsafeMemory.getByteArrayFromBytes(bytes, offset, byteArraySize));
                     offset += byteArraySize + JAVA_INTEGER_SIZE;
                     break;
                 case JAVA_SHORT_ARRAY_TYPE:
-                    if (isObjectNullArray[i] == NULL) break;
+                    if (isObjectNullArray[i]) break;
                     int shortArraySize = Utils.intFromBytes(bytes, offset);
                     UnsafeMemory.putObject(instance, declaredFieldsOffsets[i], UnsafeMemory.getShortArrayFromBytes(bytes, offset, shortArraySize));
                     offset += shortArraySize + JAVA_INTEGER_SIZE;
                     break;
                 case JAVA_INT_ARRAY_TYPE:
-                    if (isObjectNullArray[i] == NULL) break;
+                    if (isObjectNullArray[i]) break;
                     int intArraySize = Utils.intFromBytes(bytes, offset);
                     UnsafeMemory.putObject(instance, declaredFieldsOffsets[i], UnsafeMemory.getIntArrayFromBytes(bytes, offset, intArraySize));
                     offset += intArraySize + JAVA_INTEGER_SIZE;
                     break;
                 case JAVA_LONG_ARRAY_TYPE:
-                    if (isObjectNullArray[i] == NULL) break;
+                    if (isObjectNullArray[i]) break;
                     int longArraySize = Utils.intFromBytes(bytes, offset);
                     UnsafeMemory.putObject(instance, declaredFieldsOffsets[i], UnsafeMemory.getLongArrayFromBytes(bytes, offset, longArraySize));
                     offset += longArraySize + JAVA_INTEGER_SIZE;
                     break;
                 case JAVA_FLOAT_ARRAY_TYPE:
-                    if (isObjectNullArray[i] == NULL) break;
+                    if (isObjectNullArray[i]) break;
                     int floatArraySize = Utils.intFromBytes(bytes, offset);
                     UnsafeMemory.putObject(instance, declaredFieldsOffsets[i], UnsafeMemory.getFloatArrayFromBytes(bytes, offset, floatArraySize));
                     offset += floatArraySize + JAVA_INTEGER_SIZE;
                     break;
                 case JAVA_DOUBLE_ARRAY_TYPE:
-                    if (isObjectNullArray[i] == NULL) break;
+                    if (isObjectNullArray[i]) break;
                     int doubleArraySize = Utils.intFromBytes(bytes, offset);
                     UnsafeMemory.putObject(instance, declaredFieldsOffsets[i], UnsafeMemory.getDoubleArrayFromBytes(bytes, offset, doubleArraySize));
                     offset += doubleArraySize + JAVA_INTEGER_SIZE;
                     break;
                 case JAVA_BOOLEAN_ARRAY_TYPE:
-                    if (isObjectNullArray[i] == NULL) break;
+                    if (isObjectNullArray[i]) break;
                     int booleanArraySize = Utils.intFromBytes(bytes, offset);
                     UnsafeMemory.putObject(instance, declaredFieldsOffsets[i], UnsafeMemory.getBooleanArrayFromBytes(bytes, offset, booleanArraySize));
                     offset += booleanArraySize + JAVA_INTEGER_SIZE;
                     break;
                 case JAVA_CHAR_ARRAY_TYPE:
-                    if (isObjectNullArray[i] == NULL) break;
+                    if (isObjectNullArray[i]) break;
                     int charArraySize = Utils.intFromBytes(bytes, offset);
                     UnsafeMemory.putObject(instance, declaredFieldsOffsets[i], UnsafeMemory.getCharArrayFromBytes(bytes, offset, charArraySize));
                     offset += charArraySize + JAVA_INTEGER_SIZE;
@@ -372,7 +372,7 @@ public class SerializerUnsafe<T> implements SerializerUnsafeI<T> {
 
 
                 case JAVA_STRING_TYPE:
-                    if (isObjectNullArray[i] == NULL) break;
+                    if (isObjectNullArray[i]) break;
                     int size = Utils.intFromBytes(bytes, offset);
                     Object string = UnsafeMemory.allocateInstance(String.class);
                     UnsafeMemory.putObject(string, charArrayValueFieldOffset, UnsafeMemory.getCharArrayFromBytes(bytes, offset, size));
@@ -380,7 +380,7 @@ public class SerializerUnsafe<T> implements SerializerUnsafeI<T> {
                     offset += size + JAVA_INTEGER_SIZE;
                     break;
                 case JAVA_UUID_TYPE:
-                    if (isObjectNullArray[i] == NULL) break;
+                    if (isObjectNullArray[i]) break;
                     Object uuid = UnsafeMemory.allocateInstance(UUID.class);
                     UnsafeMemory.putLong(uuid, mostSigBitsFieldOffset, Utils.longFromBytes(bytes, offset));
                     UnsafeMemory.putLong(uuid, leastSigBitsFieldOffset, Utils.longFromBytes(bytes, offset + JAVA_LONG_SIZE));
