@@ -11,6 +11,9 @@ import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Created by Aleksandr Simonchuk on 19.11.14.
+ */
 public class UnsafeMemoryTest {
 
     private static Random random = new Random(System.currentTimeMillis());

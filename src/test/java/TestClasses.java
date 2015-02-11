@@ -1,6 +1,9 @@
 import java.util.Arrays;
 import java.util.UUID;
 
+/**
+ * Created by Aleksandr Simonchuk on 19.11.14.
+ */
 public class TestClasses {
 
     static class TestBytePrim {

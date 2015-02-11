@@ -3,6 +3,9 @@ package org.jcoffee.serialization;
 import static org.jcoffee.serialization.JavaTypes.*;
 import static org.jcoffee.serialization.UnsafeMemory.*;
 
+/**
+ * Created by Aleksandr Simonchuk on 19.11.14.
+ */
 public class Utils {
 
     public static byte[] bytesFromShort(short sh) {

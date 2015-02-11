@@ -1,5 +1,8 @@
 package org.jcoffee.serialization;
 
+/**
+ * Created by Aleksandr Simonchuk on 19.11.14.
+ */
 public class JavaTypes {
 
     public static final int JAVA_BYTE_TYPE              = 1;

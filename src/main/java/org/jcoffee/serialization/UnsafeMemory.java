@@ -7,6 +7,9 @@ import java.util.UUID;
 
 import static org.jcoffee.serialization.JavaTypes.*;
 
+/**
+ * Created by Aleksandr Simonchuk on 19.11.14.
+ */
 public class UnsafeMemory {
 
     private static final Unsafe UNSAFE;

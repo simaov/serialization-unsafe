@@ -6,6 +6,9 @@ import java.util.UUID;
 import static org.jcoffee.serialization.JavaTypes.*;
 import static org.jcoffee.serialization.UnsafeMemory.*;
 
+/**
+ * Created by Aleksandr Simonchuk on 19.11.14.
+ */
 public class SerializerUnsafe<T> implements SerializerUnsafeI<T> {
 
     private final Class<T> tClass;

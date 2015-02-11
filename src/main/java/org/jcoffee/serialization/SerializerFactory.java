@@ -5,6 +5,9 @@ import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * Created by Aleksandr Simonchuk on 19.11.14.
+ */
 public class SerializerFactory {
 
     private static final Map<Class, SerializerUnsafeI> SERIALIZER_UNSAFE_MAP = new HashMap<>();

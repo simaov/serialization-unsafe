@@ -1,5 +1,8 @@
 import org.jcoffee.serialization.SerializerUnsafe;
 
+/**
+ * Created by Aleksandr Simonchuk on 19.11.14.
+ */
 public class TestSerializers {
 
     static class TestBytePrimSerializer extends SerializerUnsafe<TestClasses.TestBytePrim> {
