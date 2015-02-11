@@ -1,4 +1,13 @@
 # serialization-unsafe
+
+Serializer can serialize plain java objects.
+
+Supported types:
+* all primitive types and their wrappers
+* all primitive type arrays
+* string
+* UUID
+
 For example we have a class we want to serialize
 ```
 public class TestObj {
