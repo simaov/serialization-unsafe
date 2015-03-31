@@ -1,14 +1,16 @@
 # serialization-unsafe
 
-Serializer can serialize plain java objects.
+Simple and fast plain java object serializer/deserializer.
 
 Supported types:
-* all primitive types and their wrappers
-* all primitive type arrays
+* all primitive types and wrappers
+* arrays of primitive types
 * string
 * UUID
 
-For example we have a class we want to serialize
+###Usage
+
+For example, we have a class we want to serialize
 ```
 public class TestObj {
   private Integer integer;
